@@ -6,15 +6,15 @@
 using namespace Rcpp;
 
 // ComputeConfIntervals
-List ComputeConfIntervals(DataFrame input, NumericVector x, double alpha);
-RcppExport SEXP curstatCI_ComputeConfIntervals(SEXP inputSEXP, SEXP xSEXP, SEXP alphaSEXP) {
+List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha);
+RcppExport SEXP curstatCI_ComputeConfIntervals(SEXP dataSEXP, SEXP xSEXP, SEXP alphaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< DataFrame >::type input(inputSEXP);
+    Rcpp::traits::input_parameter< DataFrame >::type data(dataSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
     Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
-    rcpp_result_gen = Rcpp::wrap(ComputeConfIntervals(input, x, alpha));
+    rcpp_result_gen = Rcpp::wrap(ComputeConfIntervals(data, x, alpha));
     return rcpp_result_gen;
 END_RCPP
 }

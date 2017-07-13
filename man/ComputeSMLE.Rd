@@ -14,10 +14,33 @@ ComputeSMLE(data, x, h)
     \item{freq2}{Frequency of observation t}
 }}
 
-\item{x}{a number or vector}
+\item{x}{numeric vector}
 
 \item{h}{bandwidth}
 }
 \value{
 SMLE(x)
+}
+\description{
+The function ComputeSMLE computes the Smoothed Maximum likelihood Estimator of the distribution function under current status data.
+}
+\examples{
+library(Rcpp)
+library(curstatCI)
+
+# sample size
+n <- 1000
+
+# Uniform data  U(0,2)
+set.seed(2)
+y <- runif(n,0,2)
+t <- runif(n,0,2)
+delta <- as.numeric(y <= t)
+
+A<-cbind(t[order(t)], delta[order(t)], rep(1,n))
+grid <-seq(0,2 ,by = 0.01)
+h<-2*n^-0.2
+
+smle <-ComputeSMLE(A,grid,h)
+plot(grid, smle,type ='l', ylim=c(0,1), main= "",ylab="",xlab="",las=1)
 }

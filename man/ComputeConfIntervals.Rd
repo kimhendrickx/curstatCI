@@ -2,28 +2,60 @@
 % Please edit documentation in R/RcppExports.R
 \name{ComputeConfIntervals}
 \alias{ComputeConfIntervals}
-\title{Confidence Intervals}
+\title{Pointwise Confidence Intervals under Current Status data}
 \usage{
-ComputeConfIntervals(input, x, alpha)
+ComputeConfIntervals(data, x, alpha)
 }
 \arguments{
-\item{input}{DataFrame with three variables:
+\item{data}{DataFrame with three variables:
 \describe{
-    \item{xx}{Observation points t sorted in ascending order}
+    \item{t}{Observation points t sorted in ascending order}
     \item{freq1}{Frequency of observation t satisfying \eqn{y \le t}}
     \item{freq2}{Frequency of observation t}
 }}
 
 \item{x}{numeric vector}
 
-\item{alpha}{level for confidence intervals}
+\item{alpha}{confidence level of pointwise confidence intervals}
 }
 \value{
 List with 4 variables:
 \enumerate{
-    \item{MLE}{ maximum likelihood estimator}
-    \item{SMLE}{ smoothed maximum likelihood estimator}
-    \item{h}{ local bandwidths for points of grid}
-    \item{CI}{ confidence intervals on points of grid}
+    \item{MLE }{ maximum likelihood estimator}
+    \item{SMLE }{ smoothed maximum likelihood estimator in x }
+    \item{h }{ local bandwidths for points in x}
+    \item{CI }{ pointwise confidence intervals for  points in x}
     }
+}
+\description{
+The function ComputeConfIntervals computes pointwise confidence intervals for the distribution function under current status data.
+The confidence intervals are based on the Smoothed Maximum likelihood Estimator and constructed using the nonparametric bootstrap.
+}
+\examples{
+library(Rcpp)
+library(curstatCI)
+
+# sample size
+n <- 1000
+
+# Uniform data  U(0,2)
+set.seed(2)
+y <- runif(n,0,2)
+t <- runif(n,0,2)
+delta <- as.numeric(y <= t)
+
+A<-cbind(t[order(t)], delta[order(t)], rep(1,n))
+grid<-seq(0,2 ,by = 0.01)
+
+# pointwise confidence intervals at grid points:
+out<-ComputeConfIntervals(data = A,x =grid,alpha = 0.05)
+
+left <- out$CI[,1]
+right <- out$CI[,2]
+
+plot(grid, out$SMLE,type ='l', ylim=c(0,1), main= "",ylab="",xlab="",las=1)
+lines(grid, left, col = 4)
+lines(grid, right, col = 4)
+segments(grid,left, grid, right)
+
 }
