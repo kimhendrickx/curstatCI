@@ -9,6 +9,7 @@
 // Created by: Kim Hendrickx
 //////////////////////////////////////////////////////////////////////////////////
 //'@title Maximum Likelihood Estimator
+//'@description The function ComputeMLE computes the Maximum likelihood Estimator of the distribution function under current status data.
 //'@param data DataFrame with three variables:
 //'\describe{
 //'     \item{t}{Observation points t sorted in ascending order}
@@ -20,6 +21,23 @@
 //'     \item{x}{jumplocations of the MLE}
 //'     \item{mle}{MLE evaluated at the jumplocations}
 //' }
+//'@examples
+//'library(Rcpp)
+//'library(curstatCI)
+//'
+//'# sample size
+//'n <- 1000
+//'
+//'# Uniform data  U(0,2)
+//'set.seed(2)
+//'y <- runif(n,0,2)
+//'t <- runif(n,0,2)
+//'delta <- as.numeric(y <= t)
+//'
+//'A<-cbind(t[order(t)], delta[order(t)], rep(1,n))
+//'mle <-ComputeMLE(A)
+//'plot(mle$x, mle$mle,type ='s', ylim=c(0,1), main= "",ylab="",xlab="",las=1)
+//'
 //'@export
 // [[Rcpp::export]]
 DataFrame ComputeMLE(DataFrame data)
@@ -28,9 +46,9 @@ DataFrame ComputeMLE(DataFrame data)
   int             i,j,n,njumps,*freq1,*freq2;
 
   DataFrame DF = Rcpp::DataFrame(data);
-  NumericVector xx = DF["V1"];
-  IntegerVector freq01 = DF["V2"];
-  IntegerVector freq02 = DF["V3"];
+  NumericVector xx = DF[0];
+  IntegerVector freq01 = DF[1];
+  IntegerVector freq02 = DF[2];
 
   n = (int)xx.size();
 
@@ -115,6 +133,7 @@ DataFrame ComputeMLE(DataFrame data)
 //////////////////////////////////////////////////////////////////////////////////
 
 //'@title Smoothed Maximum Likelihood Estimator
+//'@description The function ComputeSMLE computes the Smoothed Maximum likelihood Estimator of the distribution function under current status data.
 //'@param data DataFrame with three variables:
 //'\describe{
 //'     \item{t}{Observation points t sorted in ascending order}
@@ -122,7 +141,26 @@ DataFrame ComputeMLE(DataFrame data)
 //'     \item{freq2}{Frequency of observation t}
 //'}
 //'@param h bandwidth
-//'@param x a number or vector
+//'@param x numeric vector
+//'@examples
+//'library(Rcpp)
+//'library(curstatCI)
+//'
+//'# sample size
+//'n <- 1000
+//'
+//'# Uniform data  U(0,2)
+//'set.seed(2)
+//'y <- runif(n,0,2)
+//'t <- runif(n,0,2)
+//'delta <- as.numeric(y <= t)
+//'
+//'A<-cbind(t[order(t)], delta[order(t)], rep(1,n))
+//'grid <-seq(0,2 ,by = 0.01)
+//'h<-2*n^-0.2
+//'
+//'smle <-ComputeSMLE(A,grid,h)
+//'plot(grid, smle,type ='l', ylim=c(0,1), main= "",ylab="",xlab="",las=1)
 //'@return SMLE(x)
 //'
 //'@export
@@ -133,9 +171,9 @@ NumericVector ComputeSMLE(DataFrame data, NumericVector x, double h)
   int             i,j,k,n,ngrid,njumps,*freq1,*freq2;
 
   DataFrame DF = Rcpp::DataFrame(data);
-  NumericVector xx = DF["V1"];
-  IntegerVector freq01 = DF["V2"];
-  IntegerVector freq02 = DF["V3"];
+  NumericVector xx = DF[0];
+  IntegerVector freq01 = DF[1];
+  IntegerVector freq02 = DF[2];
 
   n = (int)xx.size();
   ngrid = (int)x.size();
@@ -201,26 +239,26 @@ NumericVector ComputeSMLE(DataFrame data, NumericVector x, double h)
   double sum, t1,t2,t3;
   NumericVector out(ngrid);
 
-    for(i=0; i<ngrid;i++)
+  for(i=0; i<ngrid;i++)
+  {
+    sum=0;
+    for (k=1;k<=njumps;k++)
     {
-      sum=0;
-      for (k=1;k<=njumps;k++)
-        {
-        t1=(grid[i]-jumploc[k])/h;
-        t2=(grid[i]+jumploc[k]-2*A)/h;
-        t3=(2*B-grid[i]-jumploc[k])/h;
-        sum+= (KK(t1)+KK(t2)-KK(t3))*p[k];
-        }
-      out[i] =fmax(0,sum) ;
+      t1=(grid[i]-jumploc[k])/h;
+      t2=(grid[i]+jumploc[k]-2*A)/h;
+      t3=(2*B-grid[i]-jumploc[k])/h;
+      sum+= (KK(t1)+KK(t2)-KK(t3))*p[k];
     }
+    out[i] =fmax(0,sum) ;
+  }
 
 
-    // free memory
+  // free memory
 
-    delete[] F, delete[] cumw, delete[] cs, delete[] y, delete[] p;
-    delete[] jumploc,  delete[] data0, delete[] grid;
-    delete[] freq1; delete[] freq2;
+  delete[] F, delete[] cumw, delete[] cs, delete[] y, delete[] p;
+  delete[] jumploc,  delete[] data0, delete[] grid;
+  delete[] freq1; delete[] freq2;
 
-    return out;
+  return out;
 
 }
