@@ -55,6 +55,7 @@
 //'lines(grid, right, col = 4)
 //'segments(grid,left, grid, right)
 //'
+//'@references The nonparametric bootstrap for the current status model, Groeneboom, P. and Hendricx, K. Electronical Journal of Statistics (2017)
 //'@export
 // [[Rcpp::export]]
 List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha)
@@ -76,7 +77,7 @@ List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha)
   Rcout << std::endl;
   Rcout << "Piet Groeneboom and Kim Hendrickx 2017" << std::endl << "For further information see:" << std::endl;
   Rcout << "The nonparametric bootstrap for the current status model," << std::endl;
-  Rcout << "Piet Groeneboom & Kim hendricx, Electronical Journal of Statistics (2017)." << std::endl << std::endl;
+  Rcout << "Piet Groeneboom & Kim Hendricx, Electronical Journal of Statistics (2017)." << std::endl << std::endl;
   Rcout << "The program produces the Studentized nonparametric bootstrap confidence intervals for the cdf, using the SMLE" << std::endl<< std::endl << std::endl;
 
 

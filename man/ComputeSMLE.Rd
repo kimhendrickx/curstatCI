@@ -44,3 +44,6 @@ h<-2*n^-0.2
 smle <-ComputeSMLE(A,grid,h)
 plot(grid, smle,type ='l', ylim=c(0,1), main= "",ylab="",xlab="",las=1)
 }
+\references{
+The nonparametric bootstrap for the current status model, Groeneboom, P. and Hendricx, K. Electronical Journal of Statistics (2017)
+}

@@ -21,6 +21,7 @@
 //'     \item{x}{jumplocations of the MLE}
 //'     \item{mle}{MLE evaluated at the jumplocations}
 //' }
+//'@references The nonparametric bootstrap for the current status model, Groeneboom, P. and Hendricx, K. Electronical Journal of Statistics (2017)
 //'@examples
 //'library(Rcpp)
 //'library(curstatCI)
@@ -142,6 +143,7 @@ DataFrame ComputeMLE(DataFrame data)
 //'}
 //'@param h bandwidth
 //'@param x numeric vector
+//'@references The nonparametric bootstrap for the current status model, Groeneboom, P. and Hendricx, K. Electronical Journal of Statistics (2017)
 //'@examples
 //'library(Rcpp)
 //'library(curstatCI)

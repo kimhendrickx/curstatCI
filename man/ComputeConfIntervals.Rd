@@ -59,3 +59,6 @@ lines(grid, right, col = 4)
 segments(grid,left, grid, right)
 
 }
+\references{
+The nonparametric bootstrap for the current status model, Groeneboom, P. and Hendricx, K. Electronical Journal of Statistics (2017)
+}
