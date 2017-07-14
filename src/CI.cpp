@@ -429,7 +429,7 @@ List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha)
     upbound[i]= fmin(1,SMLE[i]-f4[percentile1-1]*sqrt(varF(N,n,frequence1,y,data0[1],data0[n],data0,hmin1[i],grid[i])));;
   }
 
-  if(grid[1] == 0 && upbound[1]==1)
+  if(grid[1] == 0)
     upbound[1] = 0;
 
   Rcout << std::endl << std::endl;
