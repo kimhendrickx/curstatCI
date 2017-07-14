@@ -3,6 +3,7 @@ title: "Confidence intervals with current status data"
 author: "Piet Groeneboom and Kim Hendrickx"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+bibliography: bibliography.bib
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
   %\VignetteEngine{knitr::rmarkdown}
@@ -11,7 +12,7 @@ vignette: >
 
 In the current status model, the variable of interest $X$ with distribution function $F_0$ is not observed directly. A censoring variable $T \sim G$ is observed instead together with the indicator $\Delta = (X \le T)$. *curstatCI* provides functions to estimate the distribution function $F_0$ and to construct pointswise confidence intervals around $F_0(t)$ based on an observed sample $(T_1, \Delta_1),\ldots, (T_n, \Delta_n)$ of size $n$ from the observable random  vector $(T, \Delta)$.
 
-To illustrate the usage of the functions provided in the *curstatCI* package we consider a sample $(X_1,\ldots,X_n)$ of size $n=1000$ from the truncated exponential distribution on $[0,2]$ with distribution function $F_0(t) = (1-\exp(-t))/(1-\exp(-2)$ if $t \in [0,2]$. The observation points $(T_1,\ldots,T_n)$ are uniformly distribution on $[0,2]$. This data setting is also considered in the simulation section of [@GroeneboomHendrickx2017]. The R-code to generate the observable random vector $(t_1,\delta_1), \ldots, (t_n, \delta_n)$ is given below.
+To illustrate the usage of the functions provided in the *curstatCI* package we consider a sample $(X_1,\ldots,X_n)$ of size $n=1000$ from the truncated exponential distribution on $[0,2]$ with distribution function $F_0(t) = (1-\exp(-t))/(1-\exp(-2)$ if $t \in [0,2]$. The observation points $(T_1,\ldots,T_n)$ are uniformly distribution on $[0,2]$. This data setting is also considered in the simulation section of @GroeneboomHendrickx2017. The R-code to generate the observable random vector $(t_1,\delta_1), \ldots, (t_n, \delta_n)$ is given below.
 ```{r}
 set.seed(100)
 
@@ -94,16 +95,48 @@ segments(grid,left, grid, right)
 lines(grid, (1-exp(-grid))/(1-exp(-2.0)), col = 2)
 ```
 
----
-references:
-- id: GroeneboomHendrickx2017
-  title: The nonparametric bootstrap for the current status model
-  author:
-  - family: Groeneboom
-    given: Piet
-  - family: Hendrickx
-    given: Kim
-  issued: 2017
-  URL: 'https://arxiv.org/abs/1701.07359'
----
+
+
+
+## Data applications 
+
+### Hepatitis A data
+@Keiding91 considered a cross-sectional study on the Hepatitis A virus from Bulgaria. In 1964 samples were collected from schoolchildren and blood donors on the presence or absence of Hepatitis A immunity. In total $n=850$ individuals ranging from 1 to 86 years old were tested for immunization. It is assumed that, once infected with Hepatitis A, lifelong immunity is achieved. To estimate the sero-prevalence for Hepatitis A in Bulgaria 95% confidence intervals around the distribution function for the time to infection are computed using the *ComputeConfIntervals* function in the package *curstatCI*. Since only 5 out of the 850 individuals were older than 80 years, who, moreover, all had antibodies for Hepatitis A, it seems sensible to restrict the range to [0,80]. The resulting confidence intervals are obtained as follows:
+```{r, results = "hide"}
+data(hepatitisA)
+grid <-1:80
+out=ComputeConfIntervals(data=hepatitisA,x=grid,alpha=0.05)
+```
+The estimated prevalence of Hepatitis A at the age of 18 is 0.51, about half of the infections in Bulgaria happen during childhood. 
+```{r, fig.width = 3,fig.height = 3, fig.align = 'center'}
+left<-out$CI[,1]
+right<-out$CI[,2]
+
+plot(grid, out$SMLE,type ='l', ylim=c(0,1), main= "",ylab="",xlab="",las=1)
+lines(grid, left, col = 4)
+lines(grid, right, col = 4)
+segments(grid,left, grid, right)
+```
+
+
+### Rubella
+@Keiding96 considered a current status data set on the prevalence of rubella in 230 Austrian males with ages ranging from three months up to 80 years. Rubella is a highly contagious childhood disease spread by airborne and droplet transmission. The symptoms (such as rash, sore throat, mild fever and swollen glands) are less severe in children than in adults. Since the Austrian vaccination policy against rubella only vaccinated girls, the male individuals included in the dataset represent an unvaccinated population and (lifelong) immunity could only be acquired if the individual got the disease. Pointwise confidence intervals are useful to to investigate the time to immunization (i.e. the time to infection) against rubella.
+
+```{r, results = "hide"}
+data(rubella)
+grid <-1:80
+out=ComputeConfIntervals(data=rubella,x=grid,alpha=0.05)
+```
+The SMLE increases steeply in the ages before adulthood which is in line with the fact that rubella is considered as a childhood disease. 
+```{r, fig.width = 3,fig.height = 3, fig.align = 'center'}
+left<-out$CI[,1]
+right<-out$CI[,2]
+
+plot(grid, out$SMLE,type ='l', ylim=c(0,1), main= "",ylab="",xlab="",las=1)
+lines(grid, left, col = 4)
+lines(grid, right, col = 4)
+segments(grid,left, grid, right)
+```
+
+## References
 
