@@ -3,8 +3,8 @@ Type: Package
 Title: MLE, SMLE and bootstrap confidence intervals for the current status model
 Version: 0.1.0
 Authors@R: c(
-   person("Piet", "Groeneboom", email = "P.Groeneboom@tudelft.nl",role = "cre"),
-   person("Kim", "Hendrickx", email = "kim.hendrickx@uhasselt.be",role = "aut"))
+   person("Piet", "Groeneboom", email = "P.Groeneboom@tudelft.nl",role = "aut"),
+   person("Kim", "Hendrickx", email = "kim.hendrickx91@gmail.com",role = "cre"))
 Description: Computes MLE and SMLE and pointwise confidence intervals for the current status model.
 License: GPL-3
 Encoding: UTF-8

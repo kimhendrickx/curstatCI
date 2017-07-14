@@ -12,7 +12,7 @@ vignette: >
 
 In the current status model, the variable of interest $X$ with distribution function $F_0$ is not observed directly. A censoring variable $T \sim G$ is observed instead together with the indicator $\Delta = (X \le T)$. *curstatCI* provides functions to estimate the distribution function $F_0$ and to construct pointswise confidence intervals around $F_0(t)$ based on an observed sample $(T_1, \Delta_1),\ldots, (T_n, \Delta_n)$ of size $n$ from the observable random  vector $(T, \Delta)$.
 
-To illustrate the usage of the functions provided in the *curstatCI* package we consider a sample $(X_1,\ldots,X_n)$ of size $n=1000$ from the truncated exponential distribution on $[0,2]$ with distribution function $F_0(t) = (1-\exp(-t))/(1-\exp(-2)$ if $t \in [0,2]$. The observation points $(T_1,\ldots,T_n)$ are uniformly distribution on $[0,2]$. This data setting is also considered in the simulation section of @GroeneboomHendrickx2017. The R-code to generate the observable random vector $(t_1,\delta_1), \ldots, (t_n, \delta_n)$ is given below.
+To illustrate the usage of the functions provided in the *curstatCI* package we consider a sample $(X_1,\ldots,X_n)$ of size $n=1000$ from the truncated exponential distribution on $[0,2]$ with distribution function $F_0(t) = (1-\exp(-t))/(1-\exp(-2)$ if $t \in [0,2]$. The observation points $(T_1,\ldots,T_n)$ are sampled from a uniform distribution on $[0,2]$. This data setting is also considered in the simulation section of @GroeneboomHendrickx2017. The R-code to generate the observable random vector $(t_1,\delta_1), \ldots, (t_n, \delta_n)$ is given below.
 ```{r}
 set.seed(100)
 
@@ -31,20 +31,20 @@ for(i in (1:n) ){
 
 ## The nonparametric maximum likelihood estimator (MLE)
 
-The MLE $F_n$ of $F_0$ is defined as the maximizer of the loglikelihood given by (up to a constant not depending on $F$)
+The MLE $F_n$ of $F_0$ is defined as the maximizer of the log likelihood given by (up to a constant not depending on $F$)
 $$ \sum_{i=1}^n \Delta_i\log F(T_i) +  (1-\Delta_i)\log(1-F(T_i)),$$
-over all possible distribution functions $F$. As can be seen from its structure, the loglikelihood only depends on the value that $F$ takes at the observed times points $T_i$. The values in between are irrelevant as long as $F$ is increasing. The MLE $F_n$ is a step function which can be characterized by the left derivative of the greatest convex minorant of the cumulative sumdiagran consisting of the points $P_0 = (0,0)$ and
+over all possible distribution functions $F$. As can be seen from its structure, the log likelihood only depends on the value that $F$ takes at the observed times points $T_i$. The values in between are irrelevant as long as $F$ is increasing. The MLE $F_n$ is a step function which can be characterized by the left derivative of the greatest convex minorant of the cumulative sumdiagran consisting of the points $P_0 = (0,0)$ and
 $$P_i = \left(\sum_{j=1}^i w_j,\sum_{j=1}^i f_{1j}\right),\,i=1,\dots,m,$$
 
 where the $w_j$ are weights, given by the number of observations at point $T_{(j)}$, assuming that $T_{(1)}<\dots<T_{(m)}$ ($m$ being the number of different observations in the sample) are the order statistics of the sample $(T_1,\Delta_1),\dots,(T_n,\Delta_n)$ and where $f_{1j}$ is the number of $\Delta_k$ equal to one at the $j$th order statistic of the sample.  When no ties are present in the data, $w_j =1, m =n$ and $f_{1j} = \Delta_{(j)}$, where $\Delta_{(j)}$ corresponds to $T_{(j)}$.
 
-The function *ComputeMLE* in the package curstatCI computes the values of the MLE at the distictinct jumppoints of the stepwise MLE. The current status data needs to be formatted as follows. The first column contains the observations $t_{(1)}<\dots<t_{(m)}$ in ascending order. The second and third columns contain the variables $f_{1j}$ and $w_j$ corresponding to $t_{(j)}$. 
+The function *ComputeMLE* in the package curstatCI computes the values of the MLE at the distictinct jump points of the stepwise MLE. The current status data needs to be formatted as follows. The first column contains the observations $t_{(1)}<\dots<t_{(m)}$ in ascending order. The second and third columns contain the variables $f_{1j}$ and $w_j$ corresponding to $t_{(j)}$. 
 
 ```{r}
 A<-cbind(t[order(t)], delta[order(t)], rep(1,n))
 head(A)
 ```
-The function *ComputeMLE* returns the jumppoints and corresponding values of the MLE.
+The function *ComputeMLE* returns the jump points and corresponding values of the MLE.
 ```{r, fig.width = 3,fig.height = 3, fig.align = 'center'}
 library(Rcpp)
 library(curstatCI)
@@ -62,7 +62,7 @@ The SMLE is next defined by
 $$ \tilde F_{nh}(t)=\int\mathbb K\left(\frac{t-x}{h}\right)\,d F_n(x), $$
 where 
 $$\mathbb K(t) = \int_{-\infty}^t K(x)\,dx.$$
-The function *ComputeSMLE* computes the values of the SMLE in the points x based on a prespecified bandwidth choice $h$. The same bandwidth $h$ is used for all points in x. A data-driven (and possbily different) bandwidth choice for each point in x is considered in the function *ComputeConfIntervals* which is described later. For our simulated data set, a picture of the SMLE $\tilde F_{nh}(t)$ using a bandwidth $h=2n^{-1/5}$, evaluated in the points $t=0,0.02,0.04,\ldots,2$  together with true distribution function $F_0$ is obtained as follows:
+The function *ComputeSMLE* computes the values of the SMLE in the points x based on a prespecified bandwidth choice $h$. The same bandwidth $h$ is used for all points in x. A data-driven (and possibly different) bandwidth choice for each point in x is considered in the function *ComputeConfIntervals* which is described later. For our simulated data set, a picture of the SMLE $\tilde F_{nh}(t)$ using a bandwidth $h=2n^{-1/5}$, evaluated in the points $t=0,0.02,0.04,\ldots,2$  together with true distribution function $F_0$ is obtained as follows:
 
 ```{r, fig.width = 3,fig.height = 3, fig.align = 'center'}
 grid <- seq(0,2, 0.02)
@@ -80,7 +80,7 @@ where $Q_{\alpha}^*(t)$ is the $\alpha$th quantile of $B$ values of $W_{nh}^*(t)
 $$W_{nh}^*(t)=\left\{\tilde F_{nh}^*(t)-\tilde F_{nh}(t)\right\}/\sqrt{S_{nh}^*(t)},$$
 where $\tilde F_{nh}^*(t)$ is the SMLE in the bootstrap sample and  $S_{nh}(t)$ is given by:
 $$S_{nh}(t)=\frac1{hn^{2}}\sum_{i=1}^n K\left(\frac{t-T_i}h\right)^2\left(\Delta_i-F_n(T_i)\right)^2.$$
-$S_{nh}(t)^*$ is the bootstrap analogue of $S_{nh}(t)$ obtained by replacing $(T_i,\Delta_i)$ in the expression above by $(T_i^*,\Delta_i^*)$. The number of bootstrap samples $B$ used by the function *ComputeSMLE* equals $b=1000$ and the bandwidth used for estimating the SMLE $\tilde F_{nh}$ at point $t$ is obtained by minimizing the pointwise Mean Squared Error using the subsampling pricinciple in combination with undersmoothing as described in Sections 4.1.2 and 4.1.3 of  @GroeneboomHendrickx2017. Besides the upper and lower bound of the   $1-\alpha$ bootstrap confidence intervals, the function *ComputeConfIntervals`* also returns the data driven pointwise bandwidth choices and the corresponding output of the functions *ComputeMLE* and *ComputeSMLE* (using the data-driven bandwith).
+$S_{nh}^*(t)$ is the bootstrap analogue of $S_{nh}(t)$ obtained by replacing $(T_i,\Delta_i)$ in the expression above by $(T_i^*,\Delta_i^*)$. The number of bootstrap samples $B$ used by the function *ComputeSMLE* equals $B=1000$ and the bandwidth used for estimating the SMLE $\tilde F_{nh}$ at point $t$ is obtained by minimizing the pointwise Mean Squared Error using the subsampling pricinciple in combination with undersmoothing as described in Sections 4.1.2 and 4.1.3 of  @GroeneboomHendrickx2017. Besides the upper and lower bound of the   $1-\alpha$ bootstrap confidence intervals, the function *ComputeConfIntervals`* also returns the data driven pointwise bandwidth choices and the corresponding output of the functions *ComputeMLE* and *ComputeSMLE* (using the data-driven bandwith).
 
 ```{r, fig.width = 3,fig.height = 3, fig.align = 'center'}
 out=ComputeConfIntervals(data=A,x=grid,alpha=0.05)
