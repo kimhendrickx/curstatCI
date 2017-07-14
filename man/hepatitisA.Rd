@@ -15,7 +15,7 @@ hepatitisA
 }
 \description{
 A dataset on the prevalence of hepatitis A in individuals from Bulgaria
-with age range from 1 to 86 years.
+with age ranging from 1 to 86 years.
 The data consists of a cross-sectional survey conducted in 1964.
 }
 \references{

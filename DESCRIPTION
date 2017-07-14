@@ -6,7 +6,7 @@ Authors@R: c(
    person("Piet", "Groeneboom", email = "P.Groeneboom@tudelft.nl",role = "cre"),
    person("Kim", "Hendrickx", email = "kim.hendrickx@uhasselt.be",role = "aut"))
 Description: Computes MLE and SMLE and pointwise confidence intervals for the current status model.
-License: What license is it under?
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 LinkingTo: Rcpp

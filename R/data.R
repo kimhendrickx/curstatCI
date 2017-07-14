@@ -8,7 +8,7 @@
 #'@format A data frame with 225 rows and  three variables:
 #'\describe{
 #'     \item{t}{ Age of the individual at the time of testing for immunization}
-#'     \item{freq1}{ Number of individuals of age t that are immunized against Rubella}
+#'     \item{freq1}{ Number of individuals of age t that are immune for Rubella}
 #'     \item{freq2}{ Total number of individuals of age t}
 #'}
 #'@references Keiding, N., Begtrup, K., Scheike, T., and Hasibeder, G. (1996). Estimation from current status data in continuous time. Lifetime Data Anal., 2:119-129.
@@ -18,7 +18,7 @@
 #'Hepatitis A data
 #'
 #'A dataset on the prevalence of hepatitis A in individuals from Bulgaria
-#'with age range from 1 to 86 years.
+#'with age ranging from 1 to 86 years.
 #'The data consists of a cross-sectional survey conducted in 1964.
 #'
 #'

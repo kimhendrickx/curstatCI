@@ -7,7 +7,7 @@
 \format{A data frame with 225 rows and  three variables:
 \describe{
     \item{t}{ Age of the individual at the time of testing for immunization}
-    \item{freq1}{ Number of individuals of age t that are immunized against Rubella}
+    \item{freq1}{ Number of individuals of age t that are immune for Rubella}
     \item{freq2}{ Total number of individuals of age t}
 }}
 \usage{
