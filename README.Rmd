@@ -34,7 +34,7 @@ This is a basic example which shows you how to obtain the confidence intervals f
 ```{r, fig.width = 3,fig.height = 3, fig.align = 'center'}
 library(Rcpp)
 library(curstatCI)
-data(hepatitisA)
+data(rubella)
 grid <-1:80
 out=ComputeConfIntervals(data=hepatitisA,x=grid,alpha=0.05)
 

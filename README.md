@@ -23,7 +23,7 @@ This is a basic example which shows you how to obtain the confidence intervals f
 ``` r
 library(Rcpp)
 library(curstatCI)
-data(hepatitisA)
+data(rubella)
 grid <-1:80
 out=ComputeConfIntervals(data=hepatitisA,x=grid,alpha=0.05)
 #> 
@@ -40,7 +40,7 @@ out=ComputeConfIntervals(data=hepatitisA,x=grid,alpha=0.05)
 #> Sample size N =  850
 #> 
 #> 
-#> The computations took    1.587   seconds
+#> The computations took    1.696   seconds
 
 left<-out$CI[,1]
 right<-out$CI[,2]
