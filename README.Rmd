@@ -36,7 +36,7 @@ library(Rcpp)
 library(curstatCI)
 data(rubella)
 grid <-1:80
-out=ComputeConfIntervals(data=hepatitisA,x=grid,alpha=0.05)
+out=ComputeConfIntervals(data=rubella,x=grid,alpha=0.05)
 
 left<-out$CI[,1]
 right<-out$CI[,2]

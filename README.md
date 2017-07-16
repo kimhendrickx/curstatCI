@@ -25,7 +25,7 @@ library(Rcpp)
 library(curstatCI)
 data(rubella)
 grid <-1:80
-out=ComputeConfIntervals(data=hepatitisA,x=grid,alpha=0.05)
+out=ComputeConfIntervals(data=rubella,x=grid,alpha=0.05)
 #> 
 #> Piet Groeneboom and Kim Hendrickx 2017
 #> For further information see:
@@ -35,12 +35,12 @@ out=ComputeConfIntervals(data=hepatitisA,x=grid,alpha=0.05)
 #> The program produces the Studentized nonparametric bootstrap confidence intervals for the cdf, using the SMLE
 #> 
 #> 
-#> Number of unique observations:     83
+#> Number of unique observations:    225
 #> 
-#> Sample size N =  850
+#> Sample size N =  230
 #> 
 #> 
-#> The computations took    1.696   seconds
+#> The computations took    1.553   seconds
 
 left<-out$CI[,1]
 right<-out$CI[,2]
