@@ -153,20 +153,17 @@ smle &lt;-<span class="kw">ComputeSMLE</span>(<span class="dt">data=</span>A, <s
 <p>Besides the upper and lower bound of the <span class="math inline">\(1-\alpha\)</span> bootstrap confidence intervals, the function <em>ComputeConfIntervals</em> also returns the data-driven pointwise bandwidth choices and the corresponding output of the functions <em>ComputeMLE</em> and <em>ComputeSMLE</em> (using the data-driven bandwidth).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">out=<span class="kw">ComputeConfIntervals</span>(<span class="dt">data=</span>A,<span class="dt">x=</span>grid,<span class="dt">alpha=</span><span class="fl">0.05</span>)</code></pre></div>
 <pre><code>## 
-## Piet Groeneboom and Kim Hendrickx 2017
-## For further information see:
-## The nonparametric bootstrap for the current status model,
-## Piet Groeneboom &amp; Kim Hendricx, Electronical Journal of Statistics (2017).
-## 
 ## The program produces the Studentized nonparametric bootstrap confidence intervals for the cdf, using the SMLE
 ## 
+## For further information see:
+## The nonparametric bootstrap for the current status model,
+## Piet Groeneboom &amp; Kim Hendrickx, Electronical Journal of Statistics (2017).
 ## 
 ## Number of unique observations:   1000
+## Sample size n = 1000
 ## 
-## Sample size N = 1000
 ## 
-## 
-## The computations took    3.674   seconds</code></pre>
+## The computations took    3.653   seconds</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">left&lt;-out$CI[,<span class="dv">1</span>]
 right&lt;-out$CI[,<span class="dv">2</span>]
 

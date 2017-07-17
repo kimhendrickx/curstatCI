@@ -66,10 +66,12 @@ The SMLE is next defined by
 $$ \tilde F_{nh}(t)=\int\mathbb K\left(\frac{t-x}{h}\right)\,d F_n(x), $$
 where 
 $$\mathbb K(t) = \int_{-\infty}^t K(x)\,dx.$$
-The function *ComputeSMLE* computes the values of the SMLE in the points x based on a prespecified bandwidth choice $h$. The same bandwidth $h$ is used for all points in x. A data-driven (and possibly different) bandwidth choice for each point in x is considered in the function *ComputeConfIntervals* which is described later. For our simulated data set, a picture of the SMLE $\tilde F_{nh}(t)$ using a bandwidth $h=2n^{-1/5}$, evaluated in the points $t=0,0.02,0.04,\ldots,2$  together with the true distribution function $F_0$ is obtained as follows:
+The function *ComputeSMLE* computes the values of the SMLE in the points x based on a prespecified bandwidth choice $h$. The same bandwidth $h$ is used for all points in x. A data-driven (and possibly different) bandwidth choice for each point in x is considered in the function *ComputeConfIntervals* which is described later. 
+
+For our simulated data set, a picture of the SMLE $\tilde F_{nh}(t)$ using a bandwidth $h=2n^{-1/5}$, evaluated in the points $t=0.02,0.04,\ldots,1.98$  together with the true distribution function $F_0$ is obtained as follows:
 
 ```{r, fig.width = 4,fig.height = 4, fig.align = 'center'}
-grid <- seq(0,2, 0.02)
+grid <- seq(0.02,1.98, 0.02)
 smle <-ComputeSMLE(data=A, x=grid, h=2*n^-0.2)
 plot(grid, smle,type ='l', ylim=c(0,1), main= "",ylab="",xlab="",las=1)
 lines(grid, (1-exp(-grid))/(1-exp(-2.0)), col = 2, lty =2)
@@ -88,7 +90,7 @@ $S_{nh}^*(t)$ is the bootstrap analogue of $S_{nh}(t)$ obtained by replacing $(T
 $$ \sum_{b=1}^{1000}\left\{\tilde F_{m,cm^{-1/5}}^b(t) - \tilde F_{n,c_0n^{-1/5}}(t) \right\}^2,$$
 where $\tilde F_{n,c_0n^{-1/5}}$ is the SMLE in the original sample of size $n$ using an initial bandwidth $c_0n^{-1/5}$. The bandwidth used for estimating the SMLE is next given by $h =c_{t,opt}n^{-1/4}$.
 
-Besides the upper and lower bound of the   $1-\alpha$ bootstrap confidence intervals, the function *ComputeConfIntervals* also returns the data-driven pointwise bandwidth choices and the corresponding output of the functions *ComputeMLE* and *ComputeSMLE* (using the data-driven bandwidth).
+Besides the upper and lower bound of the   $1-\alpha$ bootstrap confidence intervals, the function *ComputeConfIntervals* also returns the data-driven pointwise bandwidth choices and the corresponding output of the functions *ComputeMLE* and *ComputeSMLE* (using the data-driven bandwidth). Due to boundary issues, it is recommended to limit the construction of confidence intervals to points lying strictly within the observation interval.
 
 ```{r, fig.width = 4,fig.height = 4, fig.align = 'center'}
 out=ComputeConfIntervals(data=A,x=grid,alpha=0.05)
@@ -133,7 +135,7 @@ segments(grid,left, grid, right)
 
 ```{r, results = "hide"}
 data(rubella)
-grid <-1:80
+grid <-1:75
 out=ComputeConfIntervals(data=rubella,x=grid,alpha=0.05)
 ```
 The SMLE increases steeply in the ages before adulthood which is in line with the fact that rubella is considered as a childhood disease. 

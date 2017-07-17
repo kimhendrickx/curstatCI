@@ -15,7 +15,8 @@ ComputeConfIntervals(data, x, alpha)
     \item{freq2}{Frequency of observation t. The sample size equals \code{sum(freq2)}. If no tied observations are present in the data \code{length(t)} equals \code{sum(freq2)}. }
 }}
 
-\item{x}{numeric vector}
+\item{x}{numeric vector containing the points where the confidence intervals are computed.
+This vector needs to be contained within the observation interval: \eqn{t[1] < min(x) \le max(x) < t[n]}.}
 
 \item{alpha}{confidence level of pointwise confidence intervals}
 }
@@ -53,7 +54,7 @@ t <- runif(n,0,2)
 delta <- as.numeric(y <= t)
 
 A<-cbind(t[order(t)], delta[order(t)], rep(1,n))
-grid<-seq(0,2 ,by = 0.01)
+grid<-seq(0.01,1.99 ,by = 0.01)
 
 # pointwise confidence intervals at grid points:
 out<-ComputeConfIntervals(data = A,x =grid,alpha = 0.05)
