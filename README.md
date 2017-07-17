@@ -51,7 +51,7 @@ out<-ComputeConfIntervals(data=rubella,x=grid,alpha=0.05)
 #> Sample size n =  230
 #> 
 #> 
-#> The computations took    1.665   seconds
+#> The computations took    1.5   seconds
 
 out$MLE
 #>          [,1]      [,2]
