@@ -7,11 +7,12 @@
 ComputeSMLE(data, x, h)
 }
 \arguments{
-\item{data}{DataFrame with three variables:
+\item{data}{Dataframe with three variables:
 \describe{
-    \item{t}{Observation points t sorted in ascending order}
-    \item{freq1}{Frequency of observation t satisfying \eqn{y \le t}}
-    \item{freq2}{Frequency of observation t}
+    \item{t}{Observation points t sorted in ascending order. All observations need to be positive. The total number of unique observation points equals \code{length(t)}.}
+    \item{freq1}{Frequency of observation t satisfying \eqn{x \le t}.
+                  The total number of observations with censoring indicator \eqn{\delta =1} equals \code{sum(freq1)}. }
+    \item{freq2}{Frequency of observation t. The sample size equals \code{sum(freq2)}. If no tied observations are present in the data \code{length(t)} equals \code{sum(freq2)}. }
 }}
 
 \item{x}{numeric vector}
@@ -22,7 +23,14 @@ ComputeSMLE(data, x, h)
 SMLE(x)
 }
 \description{
-The function ComputeSMLE computes the Smoothed Maximum likelihood Estimator of the distribution function under current status data.
+The function ComputeSMLE computes the Smoothed Maximum Likelihood Estimator of the distribution function under current status data.
+}
+\details{
+In the current status model, the variable of interest \eqn{X} with distribution function \eqn{F} is not observed directly.
+A censoring variable \eqn{T} is observed instead together with the indicator \eqn{\Delta = (X \le T)}.
+ComputeSMLE computes the SMLE of \eqn{F} based on a sample of size \code{n <- sum(data$freq2)} from the observable random  vector \eqn{(T, \Delta)}.
+The same bandwidth h is used for all points in the vector x.
+A selection procedure to obtain a data-driven (and possibly different) bandwidth choice for each point in the vector x is used in the function \code{\link{ComputeConfIntervals}}.
 }
 \examples{
 library(Rcpp)
@@ -43,7 +51,12 @@ h<-2*n^-0.2
 
 smle <-ComputeSMLE(A,grid,h)
 plot(grid, smle,type ='l', ylim=c(0,1), main= "",ylab="",xlab="",las=1)
+
+
 }
 \references{
-The nonparametric bootstrap for the current status model, Groeneboom, P. and Hendricx, K. Electronical Journal of Statistics (2017)
+The nonparametric bootstrap for the current status model, Groeneboom, P. and Hendrickx, K. Electronical Journal of Statistics (2017)
+}
+\seealso{
+\code{\link{ComputeConfIntervals}}
 }

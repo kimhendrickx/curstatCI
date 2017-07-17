@@ -1,4 +1,5 @@
 #include "curstat.h"
+#include <R_ext/Random.h>
 
 void convexmin(int n, double cumw[], double cs[], double y[])
 {
@@ -99,7 +100,7 @@ void data_bootstrap(int N, int n, int *m, double x[], double x2[], double data2[
 
   for (k=1;k<=N;k++)
   {
-    j=1+rand()%N;
+    j= 1+ N*unif_rand();
 
     x2[k]=x[j];
     delta2[k]=delta[j];
@@ -158,7 +159,7 @@ void data_bootstrap2(int N, int nB, int n, int *m, double x[], double x2[], doub
 
   for (k=1;k<=nB;k++)
   {
-    j=1+rand()%N;
+     j= 1+ N*unif_rand();
 
     x2[k]=x[j];
     delta2[k]=delta[j];

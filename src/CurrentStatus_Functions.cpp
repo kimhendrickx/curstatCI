@@ -9,19 +9,34 @@
 // Created by: Kim Hendrickx
 //////////////////////////////////////////////////////////////////////////////////
 //'@title Maximum Likelihood Estimator
-//'@description The function ComputeMLE computes the Maximum likelihood Estimator of the distribution function under current status data.
-//'@param data DataFrame with three variables:
+//'
+//'@description The function ComputeMLE computes the Maximum Likelihood Estimator of the distribution function under current status data.
+//'
+//'@param data Dataframe with three variables:
 //'\describe{
-//'     \item{t}{Observation points t sorted in ascending order}
-//'     \item{freq1}{Frequency of observation t satisfying \eqn{y \le t}}
-//'     \item{freq2}{Frequency of observation t}
+//'     \item{t}{Observation points t sorted in ascending order. All observations need to be positive. The total number of unique observation points equals \code{length(t)}.}
+//'     \item{freq1}{Frequency of observation t satisfying \eqn{x \le t}.
+//'                   The total number of observations with censoring indicator \eqn{\delta =1} equals \code{sum(freq1)}. }
+//'     \item{freq2}{Frequency of observation t. The sample size equals \code{sum(freq2)}. If no tied observations are present in the data \code{length(t)} equals \code{sum(freq2)}. }
 //'}
-//'@return DataFrame with two variables :
+//'
+//'@details In the current status model, the variable of interest \eqn{X} with distribution function \eqn{F} is not observed directly.
+//'A censoring variable \eqn{T} is observed instead together with the indicator \eqn{\Delta = (X \le T)}.
+//' ComputeMLE computes the MLE of \eqn{F} based on a sample of size \code{n <- sum(data$freq2)} from the observable random  vector \eqn{(T, \Delta)}.
+//'
+//'
+//'
+//'@return Dataframe with two variables :
 //'\describe{
 //'     \item{x}{jumplocations of the MLE}
 //'     \item{mle}{MLE evaluated at the jumplocations}
 //' }
-//'@references The nonparametric bootstrap for the current status model, Groeneboom, P. and Hendricx, K. Electronical Journal of Statistics (2017)
+//'
+//'@references The nonparametric bootstrap for the current status model, Groeneboom, P. and Hendrickx, K. Electronical Journal of Statistics (2017)
+//'
+//'@seealso \code{\link{ComputeConfIntervals}}
+//'
+//'
 //'@examples
 //'library(Rcpp)
 //'library(curstatCI)
@@ -134,16 +149,33 @@ DataFrame ComputeMLE(DataFrame data)
 //////////////////////////////////////////////////////////////////////////////////
 
 //'@title Smoothed Maximum Likelihood Estimator
-//'@description The function ComputeSMLE computes the Smoothed Maximum likelihood Estimator of the distribution function under current status data.
-//'@param data DataFrame with three variables:
+//'
+//'@description The function ComputeSMLE computes the Smoothed Maximum Likelihood Estimator of the distribution function under current status data.
+//'
+//'@param data Dataframe with three variables:
 //'\describe{
-//'     \item{t}{Observation points t sorted in ascending order}
-//'     \item{freq1}{Frequency of observation t satisfying \eqn{y \le t}}
-//'     \item{freq2}{Frequency of observation t}
+//'     \item{t}{Observation points t sorted in ascending order. All observations need to be positive. The total number of unique observation points equals \code{length(t)}.}
+//'     \item{freq1}{Frequency of observation t satisfying \eqn{x \le t}.
+//'                   The total number of observations with censoring indicator \eqn{\delta =1} equals \code{sum(freq1)}. }
+//'     \item{freq2}{Frequency of observation t. The sample size equals \code{sum(freq2)}. If no tied observations are present in the data \code{length(t)} equals \code{sum(freq2)}. }
 //'}
+//'
 //'@param h bandwidth
+//'
 //'@param x numeric vector
-//'@references The nonparametric bootstrap for the current status model, Groeneboom, P. and Hendricx, K. Electronical Journal of Statistics (2017)
+//'
+//'@details In the current status model, the variable of interest \eqn{X} with distribution function \eqn{F} is not observed directly.
+//'A censoring variable \eqn{T} is observed instead together with the indicator \eqn{\Delta = (X \le T)}.
+//' ComputeSMLE computes the SMLE of \eqn{F} based on a sample of size \code{n <- sum(data$freq2)} from the observable random  vector \eqn{(T, \Delta)}.
+//' The same bandwidth h is used for all points in the vector x.
+//' A selection procedure to obtain a data-driven (and possibly different) bandwidth choice for each point in the vector x is used in the function \code{\link{ComputeConfIntervals}}.
+//'
+//'@return SMLE(x)
+//'
+//'@references The nonparametric bootstrap for the current status model, Groeneboom, P. and Hendrickx, K. Electronical Journal of Statistics (2017)
+//'
+//'@seealso \code{\link{ComputeConfIntervals}}
+//'
 //'@examples
 //'library(Rcpp)
 //'library(curstatCI)
@@ -163,7 +195,7 @@ DataFrame ComputeMLE(DataFrame data)
 //'
 //'smle <-ComputeSMLE(A,grid,h)
 //'plot(grid, smle,type ='l', ylim=c(0,1), main= "",ylab="",xlab="",las=1)
-//'@return SMLE(x)
+//'
 //'
 //'@export
 // [[Rcpp::export]]

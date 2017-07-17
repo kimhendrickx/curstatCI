@@ -7,11 +7,12 @@
 ComputeConfIntervals(data, x, alpha)
 }
 \arguments{
-\item{data}{DataFrame with three variables:
+\item{data}{Dataframe with three variables:
 \describe{
-    \item{t}{Observation points t sorted in ascending order}
-    \item{freq1}{Frequency of observation t satisfying \eqn{y \le t}}
-    \item{freq2}{Frequency of observation t}
+    \item{t}{Observation points t sorted in ascending order. All observations need to be positive. The total number of unique observation points equals \code{length(t)}.}
+    \item{freq1}{Frequency of observation t satisfying \eqn{x \le t}.
+                  The total number of observations with censoring indicator \eqn{\delta =1} equals \code{sum(freq1)}. }
+    \item{freq2}{Frequency of observation t. The sample size equals \code{sum(freq2)}. If no tied observations are present in the data \code{length(t)} equals \code{sum(freq2)}. }
 }}
 
 \item{x}{numeric vector}
@@ -20,16 +21,23 @@ ComputeConfIntervals(data, x, alpha)
 }
 \value{
 List with 4 variables:
+
 \enumerate{
-    \item{MLE }{ maximum likelihood estimator}
-    \item{SMLE }{ smoothed maximum likelihood estimator in x }
-    \item{h }{ local bandwidths for points in x}
-    \item{CI }{ pointwise confidence intervals for  points in x}
-    }
+    \item{MLE }{ Maximum Likelihood Estimator}
+    \item{SMLE }{ Smoothed Maximum Likelihood Estimator in x }
+    \item{h }{ data-driven bandwidth choice for each point in x}
+    \item{CI }{ pointwise confidence interval for each points in x}
+}
 }
 \description{
 The function ComputeConfIntervals computes pointwise confidence intervals for the distribution function under current status data.
 The confidence intervals are based on the Smoothed Maximum likelihood Estimator and constructed using the nonparametric bootstrap.
+}
+\details{
+In the current status model, the variable of interest \eqn{X} with distribution function \eqn{F} is not observed directly.
+A censoring variable \eqn{T} is observed instead together with the indicator \eqn{\Delta = (X \le T)}.
+ComputeConfIntervals computes the pointwise \code{1-alpha} bootstrap confidence intervals around the SMLE of \eqn{F} based on a sample of size \code{n <- sum(data$freq2)} from the observable random  vector \eqn{(T, \Delta)}.
+The bandwidth used for estimating the SMLE at a point in the vector x is obtained by minimizing the pointwise Mean Squared Error using the subsampling pricinciple in combination with undersmoothing.
 }
 \examples{
 library(Rcpp)
@@ -60,5 +68,8 @@ segments(grid,left, grid, right)
 
 }
 \references{
-The nonparametric bootstrap for the current status model, Groeneboom, P. and Hendricx, K. Electronical Journal of Statistics (2017)
+The nonparametric bootstrap for the current status model, Groeneboom, P. and Hendrickx, K. Electronical Journal of Statistics (2017)
+}
+\seealso{
+\code{vignette("curstatCI")}
 }
