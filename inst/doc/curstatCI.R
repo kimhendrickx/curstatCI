@@ -27,7 +27,7 @@ mle
 plot(mle$x, mle$mle,type ='s', ylim=c(0,1),xlim = c(0,2), main= "",ylab="",xlab="",las=1)
 
 ## ---- fig.width = 4,fig.height = 4, fig.align = 'center'-----------------
-grid <- seq(0,2, 0.02)
+grid <- seq(0.02,1.98, 0.02)
 smle <-ComputeSMLE(data=A, x=grid, h=2*n^-0.2)
 plot(grid, smle,type ='l', ylim=c(0,1), main= "",ylab="",xlab="",las=1)
 lines(grid, (1-exp(-grid))/(1-exp(-2.0)), col = 2, lty =2)
@@ -61,7 +61,7 @@ segments(grid,left, grid, right)
 
 ## ---- results = "hide"---------------------------------------------------
 data(rubella)
-grid <-1:80
+grid <-1:75
 out=ComputeConfIntervals(data=rubella,x=grid,alpha=0.05)
 
 ## ---- fig.width = 4,fig.height = 4, fig.align = 'center'-----------------

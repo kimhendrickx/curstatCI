@@ -38,23 +38,20 @@ library(Rcpp)
 library(curstatCI)
 set.seed(1)
 data(rubella)
-grid <-1:80
+grid <-1:75
 out<-ComputeConfIntervals(data=rubella,x=grid,alpha=0.05)
-#> 
-#> Piet Groeneboom and Kim Hendrickx 2017
-#> For further information see:
-#> The nonparametric bootstrap for the current status model,
-#> Piet Groeneboom & Kim Hendricx, Electronical Journal of Statistics (2017).
 #> 
 #> The program produces the Studentized nonparametric bootstrap confidence intervals for the cdf, using the SMLE
 #> 
+#> For further information see:
+#> The nonparametric bootstrap for the current status model,
+#> Piet Groeneboom & Kim Hendrickx, Electronical Journal of Statistics (2017).
 #> 
 #> Number of unique observations:    225
+#> Sample size n =  230
 #> 
-#> Sample size N =  230
 #> 
-#> 
-#> The computations took    1.565   seconds
+#> The computations took    1.665   seconds
 
 out$MLE
 #>          [,1]      [,2]
