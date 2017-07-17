@@ -14,10 +14,22 @@ knitr::opts_chunk$set(
 
 # curstatCI
 
-The goal of curstatCI is to obtain confidence intervals for the distribution fuccntion of a random variable based on current status data.
-In the current status model, the variable of interest $X$ with distribution function $F_0$ is not observed directly. A censoring variable $T \sim G$ is observed instead together with the indicator $\Delta = (X \le T)$. *curstatCI* provides functions to estimate the distribution function $F_0$ and to construct pointswise confidence intervals around $F_0(t)$ based on an observed sample $(T_1, \Delta_1),\ldots, (T_n, \Delta_n)$ of size $n$ from the observable random  vector $(T, \Delta)$.
+The goal of curstatCI is to obtain confidence intervals for the distribution function of a random variable based on current status data.
+In the current status model, the variable of interest $X$ with distribution function $F_0$ is not observed directly. A censoring variable $T$ is observed instead together with the indicator $\Delta = (X \le T)$. *curstatCI* provides functions to estimate the distribution function $F_0$ and to construct pointswise confidence intervals around $F_0(t)$ based on an observed sample $(T_1, \Delta_1),\ldots, (T_n, \Delta_n)$ of size $n$ from the observable random  vector $(T, \Delta)$.
+
 
 ## Installation
+You can install curstatCI from CRAN with:
+``` r
+# install.packages("curstatCI")
+```
+The package *curstatCI* requires the library *Rcpp*. To use the functions available in *curstatCI* load:
+
+``` r
+load(Rcpp)
+load(curstatCI)
+```
+
 
 You can install curstatCI from github with:
 
@@ -27,21 +39,27 @@ You can install curstatCI from github with:
 devtools::install_github("pietg/curstatCI")
 ```
 
+
+
 ## Example
 
 This is a basic example which shows you how to obtain the confidence intervals for the distribution function of the time to infection for the Rubella data set. More information on the data and usage of the package can be found in the vignette "curstatCI"
 
-```{r, fig.width = 3,fig.height = 3, fig.align = 'center'}
+```{r, fig.width = 5,fig.height = 5, fig.align = 'center'}
 library(Rcpp)
 library(curstatCI)
+set.seed(1)
 data(rubella)
 grid <-1:80
-out=ComputeConfIntervals(data=rubella,x=grid,alpha=0.05)
+out<-ComputeConfIntervals(data=rubella,x=grid,alpha=0.05)
 
+out$MLE
+
+smle <-  out$SMLE
 left<-out$CI[,1]
 right<-out$CI[,2]
 
-plot(grid, out$SMLE,type ='l', ylim=c(0,1), main= "",ylab="",xlab="",las=1)
+plot(grid,smle,type ='l', ylim=c(0,1), main= "",ylab="",xlab="",las=1)
 lines(grid, left, col = 4)
 lines(grid, right, col = 4)
 segments(grid,left, grid, right)
