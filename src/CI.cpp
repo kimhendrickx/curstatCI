@@ -89,7 +89,7 @@ List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha)
 
   Rcout << std::endl;
   //Rcout << "Piet Groeneboom and Kim Hendrickx 2017" << std::endl << "For further information see:" << std::endl;
-  Rcout << "The program produces the Studentized nonparametric bootstrap confidence intervals for the cdf, using the SMLE" << std::endl<< std::endl << std::endl;
+  Rcout << "The program produces the Studentized nonparametric bootstrap confidence intervals for the cdf, using the SMLE" << std::endl<< std::endl;
   Rcout << "For further information see:" << std::endl;
   Rcout << "The nonparametric bootstrap for the current status model," << std::endl;
   Rcout << "Piet Groeneboom & Kim Hendrickx, Electronical Journal of Statistics (2017)." << std::endl << std::endl;
@@ -143,8 +143,8 @@ List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha)
   if(N>= 10000)
     nB = 500;
 
-  Rcout << "Number of unique observations:" << std::setw(7) << n << std::endl << std::endl;
-  Rcout << "Sample size N =" << std::setw(5) << N << std::endl;
+  Rcout << "Number of unique observations:" << std::setw(7) << n << std::endl;
+  Rcout << "Sample size n =" << std::setw(5) << N << std::endl;
   //Rcout << "Left point of observation interval A = " <<  std::setw(5) << A << std::endl;
   //Rcout << "Right point of observation interval B = " <<  std::setw(5) << B << std::endl;
 
