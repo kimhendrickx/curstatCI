@@ -410,13 +410,28 @@ List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha)
     {
       SMLE2[i]=bdf(A,B,m2,data2,p2,grid[i],hmin1[i]);
 
+
+      if(sqrt(varF(N,n,frequence1,y,data0[1],data0[n],data0,hmin1[i],grid[i])) > 0)
+      {
+        if( sqrt( varF(N,m,freq,y2,0.0,B,data1,hmin1[i],grid[i])) > 0 )
+          f3[iter][i]=(SMLE2[i]-SMLE[i])/( (sqrt( varF(N,m,freq,y2,0.0,B,data1,hmin1[i],grid[i])) ) );
+        else
+          f3[iter][i]=(SMLE2[i]-SMLE[i])/( (sqrt(varF(N,n,frequence1,y,data0[1],data0[n],data0,hmin1[i],grid[i])) ) );
+      }
+
+      else{
+        f3[iter][i]=(SMLE2[i]-SMLE[i]);
+      }
+
+      /*
+
       if(sqrt(varF(N,n,frequence1,y,data0[1],data0[n],data0,hmin1[i],grid[i])) > 0)
       {
         f3[iter][i]=(SMLE2[i]-SMLE[i])/( (sqrt( varF(N,m,freq,y2,0.0,B,data1,hmin1[i],grid[i]))));
       }
       else{
         f3[iter][i]=(SMLE2[i]-SMLE[i])/( (sqrt( varF(N,m,freq,y2,0.0,B,data1,(B-A)/2,grid[i]))));
-      }
+      }*/
 
     }
 
@@ -433,6 +448,8 @@ List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha)
   lowbound=new double[npoints];
   upbound=new double[npoints];
 
+
+  /*
   for (i=1;i<=npoints;i++)
   {
     for (iter=0;iter<NumIt;iter++)
@@ -442,6 +459,25 @@ List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha)
 
     lowbound[i]= fmax(0,SMLE[i]-f4[percentile2-1]*sqrt(varF(N,n,frequence1,y,data0[1],data0[n],data0,hmin1[i],grid[i])));;
     upbound[i]= fmin(1,SMLE[i]-f4[percentile1-1]*sqrt(varF(N,n,frequence1,y,data0[1],data0[n],data0,hmin1[i],grid[i])));;
+  }*/
+
+  for (i=1;i<=npoints;i++)
+  {
+    for (iter=0;iter<NumIt;iter++)
+      f4[iter]=f3[iter][i];
+
+    qsort(f4,NumIt,sizeof(double),compare);
+
+    if(sqrt(varF(N,n,frequence1,y,data0[1],data0[n],data0,hmin1[i],grid[i])) > 0)
+    {
+      lowbound[i]= (SMLE[i]-f4[percentile2-1]*sqrt(varF(N,n,frequence1,y,data0[1],data0[n],data0,hmin1[i],grid[i])));
+      upbound[i]= (SMLE[i]-f4[percentile1-1]*sqrt(varF(N,n,frequence1,y,data0[1],data0[n],data0,hmin1[i],grid[i])));;
+    }
+
+    else{
+      lowbound[i]= (SMLE[i]-f4[percentile2-1]);
+      upbound[i]= (SMLE[i]-f4[percentile1-1]);
+    }
   }
 
   if(grid[1] == 0)
