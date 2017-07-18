@@ -4,7 +4,7 @@
 \alias{ComputeConfIntervals}
 \title{Pointwise Confidence Intervals under Current Status data}
 \usage{
-ComputeConfIntervals(data, x, alpha)
+ComputeConfIntervals(data, x, alpha, bw)
 }
 \arguments{
 \item{data}{Dataframe with three variables:
@@ -19,14 +19,17 @@ ComputeConfIntervals(data, x, alpha)
 This vector needs to be contained within the observation interval: \eqn{t[1] < min(x) \le max(x) < t[n]}.}
 
 \item{alpha}{confidence level of pointwise confidence intervals}
+
+\item{bw}{numeric vector of size \code{length(x)}.
+This vector contains the pointwise bandwidth values for each point in the vector x.}
 }
 \value{
-List with 4 variables:
+List with 3 variables:
 
-\enumerate{
-    \item{MLE }{ Maximum Likelihood Estimator}
+\describe{
+    \item{MLE }{ Maximum Likelihood Estimator. This is a matrix of dimension 2 x (m+1) where m is the number of jump points of the MLE.
+                 The first column consists of the point zero and the jump locations of the MLE. The second column contains the value zero and the values of the MLE at the jump points. }
     \item{SMLE }{ Smoothed Maximum Likelihood Estimator in x }
-    \item{h }{ data-driven bandwidth choice for each point in x}
     \item{CI }{ pointwise confidence interval for each points in x}
 }
 }
@@ -37,8 +40,8 @@ The confidence intervals are based on the Smoothed Maximum likelihood Estimator 
 \details{
 In the current status model, the variable of interest \eqn{X} with distribution function \eqn{F} is not observed directly.
 A censoring variable \eqn{T} is observed instead together with the indicator \eqn{\Delta = (X \le T)}.
-ComputeConfIntervals computes the pointwise \code{1-alpha} bootstrap confidence intervals around the SMLE of \eqn{F} based on a sample of size \code{n <- sum(data$freq2)} from the observable random  vector \eqn{(T, \Delta)}.
-The bandwidth used for estimating the SMLE at a point in the vector x is obtained by minimizing the pointwise Mean Squared Error using the subsampling pricinciple in combination with undersmoothing.
+ComputeConfIntervals computes the pointwise \code{1-alpha} bootstrap confidence intervals around the SMLE of \eqn{F} based on a sample of size \code{n <- sum(data$freq2)}.
+The bandwidth parameter vector that minimizes the pointwise Mean Squared Error using the subsampling pricinciple in combination with undersmoothing is returned by the function \code{\link{ComputeBW}}.
 }
 \examples{
 library(Rcpp)
@@ -56,8 +59,11 @@ delta <- as.numeric(y <= t)
 A<-cbind(t[order(t)], delta[order(t)], rep(1,n))
 grid<-seq(0.01,1.99 ,by = 0.01)
 
+# Data-driven bandwidth vector
+bw <- ComputeBW(data =A, x = grid)
+
 # pointwise confidence intervals at grid points:
-out<-ComputeConfIntervals(data = A,x =grid,alpha = 0.05)
+out<-ComputeConfIntervals(data = A,x =grid,alpha = 0.05, bw = bw)
 
 left <- out$CI[,1]
 right <- out$CI[,2]

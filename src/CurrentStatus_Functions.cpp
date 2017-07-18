@@ -22,7 +22,7 @@
 //'
 //'@details In the current status model, the variable of interest \eqn{X} with distribution function \eqn{F} is not observed directly.
 //'A censoring variable \eqn{T} is observed instead together with the indicator \eqn{\Delta = (X \le T)}.
-//' ComputeMLE computes the MLE of \eqn{F} based on a sample of size \code{n <- sum(data$freq2)} from the observable random  vector \eqn{(T, \Delta)}.
+//' ComputeMLE computes the MLE of \eqn{F} based on a sample of size \code{n <- sum(data$freq2)}.
 //'
 //'
 //'
@@ -166,9 +166,9 @@ DataFrame ComputeMLE(DataFrame data)
 //'
 //'@details In the current status model, the variable of interest \eqn{X} with distribution function \eqn{F} is not observed directly.
 //'A censoring variable \eqn{T} is observed instead together with the indicator \eqn{\Delta = (X \le T)}.
-//' ComputeSMLE computes the SMLE of \eqn{F} based on a sample of size \code{n <- sum(data$freq2)} from the observable random  vector \eqn{(T, \Delta)}.
+//' ComputeSMLE computes the SMLE of \eqn{F} based on a sample of size \code{n <- sum(data$freq2)}.
 //' The same bandwidth h is used for all points in the vector x.
-//' A selection procedure to obtain a data-driven (and possibly different) bandwidth choice for each point in the vector x is used in the function \code{\link{ComputeConfIntervals}}.
+//' A selection procedure to obtain a data-driven (and possibly different) bandwidth choice for each point in the vector x is used in the function \code{\link{ComputeBW}}.
 //'
 //'@return SMLE(x)
 //'

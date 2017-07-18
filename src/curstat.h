@@ -31,7 +31,8 @@ typedef struct
 }
 SampleTime2;
 
-List ComputeConfIntervals(DataFrame input, NumericVector x, double alpha);
+List ComputeConfIntervals(DataFrame input, NumericVector x, double alpha, NumericVector bw);
+NumericVector ComputeBW(DataFrame input, NumericVector x);
 DataFrame ComputeMLE(DataFrame data);
 NumericVector ComputeSMLE(DataFrame data, NumericVector x, double h);
 

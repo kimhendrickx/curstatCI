@@ -28,7 +28,7 @@ The function ComputeMLE computes the Maximum Likelihood Estimator of the distrib
 \details{
 In the current status model, the variable of interest \eqn{X} with distribution function \eqn{F} is not observed directly.
 A censoring variable \eqn{T} is observed instead together with the indicator \eqn{\Delta = (X \le T)}.
-ComputeMLE computes the MLE of \eqn{F} based on a sample of size \code{n <- sum(data$freq2)} from the observable random  vector \eqn{(T, \Delta)}.
+ComputeMLE computes the MLE of \eqn{F} based on a sample of size \code{n <- sum(data$freq2)}.
 }
 \examples{
 library(Rcpp)
