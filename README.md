@@ -39,7 +39,11 @@ library(curstatCI)
 set.seed(1)
 data(rubella)
 grid <-1:75
-out<-ComputeConfIntervals(data=rubella,x=grid,alpha=0.05)
+bw <-ComputeBW(data=rubella, x=grid)
+#> 
+#> 
+#> The computations took    1.177   seconds
+out<-ComputeConfIntervals(data=rubella,x=grid,alpha=0.05, bw = bw)
 #> 
 #> The program produces the Studentized nonparametric bootstrap confidence intervals for the cdf, using the SMLE
 #> 
@@ -51,7 +55,7 @@ out<-ComputeConfIntervals(data=rubella,x=grid,alpha=0.05)
 #> Sample size n =  230
 #> 
 #> 
-#> The computations took    1.5   seconds
+#> The computations took    0.392   seconds
 
 out$MLE
 #>          [,1]      [,2]

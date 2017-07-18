@@ -95,8 +95,6 @@ List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha, Numeric
   IntegerVector freq01 = DF[1];
   IntegerVector freq02 = DF[2];
 
-  Rcout << std::endl;
-  //Rcout << "Piet Groeneboom and Kim Hendrickx 2017" << std::endl << "For further information see:" << std::endl;
   Rcout << "The program produces the Studentized nonparametric bootstrap confidence intervals for the cdf, using the SMLE" << std::endl<< std::endl;
   Rcout << "For further information see:" << std::endl;
   Rcout << "The nonparametric bootstrap for the current status model," << std::endl;
@@ -361,7 +359,7 @@ List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha, Numeric
   StopTime  = clock();
   Time_bootstrap   = (double)(StopTime - StartTime)/(double)CLOCKS_PER_SEC;
 
-  Rcout << std::endl << std::endl;
+  Rcout << std::endl;
   Rcout << "The computations took    " << setprecision(10) << Time_bootstrap << "   seconds"  << std::endl;
 
   NumericMatrix out4 = NumericMatrix(npoints,2);
@@ -372,7 +370,6 @@ List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha, Numeric
     out4(i,1)=upbound[i+1];
   }
 
-  Rcout << std::endl;
 
   // make the list for the output, containing the MLE, hazard, the bootstrap confidence intervals and -log likelihood
 
@@ -710,7 +707,6 @@ NumericVector ComputeBW(DataFrame data, NumericVector x)
     StopTime  = clock();
     Time_bootstrap   = (double)(StopTime - StartTime)/(double)CLOCKS_PER_SEC;
 
-    Rcout << std::endl << std::endl;
     Rcout << "The computations took    " << setprecision(10) << Time_bootstrap << "   seconds"  << std::endl;
 
 

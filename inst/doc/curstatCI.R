@@ -33,10 +33,11 @@ plot(grid, smle,type ='l', ylim=c(0,1), main= "",ylab="",xlab="",las=1)
 lines(grid, (1-exp(-grid))/(1-exp(-2.0)), col = 2, lty =2)
 
 ## ---- fig.width = 4,fig.height = 4, fig.align = 'center'-----------------
-out=ComputeConfIntervals(data=A,x=grid,alpha=0.05)
+bw <- ComputeBW(data=A, x = grid)
+out<-ComputeConfIntervals(data=A,x=grid,alpha=0.05, bw = bw )
 
 left<-out$CI[,1]
-right<-out$CI[,2]
+right<-out$CI[,2] 
 
 plot(grid, out$SMLE,type ='l', ylim=c(0,1), main= "",ylab="",xlab="",las=1)
 lines(grid, left, col = 4)
@@ -47,7 +48,9 @@ lines(grid, (1-exp(-grid))/(1-exp(-2.0)), col = 2)
 ## ---- results = "hide"---------------------------------------------------
 data(hepatitisA)
 grid <-1:75
-out=ComputeConfIntervals(data=hepatitisA,x=grid,alpha=0.05)
+
+bw<-ComputeBW(data=hepatitisA,x=grid)
+out<-ComputeConfIntervals(data=hepatitisA,x=grid,alpha=0.05, bw = rep(40, length(grid)))
 
 ## ---- fig.width = 4,fig.height = 4, fig.align = 'center'-----------------
 out$SMLE[18]
@@ -62,7 +65,8 @@ segments(grid,left, grid, right)
 ## ---- results = "hide"---------------------------------------------------
 data(rubella)
 grid <-1:75
-out=ComputeConfIntervals(data=rubella,x=grid,alpha=0.05)
+bw<-ComputeBW(data=rubella,x=grid)
+out<-ComputeConfIntervals(data=rubella,x=grid,alpha=0.05, bw = rep(40, length(grid)))
 
 ## ---- fig.width = 4,fig.height = 4, fig.align = 'center'-----------------
 left<-out$CI[,1]
