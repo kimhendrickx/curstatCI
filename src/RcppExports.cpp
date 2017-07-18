@@ -6,15 +6,41 @@
 using namespace Rcpp;
 
 // ComputeConfIntervals
-List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha);
-RcppExport SEXP curstatCI_ComputeConfIntervals(SEXP dataSEXP, SEXP xSEXP, SEXP alphaSEXP) {
+List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha, NumericVector bw);
+RcppExport SEXP curstatCI_ComputeConfIntervals(SEXP dataSEXP, SEXP xSEXP, SEXP alphaSEXP, SEXP bwSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< DataFrame >::type data(dataSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
     Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
-    rcpp_result_gen = Rcpp::wrap(ComputeConfIntervals(data, x, alpha));
+    Rcpp::traits::input_parameter< NumericVector >::type bw(bwSEXP);
+    rcpp_result_gen = Rcpp::wrap(ComputeConfIntervals(data, x, alpha, bw));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ComputeBW
+NumericVector ComputeBW(DataFrame data, NumericVector x);
+RcppExport SEXP curstatCI_ComputeBW(SEXP dataSEXP, SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< DataFrame >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(ComputeBW(data, x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ComputeConfIntervals0
+List ComputeConfIntervals0(DataFrame data, NumericVector x, double alpha);
+RcppExport SEXP curstatCI_ComputeConfIntervals0(SEXP dataSEXP, SEXP xSEXP, SEXP alphaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< DataFrame >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
+    rcpp_result_gen = Rcpp::wrap(ComputeConfIntervals0(data, x, alpha));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -44,7 +70,9 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"curstatCI_ComputeConfIntervals", (DL_FUNC) &curstatCI_ComputeConfIntervals, 3},
+    {"curstatCI_ComputeConfIntervals", (DL_FUNC) &curstatCI_ComputeConfIntervals, 4},
+    {"curstatCI_ComputeBW", (DL_FUNC) &curstatCI_ComputeBW, 2},
+    {"curstatCI_ComputeConfIntervals0", (DL_FUNC) &curstatCI_ComputeConfIntervals0, 3},
     {"curstatCI_ComputeMLE", (DL_FUNC) &curstatCI_ComputeMLE, 1},
     {"curstatCI_ComputeSMLE", (DL_FUNC) &curstatCI_ComputeSMLE, 3},
     {NULL, NULL, 0}
