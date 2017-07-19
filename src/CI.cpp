@@ -427,17 +427,25 @@ List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha, Numeric
 //'# sample size
 //'n <- 1000
 //'
-//'# Uniform data  U(0,2)
-//'set.seed(2)
-//'y <- runif(n,0,2)
-//'t <- runif(n,0,2)
-//'delta <- as.numeric(y <= t)
+//'## truncated exponential distribution on (0,2)
+//'set.seed(100)
+//' t <- rep(NA, n)
+//' delta <- rep(NA, n)
+//' for(i in (1:n) ){
+//'   x<-runif(1)
+//'   y<--log(1-(1-exp(-2))*x)
+//'   t[i]<-2*runif(1);
+//'   if(y<=t[i]){ delta[i]<-1}
+//'   else{delta[i]<-0}}
 //'
 //'A<-cbind(t[order(t)], delta[order(t)], rep(1,n))
+//'
+//'# x vector
 //'grid<-seq(0.01,1.99 ,by = 0.01)
 //'
 //'# Data-driven bandwidth vector
 //'bw <- ComputeBW(data =A, x = grid)
+//'plot(grid, bw)
 //'
 //'@references The nonparametric bootstrap for the current status model, Groeneboom, P. and Hendrickx, K. Electronical Journal of Statistics (2017)
 //'@export
