@@ -16,7 +16,8 @@ ComputeConfIntervals(data, x, alpha, bw)
 }}
 
 \item{x}{numeric vector containing the points where the confidence intervals are computed.
-This vector needs to be contained within the observation interval: \eqn{t[1] < min(x) \le max(x) < t[n]}.}
+It is recommended that this vector is contained within the observation interval starting from
+the smallest observation t such that \code{freq1>0} until the largest observation t such that \code{freq1<freq2}.}
 
 \item{alpha}{confidence level of pointwise confidence intervals}
 
@@ -24,13 +25,16 @@ This vector needs to be contained within the observation interval: \eqn{t[1] < m
 This vector contains the pointwise bandwidth values for each point in the vector x.}
 }
 \value{
-List with 3 variables:
+List with 5 variables:
 
 \describe{
-    \item{MLE }{ Maximum Likelihood Estimator. This is a matrix of dimension 2 x (m+1) where m is the number of jump points of the MLE.
+    \item{MLE }{Maximum Likelihood Estimator. This is a matrix of dimension (m+1)x2 where m is the number of jump points of the MLE.
                  The first column consists of the point zero and the jump locations of the MLE. The second column contains the value zero and the values of the MLE at the jump points. }
-    \item{SMLE }{ Smoothed Maximum Likelihood Estimator in x }
-    \item{CI }{ pointwise confidence interval for each points in x}
+    \item{SMLE }{Smoothed Maximum Likelihood Estimator in x }
+    \item{CI }{pointwise confidence interval. This is a martix of dimension \code{length(x)}x2.
+               The first resp. second column contains the lower resp. upper values of the confidence intervals for each point in x.}
+    \item{Studentized}{points in x for which Studentized nonparametric bootstrap confidence intervals are computed. }
+    \item{NonStudentized}{points in x for which classical nonparametric bootstrap confidence intervals are computed.}
 }
 }
 \description{
@@ -41,7 +45,16 @@ The confidence intervals are based on the Smoothed Maximum likelihood Estimator 
 In the current status model, the variable of interest \eqn{X} with distribution function \eqn{F} is not observed directly.
 A censoring variable \eqn{T} is observed instead together with the indicator \eqn{\Delta = (X \le T)}.
 ComputeConfIntervals computes the pointwise \code{1-alpha} bootstrap confidence intervals around the SMLE of \eqn{F} based on a sample of size \code{n <- sum(data$freq2)}.
+
+Since the limiting behavior for the MLE in [Groeneboom & Wellner (1992)] is derived for each point within the interval
+starting from the smallest observation such that \eqn{\Delta =1} until the largest obsrvation such that \eqn{\Delta =0},
+it is recommend to limit the construction of pointwise confidence intervals to points within this interval.
+
 The bandwidth parameter vector that minimizes the pointwise Mean Squared Error using the subsampling pricinciple in combination with undersmoothing is returned by the function \code{\link{ComputeBW}}.
+
+The default method for constructing the confidence intervals in [Groeneboom & Hendrickx (2017)] is based on estimating the asymptotic variance of the SMLE.
+When the bandwidth is small for some point in x, the variance estimate of the SMLE at this point might not exist.
+If this happens the Non-Studentized confidence interval is returned for this particular point in x.
 }
 \examples{
 library(Rcpp)
@@ -57,9 +70,14 @@ t <- runif(n,0,2)
 delta <- as.numeric(y <= t)
 
 A<-cbind(t[order(t)], delta[order(t)], rep(1,n))
-grid<-seq(0.01,1.99 ,by = 0.01)
 
-# Data-driven bandwidth vector
+# x vector
+mingrid<-A[min(which(A[,2]>0)),1]
+maxgrid<- A[max(which(A[,2] <A[,3])),1]
+
+grid<-seq(mingrid, maxgrid, length =100)
+
+# data-driven bandwidth vector
 bw <- ComputeBW(data =A, x = grid)
 
 # pointwise confidence intervals at grid points:
@@ -75,7 +93,9 @@ segments(grid,left, grid, right)
 
 }
 \references{
-The nonparametric bootstrap for the current status model, Groeneboom, P. and Hendrickx, K. Electronical Journal of Statistics (2017)
+Groeneboom, P. and Hendrickx, K. (2017). The nonparametric bootstrap for the current status model. \url{https://arxiv.org/abs/1701.07359}
+
+Groeneboom, P. & Wellner, J. (1992). Information bounds and nonparametric maximum likelihood estimation, volume 19 of DMV Seminar. Birkhauser Verlag, Base
 }
 \seealso{
 \code{vignette("curstatCI")}

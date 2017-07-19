@@ -15,28 +15,39 @@
 #'}
 #'
 #'@param x numeric vector containing the points where the confidence intervals are computed.
-#'         This vector needs to be contained within the observation interval: \eqn{t[1] < min(x) \le max(x) < t[n]}.
+#'         It is recommended that this vector is contained within the observation interval starting from
+#'         the smallest observation t such that \code{freq1>0} until the largest observation t such that \code{freq1<freq2}.
 #'
 #'@param alpha confidence level of pointwise confidence intervals
 #'
 #'@param bw numeric vector of size \code{length(x)}.
-#'         This vector contains the pointwise bandwidth values for each point in the vector x.
+#'       This vector contains the pointwise bandwidth values for each point in the vector x.
 #'
-#'@return List with 3 variables:
+#'@return List with 5 variables:
 #'
 #'\describe{
-#'     \item{MLE }{ Maximum Likelihood Estimator. This is a matrix of dimension 2 x (m+1) where m is the number of jump points of the MLE.
+#'     \item{MLE }{Maximum Likelihood Estimator. This is a matrix of dimension (m+1)x2 where m is the number of jump points of the MLE.
 #'                  The first column consists of the point zero and the jump locations of the MLE. The second column contains the value zero and the values of the MLE at the jump points. }
-#'     \item{SMLE }{ Smoothed Maximum Likelihood Estimator in x }
-#'     \item{CI }{ pointwise confidence interval for each points in x}
+#'     \item{SMLE }{Smoothed Maximum Likelihood Estimator in x }
+#'     \item{CI }{pointwise confidence interval. This is a martix of dimension \code{length(x)}x2.
+#'                The first resp. second column contains the lower resp. upper values of the confidence intervals for each point in x.}
+#'     \item{Studentized}{points in x for which Studentized nonparametric bootstrap confidence intervals are computed. }
+#'     \item{NonStudentized}{points in x for which classical nonparametric bootstrap confidence intervals are computed.}
 #' }
 #'
 #'@details In the current status model, the variable of interest \eqn{X} with distribution function \eqn{F} is not observed directly.
 #'A censoring variable \eqn{T} is observed instead together with the indicator \eqn{\Delta = (X \le T)}.
-#' ComputeConfIntervals computes the pointwise \code{1-alpha} bootstrap confidence intervals around the SMLE of \eqn{F} based on a sample of size \code{n <- sum(data$freq2)}.
-#' The bandwidth parameter vector that minimizes the pointwise Mean Squared Error using the subsampling pricinciple in combination with undersmoothing is returned by the function \code{\link{ComputeBW}}.
+#'ComputeConfIntervals computes the pointwise \code{1-alpha} bootstrap confidence intervals around the SMLE of \eqn{F} based on a sample of size \code{n <- sum(data$freq2)}.
 #'
+#'Since the limiting behavior for the MLE in [Groeneboom & Wellner (1992)] is derived for each point within the interval
+#'starting from the smallest observation such that \eqn{\Delta =1} until the largest obsrvation such that \eqn{\Delta =0},
+#'it is recommend to limit the construction of pointwise confidence intervals to points within this interval.
 #'
+#'The bandwidth parameter vector that minimizes the pointwise Mean Squared Error using the subsampling pricinciple in combination with undersmoothing is returned by the function \code{\link{ComputeBW}}.
+#'
+#'The default method for constructing the confidence intervals in [Groeneboom & Hendrickx (2017)] is based on estimating the asymptotic variance of the SMLE.
+#'When the bandwidth is small for some point in x, the variance estimate of the SMLE at this point might not exist.
+#'If this happens the Non-Studentized confidence interval is returned for this particular point in x.
 #'
 #'@seealso \code{vignette("curstatCI")}
 #'
@@ -54,9 +65,14 @@
 #'delta <- as.numeric(y <= t)
 #'
 #'A<-cbind(t[order(t)], delta[order(t)], rep(1,n))
-#'grid<-seq(0.01,1.99 ,by = 0.01)
 #'
-#'# Data-driven bandwidth vector
+#'# x vector
+#'mingrid<-A[min(which(A[,2]>0)),1]
+#'maxgrid<- A[max(which(A[,2] <A[,3])),1]
+#'
+#'grid<-seq(mingrid, maxgrid, length =100)
+#'
+#'# data-driven bandwidth vector
 #'bw <- ComputeBW(data =A, x = grid)
 #'
 #'# pointwise confidence intervals at grid points:
@@ -70,7 +86,9 @@
 #'lines(grid, right, col = 4)
 #'segments(grid,left, grid, right)
 #'
-#'@references The nonparametric bootstrap for the current status model, Groeneboom, P. and Hendrickx, K. Electronical Journal of Statistics (2017)
+#'@references Groeneboom, P. and Hendrickx, K. (2017). The nonparametric bootstrap for the current status model. \url{https://arxiv.org/abs/1701.07359}
+#'@references Groeneboom, P. & Wellner, J. (1992). Information bounds and nonparametric maximum likelihood estimation, volume 19 of DMV Seminar. Birkhauser Verlag, Base
+#'
 #'@export
 ComputeConfIntervals <- function(data, x, alpha, bw) {
     .Call('curstatCI_ComputeConfIntervals', PACKAGE = 'curstatCI', data, x, alpha, bw)
@@ -89,14 +107,12 @@ ComputeConfIntervals <- function(data, x, alpha, bw) {
 #'}
 #'
 #'@param x numeric vector containing the points where the confidence intervals are computed.
-#'         This vector needs to be contained within the observation interval: \eqn{t[1] < min(x) \le max(x) < t[n]}.
 #'
 #'
 #'@return bw data-driven bandwidth vector of size \code{length(x)} for each point in x
 #'
 #'
-#'
-#' @seealso \code{vignette("curstatCI")}
+#'@seealso \code{vignette("curstatCI")}
 #'
 #'@examples
 #'library(Rcpp)
@@ -105,19 +121,27 @@ ComputeConfIntervals <- function(data, x, alpha, bw) {
 #'# sample size
 #'n <- 1000
 #'
-#'# Uniform data  U(0,2)
-#'set.seed(2)
-#'y <- runif(n,0,2)
-#'t <- runif(n,0,2)
-#'delta <- as.numeric(y <= t)
+#'## truncated exponential distribution on (0,2)
+#'set.seed(100)
+#' t <- rep(NA, n)
+#' delta <- rep(NA, n)
+#' for(i in (1:n) ){
+#'   x<-runif(1)
+#'   y<--log(1-(1-exp(-2))*x)
+#'   t[i]<-2*runif(1);
+#'   if(y<=t[i]){ delta[i]<-1}
+#'   else{delta[i]<-0}}
 #'
 #'A<-cbind(t[order(t)], delta[order(t)], rep(1,n))
+#'
+#'# x vector
 #'grid<-seq(0.01,1.99 ,by = 0.01)
 #'
-#'# Data-driven bandwidth vector
+#'# data-driven bandwidth vector
 #'bw <- ComputeBW(data =A, x = grid)
+#'plot(grid, bw)
 #'
-#'@references The nonparametric bootstrap for the current status model, Groeneboom, P. and Hendrickx, K. Electronical Journal of Statistics (2017)
+#'@references Groeneboom, P. and Hendrickx, K. (2017). The nonparametric bootstrap for the current status model. \url{https://arxiv.org/abs/1701.07359}
 #'@export
 ComputeBW <- function(data, x) {
     .Call('curstatCI_ComputeBW', PACKAGE = 'curstatCI', data, x)
@@ -214,7 +238,7 @@ ComputeConfIntervals0 <- function(data, x, alpha) {
 #'     \item{mle}{MLE evaluated at the jumplocations}
 #' }
 #'
-#'@references The nonparametric bootstrap for the current status model, Groeneboom, P. and Hendrickx, K. Electronical Journal of Statistics (2017)
+#'@references Groeneboom, P. and Hendrickx, K. (2017). The nonparametric bootstrap for the current status model. \url{https://arxiv.org/abs/1701.07359}
 #'
 #'@seealso \code{\link{ComputeConfIntervals}}
 #'
@@ -253,19 +277,18 @@ ComputeMLE <- function(data) {
 #'     \item{freq2}{Frequency of observation t. The sample size equals \code{sum(freq2)}. If no tied observations are present in the data \code{length(t)} equals \code{sum(freq2)}. }
 #'}
 #'
-#'@param h bandwidth
+#'@param bw numeric vector of size \code{length(x)}. This vector contains the pointwise bandwidth values for each point in the vector x.
 #'
 #'@param x numeric vector
 #'
 #'@details In the current status model, the variable of interest \eqn{X} with distribution function \eqn{F} is not observed directly.
 #'A censoring variable \eqn{T} is observed instead together with the indicator \eqn{\Delta = (X \le T)}.
 #' ComputeSMLE computes the SMLE of \eqn{F} based on a sample of size \code{n <- sum(data$freq2)}.
-#' The same bandwidth h is used for all points in the vector x.
-#' A selection procedure to obtain a data-driven (and possibly different) bandwidth choice for each point in the vector x is used in the function \code{\link{ComputeBW}}.
+#' The bandwidth parameter vector that minimizes the pointwise Mean Squared Error using the subsampling pricinciple in combination with undersmoothing is returned by the function \link{ComputeBW}.
 #'
 #'@return SMLE(x)
 #'
-#'@references The nonparametric bootstrap for the current status model, Groeneboom, P. and Hendrickx, K. Electronical Journal of Statistics (2017)
+#'@references Groeneboom, P. and Hendrickx, K. (2017). The nonparametric bootstrap for the current status model. \url{https://arxiv.org/abs/1701.07359}
 #'
 #'@seealso \code{\link{ComputeConfIntervals}}
 #'
@@ -284,14 +307,16 @@ ComputeMLE <- function(data) {
 #'
 #'A<-cbind(t[order(t)], delta[order(t)], rep(1,n))
 #'grid <-seq(0,2 ,by = 0.01)
-#'h<-2*n^-0.2
+#'
+#'# bandwidth vector
+#'h<-rep(2*n^-0.2,length(grid))
 #'
 #'smle <-ComputeSMLE(A,grid,h)
 #'plot(grid, smle,type ='l', ylim=c(0,1), main= "",ylab="",xlab="",las=1)
 #'
 #'
 #'@export
-ComputeSMLE <- function(data, x, h) {
-    .Call('curstatCI_ComputeSMLE', PACKAGE = 'curstatCI', data, x, h)
+ComputeSMLE <- function(data, x, bw) {
+    .Call('curstatCI_ComputeSMLE', PACKAGE = 'curstatCI', data, x, bw)
 }
 

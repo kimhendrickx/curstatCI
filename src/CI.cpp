@@ -20,28 +20,39 @@
 //'}
 //'
 //'@param x numeric vector containing the points where the confidence intervals are computed.
-//'         This vector needs to be contained within the observation interval: \eqn{t[1] < min(x) \le max(x) < t[n]}.
+//'         It is recommended that this vector is contained within the observation interval starting from
+//'         the smallest observation t such that \code{freq1>0} until the largest observation t such that \code{freq1<freq2}.
 //'
 //'@param alpha confidence level of pointwise confidence intervals
 //'
 //'@param bw numeric vector of size \code{length(x)}.
-//'         This vector contains the pointwise bandwidth values for each point in the vector x.
+//'       This vector contains the pointwise bandwidth values for each point in the vector x.
 //'
-//'@return List with 3 variables:
+//'@return List with 5 variables:
 //'
 //'\describe{
-//'     \item{MLE }{ Maximum Likelihood Estimator. This is a matrix of dimension 2 x (m+1) where m is the number of jump points of the MLE.
+//'     \item{MLE }{Maximum Likelihood Estimator. This is a matrix of dimension (m+1)x2 where m is the number of jump points of the MLE.
 //'                  The first column consists of the point zero and the jump locations of the MLE. The second column contains the value zero and the values of the MLE at the jump points. }
-//'     \item{SMLE }{ Smoothed Maximum Likelihood Estimator in x }
-//'     \item{CI }{ pointwise confidence interval for each points in x}
+//'     \item{SMLE }{Smoothed Maximum Likelihood Estimator in x }
+//'     \item{CI }{pointwise confidence interval. This is a martix of dimension \code{length(x)}x2.
+//'                The first resp. second column contains the lower resp. upper values of the confidence intervals for each point in x.}
+//'     \item{Studentized}{points in x for which Studentized nonparametric bootstrap confidence intervals are computed. }
+//'     \item{NonStudentized}{points in x for which classical nonparametric bootstrap confidence intervals are computed.}
 //' }
 //'
 //'@details In the current status model, the variable of interest \eqn{X} with distribution function \eqn{F} is not observed directly.
 //'A censoring variable \eqn{T} is observed instead together with the indicator \eqn{\Delta = (X \le T)}.
-//' ComputeConfIntervals computes the pointwise \code{1-alpha} bootstrap confidence intervals around the SMLE of \eqn{F} based on a sample of size \code{n <- sum(data$freq2)}.
-//' The bandwidth parameter vector that minimizes the pointwise Mean Squared Error using the subsampling pricinciple in combination with undersmoothing is returned by the function \code{\link{ComputeBW}}.
+//'ComputeConfIntervals computes the pointwise \code{1-alpha} bootstrap confidence intervals around the SMLE of \eqn{F} based on a sample of size \code{n <- sum(data$freq2)}.
 //'
+//'Since the limiting behavior for the MLE in [Groeneboom & Wellner (1992)] is derived for each point within the interval
+//'starting from the smallest observation such that \eqn{\Delta =1} until the largest obsrvation such that \eqn{\Delta =0},
+//'it is recommend to limit the construction of pointwise confidence intervals to points within this interval.
 //'
+//'The bandwidth parameter vector that minimizes the pointwise Mean Squared Error using the subsampling pricinciple in combination with undersmoothing is returned by the function \code{\link{ComputeBW}}.
+//'
+//'The default method for constructing the confidence intervals in [Groeneboom & Hendrickx (2017)] is based on estimating the asymptotic variance of the SMLE.
+//'When the bandwidth is small for some point in x, the variance estimate of the SMLE at this point might not exist.
+//'If this happens the Non-Studentized confidence interval is returned for this particular point in x.
 //'
 //'@seealso \code{vignette("curstatCI")}
 //'
@@ -59,9 +70,14 @@
 //'delta <- as.numeric(y <= t)
 //'
 //'A<-cbind(t[order(t)], delta[order(t)], rep(1,n))
-//'grid<-seq(0.01,1.99 ,by = 0.01)
 //'
-//'# Data-driven bandwidth vector
+//'# x vector
+//'mingrid<-A[min(which(A[,2]>0)),1]
+//'maxgrid<- A[max(which(A[,2] <A[,3])),1]
+//'
+//'grid<-seq(mingrid, maxgrid, length =100)
+//'
+//'# data-driven bandwidth vector
 //'bw <- ComputeBW(data =A, x = grid)
 //'
 //'# pointwise confidence intervals at grid points:
@@ -75,7 +91,9 @@
 //'lines(grid, right, col = 4)
 //'segments(grid,left, grid, right)
 //'
-//'@references The nonparametric bootstrap for the current status model, Groeneboom, P. and Hendrickx, K. Electronical Journal of Statistics (2017)
+//'@references Groeneboom, P. and Hendrickx, K. (2017). The nonparametric bootstrap for the current status model. \url{https://arxiv.org/abs/1701.07359}
+//'@references Groeneboom, P. & Wellner, J. (1992). Information bounds and nonparametric maximum likelihood estimation, volume 19 of DMV Seminar. Birkhauser Verlag, Base
+//'
 //'@export
 // [[Rcpp::export]]
 
@@ -83,8 +101,9 @@ List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha, Numeric
 {
   double          A,B,*data0,*Data,*data1,*data2,*grid,*p,*p2;
   double          *tt,**f3,*lowbound,*upbound,*f4, *hmin1;
-  double          *cumw,*cs,*F,*F2,*jumploc,*y,*y2,*SMLE,*SMLE2;
-  int             i,j,k,m,m2,N,n,*delta,**freq,njumps,*delta2,*freq1,*freq2,**frequence1;
+  double          *cumw,*cs,*F,*F2,*jumploc,*y,*y2,*SMLE,*SMLE2,*studentized, *nonstudentized;
+  int             i,j,k,m,m2,N,n,NumStud, NumNonStud;
+  int             *delta,**freq,njumps,*delta2,*freq1,*freq2,**frequence1;
   int             percentile1,percentile2,iter,NumIt=1000, npoints;
   clock_t         StartTime, StopTime;
   double          Time_bootstrap;
@@ -194,18 +213,18 @@ List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha, Numeric
   data2= new double[n+1];
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////
-    SMLE= new double[npoints+1];
+  SMLE= new double[npoints+1];
   SMLE2= new double[npoints+1];
   p= new double[n+1];
   p2= new double[n+1];
 
   frequence1 = new int*[2];
   for (i=0;i<2;i++)
-    frequence1[i] = new int[n+1];
+    frequence1[i] = new int[N+1];
 
   freq = new int*[2];
   for (i=0;i<2;i++)
-    freq[i] = new int[n+1];
+    freq[i] = new int[N+1];
 
   f3  = new double*[NumIt+1];
 
@@ -217,6 +236,10 @@ List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha, Numeric
 
   y[0]=y2[0]=0;
 
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Counter for number of studentized
+  studentized = new double[npoints+1];
+  nonstudentized = new double[npoints+1];
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////
   StartTime = clock();
@@ -333,6 +356,9 @@ List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha, Numeric
   lowbound=new double[npoints];
   upbound=new double[npoints];
 
+  j = 0;
+  k= 0;
+
   for (i=1;i<=npoints;i++)
   {
     for (iter=0;iter<NumIt;iter++)
@@ -343,23 +369,45 @@ List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha, Numeric
     if(sqrt(varF(N,n,frequence1,y,data0[1],data0[n],data0,hmin1[i],grid[i])) > 0)
     {
       lowbound[i]= fmax(0,SMLE[i]-f4[percentile2-1]*sqrt(varF(N,n,frequence1,y,data0[1],data0[n],data0,hmin1[i],grid[i])));
-      upbound[i]= fmin(1,SMLE[i]-f4[percentile1-1]*sqrt(varF(N,n,frequence1,y,data0[1],data0[n],data0,hmin1[i],grid[i])));;
+      upbound[i]= fmin(1,SMLE[i]-f4[percentile1-1]*sqrt(varF(N,n,frequence1,y,data0[1],data0[n],data0,hmin1[i],grid[i])));
+
+      k++;
+      studentized[k] = grid[i];
     }
+
 
     else{
       lowbound[i]= fmax(0,SMLE[i]-f4[percentile2-1]);
       upbound[i]= fmin(1,SMLE[i]-f4[percentile1-1]);
+
+      j++;
+      nonstudentized[j] = grid[i];
     }
   }
 
   if(grid[1] == 0)
     upbound[1] = 0;
 
+  NumStud = k;
+  NumNonStud = j;
+
+  Rcout << "Number of Studentized Intervals = " << setprecision(6) << NumStud  << std::endl;
+  Rcout << "Number of Non-Studentized Intervals = " << setprecision(6) << NumNonStud  << std::endl;
+
+
+  NumericVector outS(NumStud);
+  NumericVector outNS(NumNonStud);
+
+  for (i=0;i<NumStud;i++)
+    outS[i]=studentized[i+1];
+
+  for (i=0;i<NumNonStud;i++)
+    outNS[i]=nonstudentized[i+1];
+
 
   StopTime  = clock();
   Time_bootstrap   = (double)(StopTime - StartTime)/(double)CLOCKS_PER_SEC;
 
-  Rcout << std::endl;
   Rcout << "The computations took    " << setprecision(10) << Time_bootstrap << "   seconds"  << std::endl;
 
   NumericMatrix out4 = NumericMatrix(npoints,2);
@@ -370,10 +418,12 @@ List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha, Numeric
     out4(i,1)=upbound[i+1];
   }
 
+  Rcout << std::endl;
 
   // make the list for the output, containing the MLE, hazard, the bootstrap confidence intervals and -log likelihood
 
-  List out = List::create(Rcpp::Named("MLE")=out1,Rcpp::Named("SMLE")=out2,Rcpp::Named("CI")=out4 );
+  List out = List::create(Rcpp::Named("MLE")=out1,Rcpp::Named("SMLE")=out2,Rcpp::Named("CI")=out4 , Rcpp::Named("Studentized")=outS , Rcpp::Named("NonStudentized")=outNS  );
+
 
   // free memory
 
@@ -411,14 +461,12 @@ List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha, Numeric
 //'}
 //'
 //'@param x numeric vector containing the points where the confidence intervals are computed.
-//'         This vector needs to be contained within the observation interval: \eqn{t[1] < min(x) \le max(x) < t[n]}.
 //'
 //'
 //'@return bw data-driven bandwidth vector of size \code{length(x)} for each point in x
 //'
 //'
-//'
-//' @seealso \code{vignette("curstatCI")}
+//'@seealso \code{vignette("curstatCI")}
 //'
 //'@examples
 //'library(Rcpp)
@@ -443,11 +491,11 @@ List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha, Numeric
 //'# x vector
 //'grid<-seq(0.01,1.99 ,by = 0.01)
 //'
-//'# Data-driven bandwidth vector
+//'# data-driven bandwidth vector
 //'bw <- ComputeBW(data =A, x = grid)
 //'plot(grid, bw)
 //'
-//'@references The nonparametric bootstrap for the current status model, Groeneboom, P. and Hendrickx, K. Electronical Journal of Statistics (2017)
+//'@references Groeneboom, P. and Hendrickx, K. (2017). The nonparametric bootstrap for the current status model. \url{https://arxiv.org/abs/1701.07359}
 //'@export
 // [[Rcpp::export]]
 NumericVector ComputeBW(DataFrame data, NumericVector x)
@@ -573,16 +621,18 @@ NumericVector ComputeBW(DataFrame data, NumericVector x)
 
     frequence1 = new int*[2];
     for (i=0;i<2;i++)
-    frequence1[i] = new int[n+1];
+    frequence1[i] = new int[N+1];
 
     freq = new int*[2];
     for (i=0;i<2;i++)
-    freq[i] = new int[n+1];
+    freq[i] = new int[N+1];
 
     F[0]=F2[0]=0;
     cumw[0]=cs[0]=0;
 
     y[0]=y2[0]=0;
+
+
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////

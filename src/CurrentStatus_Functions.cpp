@@ -32,7 +32,7 @@
 //'     \item{mle}{MLE evaluated at the jumplocations}
 //' }
 //'
-//'@references The nonparametric bootstrap for the current status model, Groeneboom, P. and Hendrickx, K. Electronical Journal of Statistics (2017)
+//'@references Groeneboom, P. and Hendrickx, K. (2017). The nonparametric bootstrap for the current status model. \url{https://arxiv.org/abs/1701.07359}
 //'
 //'@seealso \code{\link{ComputeConfIntervals}}
 //'
@@ -160,19 +160,18 @@ DataFrame ComputeMLE(DataFrame data)
 //'     \item{freq2}{Frequency of observation t. The sample size equals \code{sum(freq2)}. If no tied observations are present in the data \code{length(t)} equals \code{sum(freq2)}. }
 //'}
 //'
-//'@param h bandwidth
+//'@param bw numeric vector of size \code{length(x)}. This vector contains the pointwise bandwidth values for each point in the vector x.
 //'
 //'@param x numeric vector
 //'
 //'@details In the current status model, the variable of interest \eqn{X} with distribution function \eqn{F} is not observed directly.
 //'A censoring variable \eqn{T} is observed instead together with the indicator \eqn{\Delta = (X \le T)}.
 //' ComputeSMLE computes the SMLE of \eqn{F} based on a sample of size \code{n <- sum(data$freq2)}.
-//' The same bandwidth h is used for all points in the vector x.
-//' A selection procedure to obtain a data-driven (and possibly different) bandwidth choice for each point in the vector x is used in the function \code{\link{ComputeBW}}.
+//' The bandwidth parameter vector that minimizes the pointwise Mean Squared Error using the subsampling pricinciple in combination with undersmoothing is returned by the function \link{ComputeBW}.
 //'
 //'@return SMLE(x)
 //'
-//'@references The nonparametric bootstrap for the current status model, Groeneboom, P. and Hendrickx, K. Electronical Journal of Statistics (2017)
+//'@references Groeneboom, P. and Hendrickx, K. (2017). The nonparametric bootstrap for the current status model. \url{https://arxiv.org/abs/1701.07359}
 //'
 //'@seealso \code{\link{ComputeConfIntervals}}
 //'
@@ -191,7 +190,9 @@ DataFrame ComputeMLE(DataFrame data)
 //'
 //'A<-cbind(t[order(t)], delta[order(t)], rep(1,n))
 //'grid <-seq(0,2 ,by = 0.01)
-//'h<-2*n^-0.2
+//'
+//'# bandwidth vector
+//'h<-rep(2*n^-0.2,length(grid))
 //'
 //'smle <-ComputeSMLE(A,grid,h)
 //'plot(grid, smle,type ='l', ylim=c(0,1), main= "",ylab="",xlab="",las=1)
@@ -199,9 +200,9 @@ DataFrame ComputeMLE(DataFrame data)
 //'
 //'@export
 // [[Rcpp::export]]
-NumericVector ComputeSMLE(DataFrame data, NumericVector x, double h)
+NumericVector ComputeSMLE(DataFrame data, NumericVector x, NumericVector bw)
 {
-  double          *data0,*cumw,*cs,*F,*p,*jumploc,*y,*grid,A,B;
+  double          *data0,*cumw,*cs,*F,*p,*jumploc,*y,*grid,A,B, *h;
   int             i,j,k,n,ngrid,njumps,*freq1,*freq2;
 
   DataFrame DF = Rcpp::DataFrame(data);
@@ -235,9 +236,12 @@ NumericVector ComputeSMLE(DataFrame data, NumericVector x, double h)
   y= new double[n+1];
   jumploc= new double[n+1];
   grid= new double[ngrid];
+  h= new double[ngrid];
 
-  for (i=0;i<ngrid;i++)
+  for (i=0;i<ngrid;i++){
     grid[i]=(double)x[i];
+    h[i] = (double)bw[i];
+  }
 
 
   F[0]=0;
@@ -278,9 +282,9 @@ NumericVector ComputeSMLE(DataFrame data, NumericVector x, double h)
     sum=0;
     for (k=1;k<=njumps;k++)
     {
-      t1=(grid[i]-jumploc[k])/h;
-      t2=(grid[i]+jumploc[k]-2*A)/h;
-      t3=(2*B-grid[i]-jumploc[k])/h;
+      t1=(grid[i]-jumploc[k])/h[i];
+      t2=(grid[i]+jumploc[k]-2*A)/h[i];
+      t3=(2*B-grid[i]-jumploc[k])/h[i];
       sum+= (KK(t1)+KK(t2)-KK(t3))*p[k];
     }
     out[i] =fmax(0,sum) ;

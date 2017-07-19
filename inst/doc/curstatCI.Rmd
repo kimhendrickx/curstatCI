@@ -10,15 +10,15 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-In the current status model, a positive variable of interest $X$ with distribution function $F_0$ is not observed directly. A censoring variable $T \sim G$ is observed instead together with the indicator $\Delta = (X \le T)$. *curstatCI* provides functions to estimate the distribution function $F_0$ and to construct pointswise confidence intervals around $F_0(t)$ based on an observed sample $(T_1, \Delta_1),\ldots, (T_n, \Delta_n)$ of size $n$ from the observable random  vector $(T, \Delta)$.
+In the current status model, a positive variable of interest $X$ with distribution function $F_0$ is not observed directly. A censoring variable $T \sim G$ is observed instead together with the indicator $\Delta=(X \le T)$. *curstatCI* provides functions to estimate the distribution function $F_0$ and to construct pointswise confidence intervals around $F_0(t)$ based on an observed sample $(T_1, \Delta_1),\ldots, (T_n, \Delta_n)$ of size $n$ from the observable random  vector $(T, \Delta)$.
 
-To illustrate the usage of the functions provided in the *curstatCI* package we consider a sample $(X_1,\ldots,X_n)$ of size $n=1000$ from the truncated exponential distribution on $[0,2]$ with distribution function $F_0(t) = (1-\exp(-t))/(1-\exp(-2)$ if $t \in [0,2]$. The observation points $(T_1,\ldots,T_n)$ are sampled from a uniform distribution on $[0,2]$. This data setting is also considered in the simulation section of @GroeneboomHendrickx2017. The R-code to generate the observable random vector $(t_1,\delta_1), \ldots, (t_n, \delta_n)$ is given below.
+To illustrate the usage of the functions provided in the *curstatCI* package we consider a sample $(X_1,\ldots,X_n)$ of size $n=1000$ from the truncated exponential distribution on $[0,2]$ with distribution function $F_0(t)=(1-\exp(-t))/(1-\exp(-2)$ if $t \in [0,2]$. The observation points $(T_1,\ldots,T_n)$ are sampled from a uniform distribution on $[0,2]$. This data setting is also considered in the simulation section of @GroeneboomHendrickx2017. The R-code to generate the observable random vector $(t_1,\delta_1), \ldots, (t_n, \delta_n)$ is given below.
 ```{r}
 set.seed(100)
 
 n<-1000
-t <- rep(NA, n)
-delta <- rep(NA, n)
+t<-rep(NA, n)
+delta<-rep(NA, n)
 
 for(i in (1:n) ){
   x<-runif(1)
@@ -33,10 +33,10 @@ for(i in (1:n) ){
 
 The MLE $F_n$ of $F_0$ is defined as the maximizer of the log likelihood given by (up to a constant not depending on $F$)
 $$ \sum_{i=1}^n \Delta_i\log F(T_i) +  (1-\Delta_i)\log(1-F(T_i)),$$
-over all possible distribution functions $F$. As can be seen from its structure, the log likelihood only depends on the value that $F$ takes at the observed time points $T_i$. The values in between are irrelevant as long as $F$ is increasing. The MLE $F_n$ is a step function which can be characterized by the left derivative of the greatest convex minorant of the cumulative sumdiagran consisting of the points $P_0 = (0,0)$ and
-$$P_i = \left(\sum_{j=1}^i w_j,\sum_{j=1}^i f_{1j}\right),\,i=1,\dots,m,$$
+over all possible distribution functions $F$. As can be seen from its structure, the log likelihood only depends on the value that $F$ takes at the observed time points $T_i$. The values in between are irrelevant as long as $F$ is increasing. The MLE $F_n$ is a step function which can be characterized by the left derivative of the greatest convex minorant of the cumulative sumdiagran consisting of the points $P_0=(0,0)$ and
+$$P_i=\left(\sum_{j=1}^i w_j,\sum_{j=1}^i f_{1j}\right),\,i=1,\dots,m,$$
 
-where the $w_j$ are weights, given by the number of observations at point $T_{(j)}$, assuming that $T_{(1)}<\dots<T_{(m)}$ ($m$ being the number of different observations in the sample) are the order statistics of the sample $(T_1,\Delta_1),\dots,(T_n,\Delta_n)$ and where $f_{1j}$ is the number of $\Delta_k$ equal to one at the $j$th order statistic of the sample.  When no ties are present in the data, $w_j =1, m =n$ and $f_{1j} = \Delta_{(j)}$, where $\Delta_{(j)}$ corresponds to $T_{(j)}$.
+where the $w_j$ are weights, given by the number of observations at point $T_{(j)}$, assuming that $T_{(1)}<\dots<T_{(m)}$ ($m$ being the number of different observations in the sample) are the order statistics of the sample $(T_1,\Delta_1),\dots,(T_n,\Delta_n)$ and where $f_{1j}$ is the number of $\Delta_k$ equal to one at the $j$th order statistic of the sample.  When no ties are present in the data, $w_j=1, m=n$ and $f_{1j}=\Delta_{(j)}$, where $\Delta_{(j)}$ corresponds to $T_{(j)}$.
 
 The function *ComputeMLE* in the package curstatCI computes the values of the MLE at the distinct jump points of the stepwise MLE. The current status data needs to be formatted as follows. The first column contains the observations $t_{(1)}<\dots<t_{(m)}$ in ascending order. The second and third columns contain the variables $f_{1j}$ and $w_j$ corresponding to $t_{(j)}$. 
 
@@ -45,7 +45,7 @@ A<-cbind(t[order(t)], delta[order(t)], rep(1,n))
 head(A)
 ```
 The function *ComputeMLE* returns the jump points and corresponding values of the MLE.
-```{r, fig.width = 4,fig.height = 4, fig.align = 'center'}
+```{r, fig.width=4,fig.height=4, fig.align='center'}
 library(Rcpp)
 library(curstatCI)
 
@@ -54,8 +54,8 @@ mle
 ```
 The number of jump points in the simulated data example equals 24. The MLE is zero at all points smaller than the first jump point 0.04461921 and one at all points larger than or equal than the last jump point 1.91620524. A picture of the step function $F_n$ is given below.
 
-```{r, fig.width = 4,fig.height = 4, fig.align = 'center'}
-plot(mle$x, mle$mle,type ='s', ylim=c(0,1),xlim = c(0,2), main= "",ylab="",xlab="",las=1)
+```{r, fig.width=4,fig.height=4, fig.align='center'}
+plot(mle$x, mle$mle,type='s', ylim=c(0,1),xlim=c(0,2), main="",ylab="",xlab="",las=1)
 ```
 
 ## The smoothed maximum likelihood estimator (SMLE)
@@ -65,16 +65,17 @@ $$ K(t)=\frac{35}{32}\left(1-t^2\right)^31_{[-1,1]}(t).$$
 The SMLE is next defined by
 $$ \tilde F_{nh}(t)=\int\mathbb K\left(\frac{t-x}{h}\right)\,d F_n(x), $$
 where 
-$$\mathbb K(t) = \int_{-\infty}^t K(x)\,dx.$$
-The function *ComputeSMLE* computes the values of the SMLE in the points x based on a prespecified bandwidth choice $h$. The same bandwidth $h$ is used for all points in x. A data-driven (and possibly different) bandwidth choice for each point in x is considered in the function *ComputeConfIntervals* which is described later. 
+$$\mathbb K(t)=\int_{-\infty}^t K(x)\,dx.$$
+The function *ComputeSMLE* computes the values of the SMLE in the points x based on a prespecified bandwidth choice $h$. A user-specified bandwidth vector bw of size \code{\length(x)} is used for each point in the vetor x. A data-driven bandwidth choice for each point in x is returned by the function *ComputeBW* which is described later. 
 
 For our simulated data set, a picture of the SMLE $\tilde F_{nh}(t)$ using a bandwidth $h=2n^{-1/5}$, evaluated in the points $t=0.02,0.04,\ldots,1.98$  together with the true distribution function $F_0$ is obtained as follows:
 
-```{r, fig.width = 4,fig.height = 4, fig.align = 'center'}
-grid <- seq(0.02,1.98, 0.02)
-smle <-ComputeSMLE(data=A, x=grid, h=2*n^-0.2)
-plot(grid, smle,type ='l', ylim=c(0,1), main= "",ylab="",xlab="",las=1)
-lines(grid, (1-exp(-grid))/(1-exp(-2.0)), col = 2, lty =2)
+```{r, fig.width=4,fig.height=4, fig.align='center'}
+grid<-seq(0.02,1.98, 0.02)
+bw<-rep(2*n^-0.2,length(grid))
+smle<-ComputeSMLE(data=A, x=grid, bw=bw)
+plot(grid, smle,type='l', ylim=c(0,1), main="",ylab="",xlab="",las=1)
+lines(grid, (1-exp(-grid))/(1-exp(-2.0)), col=2, lty=2)
 ```
 
 
@@ -88,24 +89,52 @@ where $\tilde F_{nh}^*(t)$ is the SMLE in the bootstrap sample and  $S_{nh}(t)$ 
 $$S_{nh}(t)=\frac1{hn^{2}}\sum_{i=1}^n K\left(\frac{t-T_i}h\right)^2\left(\Delta_i-F_n(T_i)\right)^2.$$
 $S_{nh}^*(t)$ is the bootstrap analogue of $S_{nh}(t)$ obtained by replacing $(T_i,\Delta_i)$ in the expression above by $(T_i^*,\Delta_i^*)$. The number of bootstrap samples $B$ used by the function *ComputeSMLE* equals $B=1000$. 
 
-The bandwidth for estimating the SMLE $\tilde F_{nh}$ at point $t$, obtained by minimizing the pointwise Mean Squared Error using the subsampling pricinciple in combination with undersmoothing is given by the function *ComputeBW*. To obtain an approximation to the optimal bandwidth minimizing the pointwise MSE, we generate $1000$ bootstrap subsamples of size  $m = o(n)$ from the original sample using the subsampling principle and take $c_{t, opt}$ as the minimizer of
+The bandwidth for estimating the SMLE $\tilde F_{nh}$ at point $t$, obtained by minimizing the pointwise Mean Squared Error using the subsampling pricinciple in combination with undersmoothing is given by the function *ComputeBW*. To obtain an approximation to the optimal bandwidth minimizing the pointwise MSE, $1000$ bootstrap subsamples of size  $m=o(n)$ are generated from the original sample using the subsampling principle and $c_{t, opt}$ is selected as the minimizer of
 $$ \sum_{b=1}^{1000}\left\{\tilde F_{m,cm^{-1/5}}^b(t) - \tilde F_{n,c_0n^{-1/5}}(t) \right\}^2,$$
-where $\tilde F_{n,c_0n^{-1/5}}$ is the SMLE in the original sample of size $n$ using an initial bandwidth $c_0n^{-1/5}$. The bandwidth used for estimating the SMLE is next given by $h =c_{t,opt}n^{-1/4}$.
+where $\tilde F_{n,c_0n^{-1/5}}$ is the SMLE in the original sample of size $n$ using an initial bandwidth $c_0n^{-1/5}$. The bandwidth used for estimating the SMLE is next given by $h=c_{t,opt}n^{-1/4}$.
 
-Besides the upper and lower bound of the   $1-\alpha$ bootstrap confidence intervals, the function *ComputeConfIntervals* also returns the data-driven pointwise bandwidth choices and the corresponding output of the functions *ComputeMLE* and *ComputeSMLE* (using the data-driven bandwidth). Due to boundary issues, it is recommended to limit the construction of confidence intervals to points lying strictly within the observation interval.
+When the bandwidth $h$ is small, it can happen that no time points are observed within the interval $[t-h, t+h]$. As a consequence  the estimate of the variance $S_{nh}(t)$ is zero and the Studentized Confidence intervals are unsatisfactory. If this happens, the function *ComputeConfIntervals* returns the classical $1-\alpha$ confidence intervalsgiven by:
+$$ \left[\tilde F_{nh}(t)-Z_{1-\alpha/2}^*(t), \tilde F_{nh}(t)-Z_{\alpha/2}^*(t)\right],$$
+where $Z_{\alpha}^*(t)$ is the $\alpha$th quantile of $B$ values of $V_{nh}^*(t)$ defined by,
+$$V_{nh}^*(t)=\tilde F_{nh}^*(t)-\tilde F_{nh}(t),$$
 
-```{r, fig.width = 4,fig.height = 4, fig.align = 'center'}
-bw <- ComputeBW(data=A, x = grid)
-out<-ComputeConfIntervals(data=A,x=grid,alpha=0.05, bw = bw )
 
+Besides the upper and lower bounds of the   $1-\alpha$ bootstrap confidence intervals, the function *ComputeConfIntervals* also returns the output of the functions *ComputeMLE* and *ComputeSMLE*. Since the limiting behavior for the MLE in @GrWe92 is derived for each point within the interval starting from the smallest observation $T_i$ such that $\Delta_i=1$ until the largest obsrvation $T_j$ such that $\Delta_j=0$, it is recommend to limit the construction of pointwise confidence intervals to points within this interval. 
+
+The general approach for constructing the confidence intervals is the following: 
+First decide upon the points where the confidence intervals need to be computed.
+If no particular interest in certain points is requested, it is recommended to consider a grid of points within the interval starting from the smallest observed time point $t_i$ for which $\delta_i=1$ until the largest observed time point $t_j$ for which $\delta_j=0$. The function *ComputeConfIntervals* can also deal with positive values outside this interval but some numerical instability is to be expected.
+```{r, results="hide"}
+mingrid<-A[min(which(A[,2]>0)),1]
+maxgrid<-A[max(which(A[,2]<A[,3])),1]
+grid<-seq(mingrid,maxgrid ,length=200)
+```
+Next, select the bandwidth vector for estimating the SMLE $\tilde F_{nh}(t)$ for each point in the grid. If no pre-specified bandwidth value is preferred, a data-driven bandwidth vector can be obtained by the function *ComputeBW*. 
+```{r, fig.width=4,fig.height=4, fig.align='center'}
+bw<-ComputeBW(data=A, x=grid)
+plot(grid, bw, main="",ylim=c(0.5,0.7),ylab="bw",xlab="x",las=1)
+```
+
+The bandwidth vector obatined by the function  *ComputeBW* is used as input bandwidth for the function  *ComputeConfIntervals*. 
+```{r, fig.width=4,fig.height=4, fig.align='center'}
+out<-ComputeConfIntervals(data=A,x=grid,alpha=0.05, bw=bw )
+```
+The function *ComputeConfIntervals* informs about the number of times the Studentized resp. classical bootstrap confidence intervals are calculated. The default method is the Studentized bootstrap confidence interval. In this simulated data example, the variance estimate for the Studentized confidence intervals is available for each point in the grid and out$Studentized equals grid. 
+```{r}
+attributes(out)
+
+out$NonStudentized
+```
+A picture of the the SMLE together with the pointwise confidence intervals in the gridpoints and the true distribution function $F_0$ is given below:
+```{r, fig.width=4,fig.height=4, fig.align='center'}
 left<-out$CI[,1]
 right<-out$CI[,2] 
 
-plot(grid, out$SMLE,type ='l', ylim=c(0,1), main= "",ylab="",xlab="",las=1)
-lines(grid, left, col = 4)
-lines(grid, right, col = 4)
+plot(grid, out$SMLE,type='l', ylim=c(0,1), main="",ylab="",xlab="",las=1)
+lines(grid, left, col=4)
+lines(grid, right, col=4)
 segments(grid,left, grid, right)
-lines(grid, (1-exp(-grid))/(1-exp(-2.0)), col = 2)
+lines(grid, (1-exp(-grid))/(1-exp(-2.0)), col=2)
 ```
 
 
@@ -114,46 +143,106 @@ lines(grid, (1-exp(-grid))/(1-exp(-2.0)), col = 2)
 ## Data applications 
 
 ### Hepatitis A data
-@Keiding91 considered a cross-sectional study on the Hepatitis A virus from Bulgaria. In 1964 samples were collected from schoolchildren and blood donors on the presence or absence of Hepatitis A immunity. In total $n=850$ individuals ranging from 1 to 86 years old were tested for immunization. It is assumed that, once infected with Hepatitis A, lifelong immunity is achieved. To estimate the sero-prevalence for Hepatitis A in Bulgaria 95% confidence intervals around the distribution function for the time to infection are computed using the *ComputeConfIntervals* function in the package *curstatCI*. Since only 22 out of the 850 individuals were older than 75 years, who, moreover, all had antibodies for Hepatitis A, it seems sensible to restrict the range to [0,75]. The resulting confidence intervals are obtained as follows:
-```{r, results = "hide"}
+@Keiding91 considered a cross-sectional study on the Hepatitis A virus from Bulgaria. In 1964 samples were collected from schoolchildren and blood donors on the presence or absence of Hepatitis A immunity. In total $n=850$ individuals ranging from 1 to 86 years old were tested for immunization. It is assumed that, once infected with Hepatitis A, lifelong immunity is achieved. To estimate the sero-prevalence for Hepatitis A in Bulgaria 95% confidence intervals around the distribution function for the time to infection are computed using the *ComputeConfIntervals* function in the package *curstatCI*. Since only 51 out of the 850 individuals were older than 69 years, who, moreover, all had antibodies for Hepatitis A, it seems sensible to restrict the range to [0,69]. The resulting confidence intervals are obtained as follows:
+```{r}
 data(hepatitisA)
-grid <-1:75
+mingrid<-hepatitisA[min(which(hepatitisA$freq1>0)),1]
+maxgrid<-hepatitisA[max(which(hepatitisA$freq1<hepatitisA$freq2)),1]
+c(mingrid, maxgrid)
+```
+```{r, results='hide'}
+grid<-mingrid:maxgrid
 
 bw<-ComputeBW(data=hepatitisA,x=grid)
-out<-ComputeConfIntervals(data=hepatitisA,x=grid,alpha=0.05, bw = rep(40, length(grid)))
+out<-ComputeConfIntervals(data=hepatitisA,x=grid,alpha=0.05, bw=bw)
 ```
 The estimated prevalence of Hepatitis A at the age of 18 is 0.51, about half of the infections in Bulgaria happen during childhood. 
-```{r, fig.width = 4,fig.height = 4, fig.align = 'center'}
+```{r, fig.width=4,fig.height=4, fig.align='center'}
 out$SMLE[18]
 left<-out$CI[,1]
 right<-out$CI[,2]
 
-plot(grid, out$SMLE,type ='l', ylim=c(0,1), main= "",ylab="",xlab="",las=1)
-lines(grid, left, col = 4)
-lines(grid, right, col = 4)
+plot(grid, out$SMLE,type='l', ylim=c(0,1), main="",ylab="",xlab="",las=1)
+lines(grid, left, col=4)
+lines(grid, right, col=4)
 segments(grid,left, grid, right)
 ```
-
+The confidence interval around $\tilde F_{nh}(1)$ is computed using the classical confidence interval instead of the Studentized confidence interval.
+```{r}
+out$NonStudentized
+```
 
 ### Rubella
 @Keiding96 considered a current status data set on the prevalence of rubella in 230 Austrian males with ages ranging from three months up to 80 years. Rubella is a highly contagious childhood disease spread by airborne and droplet transmission. The symptoms (such as rash, sore throat, mild fever and swollen glands) are less severe in children than in adults. Since the Austrian vaccination policy against rubella only vaccinated girls, the male individuals included in the data set represent an unvaccinated population and (lifelong) immunity could only be acquired if the individual got the disease. Pointwise confidence intervals are useful to investigate the time to immunization (i.e. the time to infection) against rubella.
 
-```{r, results = "hide"}
+```{r}
 data(rubella)
-grid <-1:75
+mingrid<-rubella[min(which(rubella$freq1>0)),1]
+maxgrid<-rubella[max(which(rubella$freq1<rubella$freq2)),1]
+c(mingrid, maxgrid)
+```
+```{r, results="hide"}
+grid<-1:74
 bw<-ComputeBW(data=rubella,x=grid)
-out<-ComputeConfIntervals(data=rubella,x=grid,alpha=0.05, bw = rep(40, length(grid)))
+out<-ComputeConfIntervals(data=rubella,x=grid,alpha=0.05, bw=bw)
 ```
 The SMLE increases steeply in the ages before adulthood which is in line with the fact that rubella is considered as a childhood disease. 
-```{r, fig.width = 4,fig.height = 4, fig.align = 'center'}
+```{r, fig.width=4,fig.height=4, fig.align='center'}
 left<-out$CI[,1]
 right<-out$CI[,2]
 
-plot(grid, out$SMLE,type ='l', ylim=c(0,1), main= "",ylab="",xlab="",las=1)
-lines(grid, left, col = 4)
-lines(grid, right, col = 4)
+plot(grid, out$SMLE,type='l', ylim=c(0,1), main="",ylab="",xlab="",las=1)
+lines(grid, left, col=4)
+lines(grid, right, col=4)
 segments(grid,left, grid, right)
 ```
 
+### Exponential sample
+In this example, 1000 observations are simulated from the exponential distribution with mean 4/3. Although the theory does not support this data model, *curstatCI* can still be used to construct confidence intervals around the SMLE of the exponential distributuin function $F_0(t)=1-\exp(-0.75t)$.
+```{r, fig.width=4,fig.height=4, fig.align='center'}
+# sample size
+n<-1000
+
+# Exponential Data without ties (mean 1/lambda)
+set.seed(100)
+lambda<-0.75;
+y<-rexp(n,lambda); summary(y)
+t<-runif(n, 0,5)
+delta<-as.numeric(y<=t)
+
+## input data matrix
+A<-cbind(t[order(t)], delta[order(t)], rep(1,n))
+
+
+## x vector (recommended)
+maxgrid<-A[max(which(A[, 2]==0)),1]
+mingrid<-A[min(which(A[, 2]==1)),1]
+c(mingrid,maxgrid)
+
+## x vector 2
+grid<-seq(A[2,1] ,A[n-1,1], length=200)
+c(A[2,1] ,A[n-1,1])
+
+bw<-ComputeBW(A,grid)
+plot(grid,bw,ylim=c(1,2), main="",ylab="",xlab="",las=1)
+
+
+out=ComputeConfIntervals(A,grid,0.05, bw)
+left<-out$CI[,1]
+right<-out$CI[,2]
+```
+The confidence intervals at the points outside the recommended range do not include the true distribution function is this example. The overall performance of the confidence intervals is good despite the fact that the theory for this model is not yet proven.
+```{r, fig.width=4,fig.height=4, fig.align='center'}
+plot(grid, out$SMLE,type='l', ylim=c(0,1), main="",ylab="",xlab="",las=1)
+lines(grid, left, col=4)
+lines(grid, right, col=4)
+segments(grid,left,grid,right)
+
+## True distribution function
+lines(grid, 1-exp(-lambda*grid), col=2)
+
+## Recommended x limits
+abline(v=c(mingrid, maxgrid), col=2 )
+```
 ## References
 

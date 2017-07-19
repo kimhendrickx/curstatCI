@@ -15,8 +15,7 @@ ComputeBW(data, x)
     \item{freq2}{Frequency of observation t. The sample size equals \code{sum(freq2)}. If no tied observations are present in the data \code{length(t)} equals \code{sum(freq2)}. }
 }}
 
-\item{x}{numeric vector containing the points where the confidence intervals are computed.
-This vector needs to be contained within the observation interval: \eqn{t[1] < min(x) \le max(x) < t[n]}.}
+\item{x}{numeric vector containing the points where the confidence intervals are computed.}
 }
 \value{
 bw data-driven bandwidth vector of size \code{length(x)} for each point in x
@@ -47,12 +46,13 @@ A<-cbind(t[order(t)], delta[order(t)], rep(1,n))
 # x vector
 grid<-seq(0.01,1.99 ,by = 0.01)
 
-# Data-driven bandwidth vector
+# data-driven bandwidth vector
 bw <- ComputeBW(data =A, x = grid)
+plot(grid, bw)
 
 }
 \references{
-The nonparametric bootstrap for the current status model, Groeneboom, P. and Hendrickx, K. Electronical Journal of Statistics (2017)
+Groeneboom, P. and Hendrickx, K. (2017). The nonparametric bootstrap for the current status model. \url{https://arxiv.org/abs/1701.07359}
 }
 \seealso{
 \code{vignette("curstatCI")}

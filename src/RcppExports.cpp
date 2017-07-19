@@ -56,15 +56,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // ComputeSMLE
-NumericVector ComputeSMLE(DataFrame data, NumericVector x, double h);
-RcppExport SEXP curstatCI_ComputeSMLE(SEXP dataSEXP, SEXP xSEXP, SEXP hSEXP) {
+NumericVector ComputeSMLE(DataFrame data, NumericVector x, NumericVector bw);
+RcppExport SEXP curstatCI_ComputeSMLE(SEXP dataSEXP, SEXP xSEXP, SEXP bwSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< DataFrame >::type data(dataSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< double >::type h(hSEXP);
-    rcpp_result_gen = Rcpp::wrap(ComputeSMLE(data, x, h));
+    Rcpp::traits::input_parameter< NumericVector >::type bw(bwSEXP);
+    rcpp_result_gen = Rcpp::wrap(ComputeSMLE(data, x, bw));
     return rcpp_result_gen;
 END_RCPP
 }

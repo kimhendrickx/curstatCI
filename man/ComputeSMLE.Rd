@@ -4,7 +4,7 @@
 \alias{ComputeSMLE}
 \title{Smoothed Maximum Likelihood Estimator}
 \usage{
-ComputeSMLE(data, x, h)
+ComputeSMLE(data, x, bw)
 }
 \arguments{
 \item{data}{Dataframe with three variables:
@@ -17,7 +17,7 @@ ComputeSMLE(data, x, h)
 
 \item{x}{numeric vector}
 
-\item{h}{bandwidth}
+\item{bw}{numeric vector of size \code{length(x)}. This vector contains the pointwise bandwidth values for each point in the vector x.}
 }
 \value{
 SMLE(x)
@@ -29,8 +29,7 @@ The function ComputeSMLE computes the Smoothed Maximum Likelihood Estimator of t
 In the current status model, the variable of interest \eqn{X} with distribution function \eqn{F} is not observed directly.
 A censoring variable \eqn{T} is observed instead together with the indicator \eqn{\Delta = (X \le T)}.
 ComputeSMLE computes the SMLE of \eqn{F} based on a sample of size \code{n <- sum(data$freq2)}.
-The same bandwidth h is used for all points in the vector x.
-A selection procedure to obtain a data-driven (and possibly different) bandwidth choice for each point in the vector x is used in the function \code{\link{ComputeBW}}.
+The bandwidth parameter vector that minimizes the pointwise Mean Squared Error using the subsampling pricinciple in combination with undersmoothing is returned by the function \link{ComputeBW}.
 }
 \examples{
 library(Rcpp)
@@ -47,7 +46,9 @@ delta <- as.numeric(y <= t)
 
 A<-cbind(t[order(t)], delta[order(t)], rep(1,n))
 grid <-seq(0,2 ,by = 0.01)
-h<-2*n^-0.2
+
+# bandwidth vector
+h<-rep(2*n^-0.2,length(grid))
 
 smle <-ComputeSMLE(A,grid,h)
 plot(grid, smle,type ='l', ylim=c(0,1), main= "",ylab="",xlab="",las=1)
@@ -55,7 +56,7 @@ plot(grid, smle,type ='l', ylim=c(0,1), main= "",ylab="",xlab="",las=1)
 
 }
 \references{
-The nonparametric bootstrap for the current status model, Groeneboom, P. and Hendrickx, K. Electronical Journal of Statistics (2017)
+Groeneboom, P. and Hendrickx, K. (2017). The nonparametric bootstrap for the current status model. \url{https://arxiv.org/abs/1701.07359}
 }
 \seealso{
 \code{\link{ComputeConfIntervals}}
