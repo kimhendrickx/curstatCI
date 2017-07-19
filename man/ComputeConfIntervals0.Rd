@@ -57,7 +57,7 @@ A<-cbind(t[order(t)], delta[order(t)], rep(1,n))
 grid<-seq(0.01,1.99 ,by = 0.01)
 
 # pointwise confidence intervals at grid points:
-out<-ComputeConfIntervals(data = A,x =grid,alpha = 0.05)
+out<-ComputeConfIntervals0(data = A,x =grid,alpha = 0.05)
 
 left <- out$CI[,1]
 right <- out$CI[,2]
