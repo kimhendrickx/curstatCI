@@ -224,7 +224,7 @@ List ComputeConfIntervals0(DataFrame data, NumericVector x, double alpha)
   f3  = new double*[NumIt+1];
 
   for (iter=0;iter<NumIt+1;iter++)
-    f3[iter] = new double[npoints];
+    f3[iter] = new double[npoints+1];
 
 
   F[0]=F2[0]=0;
@@ -445,8 +445,8 @@ List ComputeConfIntervals0(DataFrame data, NumericVector x, double alpha)
 
   f4= new double[NumIt+1];
 
-  lowbound=new double[npoints];
-  upbound=new double[npoints];
+  lowbound=new double[npoints+1];
+  upbound=new double[npoints+1];
 
 
   /*
