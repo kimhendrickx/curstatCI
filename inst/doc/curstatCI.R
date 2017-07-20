@@ -40,7 +40,7 @@ grid<-seq(mingrid,maxgrid ,length=200)
 
 ## ---- fig.width=4,fig.height=4, fig.align='center'-----------------------
 bw<-ComputeBW(data=A, x=grid)
-plot(grid, bw, main="",ylim=c(0.5,0.7),ylab="bw",xlab="x",las=1)
+plot(grid, bw, main="",ylim=c(0.5,0.7),ylab="",xlab="",las=1)
 
 ## ---- fig.width=4,fig.height=4, fig.align='center'-----------------------
 out<-ComputeConfIntervals(data=A,x=grid,alpha=0.05, bw=bw )
@@ -62,6 +62,7 @@ lines(grid, (1-exp(-grid))/(1-exp(-2.0)), col=2)
 
 ## ------------------------------------------------------------------------
 data(hepatitisA)
+head(hepatitisA)
 mingrid<-hepatitisA[min(which(hepatitisA$freq1>0)),1]
 maxgrid<-hepatitisA[max(which(hepatitisA$freq1<hepatitisA$freq2)),1]
 c(mingrid, maxgrid)
@@ -87,6 +88,7 @@ out$NonStudentized
 
 ## ------------------------------------------------------------------------
 data(rubella)
+head(rubella)
 mingrid<-rubella[min(which(rubella$freq1>0)),1]
 maxgrid<-rubella[max(which(rubella$freq1<rubella$freq2)),1]
 c(mingrid, maxgrid)
@@ -116,18 +118,17 @@ y<-rexp(n,lambda); summary(y)
 t<-runif(n, 0,5)
 delta<-as.numeric(y<=t)
 
-## input data matrix
+# input data matrix
 A<-cbind(t[order(t)], delta[order(t)], rep(1,n))
 
 
-## x vector (recommended)
+# x vector (recommended)
 maxgrid<-A[max(which(A[, 2]==0)),1]
 mingrid<-A[min(which(A[, 2]==1)),1]
 c(mingrid,maxgrid)
 
-## x vector 2
-grid<-seq(A[2,1] ,A[n-1,1], length=200)
-c(A[2,1] ,A[n-1,1])
+# x vector 2
+grid <-seq(0,5, by = 0.05)
 
 bw<-ComputeBW(A,grid)
 plot(grid,bw,ylim=c(1,2), main="",ylab="",xlab="",las=1)
@@ -143,9 +144,9 @@ lines(grid, left, col=4)
 lines(grid, right, col=4)
 segments(grid,left,grid,right)
 
-## True distribution function
+# True distribution function
 lines(grid, 1-exp(-lambda*grid), col=2)
 
-## Recommended x limits
+# Recommended x limits
 abline(v=c(mingrid, maxgrid), col=2 )
 

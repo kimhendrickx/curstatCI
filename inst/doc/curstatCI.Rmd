@@ -52,7 +52,7 @@ library(curstatCI)
 mle<-ComputeMLE(data=A)
 mle
 ```
-The number of jump points in the simulated data example equals 24. The MLE is zero at all points smaller than the first jump point 0.04461921 and one at all points larger than or equal than the last jump point 1.91620524. A picture of the step function $F_n$ is given below.
+The number of jump points in the simulated data example equals 24. The MLE is zero at all points smaller than the first jump point 0.04461921 and one at all points larger than or equal to the last jump point 1.91620524. A picture of the step function $F_n$ is given below.
 
 ```{r, fig.width=4,fig.height=4, fig.align='center'}
 plot(mle$x, mle$mle,type='s', ylim=c(0,1),xlim=c(0,2), main="",ylab="",xlab="",las=1)
@@ -66,7 +66,7 @@ The SMLE is next defined by
 $$ \tilde F_{nh}(t)=\int\mathbb K\left(\frac{t-x}{h}\right)\,d F_n(x), $$
 where 
 $$\mathbb K(t)=\int_{-\infty}^t K(x)\,dx.$$
-The function *ComputeSMLE* computes the values of the SMLE in the points x based on a prespecified bandwidth choice $h$. A user-specified bandwidth vector bw of size \code{\length(x)} is used for each point in the vetor x. A data-driven bandwidth choice for each point in x is returned by the function *ComputeBW* which is described later. 
+The function *ComputeSMLE* computes the values of the SMLE in the points x based on a pre-specified bandwidth choice $h$. A user-specified bandwidth vector bw of size \code{\length(x)} is used for each point in the vetor x. A data-driven bandwidth choice for each point in x is returned by the function *ComputeBW* which is described later. 
 
 For our simulated data set, a picture of the SMLE $\tilde F_{nh}(t)$ using a bandwidth $h=2n^{-1/5}$, evaluated in the points $t=0.02,0.04,\ldots,1.98$  together with the true distribution function $F_0$ is obtained as follows:
 
@@ -112,7 +112,7 @@ grid<-seq(mingrid,maxgrid ,length=200)
 Next, select the bandwidth vector for estimating the SMLE $\tilde F_{nh}(t)$ for each point in the grid. If no pre-specified bandwidth value is preferred, a data-driven bandwidth vector can be obtained by the function *ComputeBW*. 
 ```{r, fig.width=4,fig.height=4, fig.align='center'}
 bw<-ComputeBW(data=A, x=grid)
-plot(grid, bw, main="",ylim=c(0.5,0.7),ylab="bw",xlab="x",las=1)
+plot(grid, bw, main="",ylim=c(0.5,0.7),ylab="",xlab="",las=1)
 ```
 
 The bandwidth vector obatined by the function  *ComputeBW* is used as input bandwidth for the function  *ComputeConfIntervals*. 
@@ -146,6 +146,7 @@ lines(grid, (1-exp(-grid))/(1-exp(-2.0)), col=2)
 @Keiding91 considered a cross-sectional study on the Hepatitis A virus from Bulgaria. In 1964 samples were collected from schoolchildren and blood donors on the presence or absence of Hepatitis A immunity. In total $n=850$ individuals ranging from 1 to 86 years old were tested for immunization. It is assumed that, once infected with Hepatitis A, lifelong immunity is achieved. To estimate the sero-prevalence for Hepatitis A in Bulgaria 95% confidence intervals around the distribution function for the time to infection are computed using the *ComputeConfIntervals* function in the package *curstatCI*. Since only 51 out of the 850 individuals were older than 69 years, who, moreover, all had antibodies for Hepatitis A, it seems sensible to restrict the range to [0,69]. The resulting confidence intervals are obtained as follows:
 ```{r}
 data(hepatitisA)
+head(hepatitisA)
 mingrid<-hepatitisA[min(which(hepatitisA$freq1>0)),1]
 maxgrid<-hepatitisA[max(which(hepatitisA$freq1<hepatitisA$freq2)),1]
 c(mingrid, maxgrid)
@@ -177,6 +178,7 @@ out$NonStudentized
 
 ```{r}
 data(rubella)
+head(rubella)
 mingrid<-rubella[min(which(rubella$freq1>0)),1]
 maxgrid<-rubella[max(which(rubella$freq1<rubella$freq2)),1]
 c(mingrid, maxgrid)
@@ -198,7 +200,7 @@ segments(grid,left, grid, right)
 ```
 
 ### Exponential sample
-In this example, 1000 observations are simulated from the exponential distribution with mean 4/3. Although the theory does not support this data model, *curstatCI* can still be used to construct confidence intervals around the SMLE of the exponential distributuin function $F_0(t)=1-\exp(-0.75t)$.
+In this example, 1000 observations are simulated from the exponential distribution with mean 4/3. Although the theory does not support this data model, *curstatCI* can still be used to construct confidence intervals around the SMLE of the exponential distribution function $F_0(t)=1-\exp(-0.75t)$.
 ```{r, fig.width=4,fig.height=4, fig.align='center'}
 # sample size
 n<-1000
@@ -210,18 +212,17 @@ y<-rexp(n,lambda); summary(y)
 t<-runif(n, 0,5)
 delta<-as.numeric(y<=t)
 
-## input data matrix
+# input data matrix
 A<-cbind(t[order(t)], delta[order(t)], rep(1,n))
 
 
-## x vector (recommended)
+# x vector (recommended)
 maxgrid<-A[max(which(A[, 2]==0)),1]
 mingrid<-A[min(which(A[, 2]==1)),1]
 c(mingrid,maxgrid)
 
-## x vector 2
-grid<-seq(A[2,1] ,A[n-1,1], length=200)
-c(A[2,1] ,A[n-1,1])
+# x vector 2
+grid <-seq(0,5, by = 0.05)
 
 bw<-ComputeBW(A,grid)
 plot(grid,bw,ylim=c(1,2), main="",ylab="",xlab="",las=1)
@@ -231,18 +232,20 @@ out=ComputeConfIntervals(A,grid,0.05, bw)
 left<-out$CI[,1]
 right<-out$CI[,2]
 ```
-The confidence intervals at the points outside the recommended range do not include the true distribution function is this example. The overall performance of the confidence intervals is good despite the fact that the theory for this model is not yet proven.
+The confidence intervals at the points outside the recommended range do not include the true distribution function in this example. The overall performance of the confidence intervals is good despite the fact that the theory for this model is not yet proven.
 ```{r, fig.width=4,fig.height=4, fig.align='center'}
 plot(grid, out$SMLE,type='l', ylim=c(0,1), main="",ylab="",xlab="",las=1)
 lines(grid, left, col=4)
 lines(grid, right, col=4)
 segments(grid,left,grid,right)
 
-## True distribution function
+# True distribution function
 lines(grid, 1-exp(-lambda*grid), col=2)
 
-## Recommended x limits
+# Recommended x limits
 abline(v=c(mingrid, maxgrid), col=2 )
 ```
+
+
 ## References
 

@@ -18,7 +18,7 @@ ComputeBW(data, x)
 \item{x}{numeric vector containing the points where the confidence intervals are computed.}
 }
 \value{
-bw data-driven bandwidth vector of size \code{length(x)} for each point in x
+bw data-driven bandwidth vector of size \code{length(x)} containing the bandwidth value for each point in x.
 }
 \description{
 The function ComputeBW computes the bandwidth that minimizes the pointwise Mean Squared Error using the subsampling pricinciple in combination with undersmoothing.
@@ -30,7 +30,7 @@ library(curstatCI)
 # sample size
 n <- 1000
 
-## truncated exponential distribution on (0,2)
+# truncated exponential distribution on (0,2)
 set.seed(100)
 t <- rep(NA, n)
 delta <- rep(NA, n)
