@@ -15,7 +15,7 @@ ComputeSMLE(data, x, bw)
     \item{freq2}{Frequency of observation t. The sample size equals \code{sum(freq2)}. If no tied observations are present in the data \code{length(t)} equals \code{sum(freq2)}. }
 }}
 
-\item{x}{numeric vector.}
+\item{x}{numeric vector containing the points where the confidence intervals are computed.}
 
 \item{bw}{numeric vector of size \code{length(x)}. This vector contains the pointwise bandwidth values for each point in the vector x.}
 }

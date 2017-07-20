@@ -50,7 +50,7 @@ library(Rcpp)
 library(curstatCI)
 set.seed(1)
 data(rubella)
-grid <-1:75
+grid <-1:80
 bw <-ComputeBW(data=rubella, x=grid)
 out<-ComputeConfIntervals(data=rubella,x=grid,alpha=0.05, bw = bw)
 

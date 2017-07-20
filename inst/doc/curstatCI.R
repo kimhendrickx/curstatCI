@@ -33,10 +33,9 @@ smle<-ComputeSMLE(data=A, x=grid, bw=bw)
 plot(grid, smle,type='l', ylim=c(0,1), main="",ylab="",xlab="",las=1)
 lines(grid, (1-exp(-grid))/(1-exp(-2.0)), col=2, lty=2)
 
-## ---- results="hide"-----------------------------------------------------
-mingrid<-A[min(which(A[,2]>0)),1]
-maxgrid<-A[max(which(A[,2]<A[,3])),1]
-grid<-seq(mingrid,maxgrid ,length=200)
+## ------------------------------------------------------------------------
+c(min(t),max(t))
+grid<-seq(0.01,1.99 ,by=0.01)
 
 ## ---- fig.width=4,fig.height=4, fig.align='center'-----------------------
 bw<-ComputeBW(data=A, x=grid)
@@ -63,12 +62,9 @@ lines(grid, (1-exp(-grid))/(1-exp(-2.0)), col=2)
 ## ------------------------------------------------------------------------
 data(hepatitisA)
 head(hepatitisA)
-mingrid<-hepatitisA[min(which(hepatitisA$freq1>0)),1]
-maxgrid<-hepatitisA[max(which(hepatitisA$freq1<hepatitisA$freq2)),1]
-c(mingrid, maxgrid)
 
 ## ---- results='hide'-----------------------------------------------------
-grid<-mingrid:maxgrid
+grid<-1:75
 
 bw<-ComputeBW(data=hepatitisA,x=grid)
 out<-ComputeConfIntervals(data=hepatitisA,x=grid,alpha=0.05, bw=bw)
@@ -89,12 +85,10 @@ out$NonStudentized
 ## ------------------------------------------------------------------------
 data(rubella)
 head(rubella)
-mingrid<-rubella[min(which(rubella$freq1>0)),1]
-maxgrid<-rubella[max(which(rubella$freq1<rubella$freq2)),1]
-c(mingrid, maxgrid)
+summary(rubella$t)
 
 ## ---- results="hide"-----------------------------------------------------
-grid<-1:74
+grid<-1:80
 bw<-ComputeBW(data=rubella,x=grid)
 out<-ComputeConfIntervals(data=rubella,x=grid,alpha=0.05, bw=bw)
 

@@ -162,7 +162,7 @@ DataFrame ComputeMLE(DataFrame data)
 //'
 //'@param bw numeric vector of size \code{length(x)}. This vector contains the pointwise bandwidth values for each point in the vector x.
 //'
-//'@param x numeric vector.
+//'@param x numeric vector containing the points where the confidence intervals are computed.
 //'
 //'@details In the current status model, the variable of interest \eqn{X} with distribution function \eqn{F} is not observed directly.
 //'A censoring variable \eqn{T} is observed instead together with the indicator \eqn{\Delta = (X \le T)}.

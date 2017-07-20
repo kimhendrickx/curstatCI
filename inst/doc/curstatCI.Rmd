@@ -99,15 +99,14 @@ where $Z_{\alpha}^*(t)$ is the $\alpha$th quantile of $B$ values of $V_{nh}^*(t)
 $$V_{nh}^*(t)=\tilde F_{nh}^*(t)-\tilde F_{nh}(t),$$
 
 
-Besides the upper and lower bounds of the   $1-\alpha$ bootstrap confidence intervals, the function *ComputeConfIntervals* also returns the output of the functions *ComputeMLE* and *ComputeSMLE*. Since the limiting behavior for the MLE in @GrWe92 is derived for each point within the interval starting from the smallest observation $T_i$ such that $\Delta_i=1$ until the largest obsrvation $T_j$ such that $\Delta_j=0$, it is recommend to limit the construction of pointwise confidence intervals to points within this interval. 
+Besides the upper and lower bounds of the   $1-\alpha$ bootstrap confidence intervals, the function *ComputeConfIntervals* also returns the output of the functions *ComputeMLE* and *ComputeSMLE*. The theory for the construction of pointwise confidence intervals is limited to  points within the observation interval. It is not recomended to construct intervals in points smaller resp. larger than the smallst resp. largest observed time point. 
 
 The general approach for constructing the confidence intervals is the following: 
 First decide upon the points where the confidence intervals need to be computed.
-If no particular interest in certain points is requested, it is recommended to consider a grid of points within the interval starting from the smallest observed time point $t_i$ for which $\delta_i=1$ until the largest observed time point $t_j$ for which $\delta_j=0$. The function *ComputeConfIntervals* can also deal with positive values outside this interval but some numerical instability is to be expected.
-```{r, results="hide"}
-mingrid<-A[min(which(A[,2]>0)),1]
-maxgrid<-A[max(which(A[,2]<A[,3])),1]
-grid<-seq(mingrid,maxgrid ,length=200)
+If no particular interest in certain points is requested, it is useful to consider a grid of points within the interval starting from the smallest observed time point $t_i$ until the largest observed time point $t_j$. The function *ComputeConfIntervals* can also deal with positive values outside this interval but some numerical instability is to be expected and the results are no longer trustworthy.
+```{r}
+c(min(t),max(t))
+grid<-seq(0.01,1.99 ,by=0.01)
 ```
 Next, select the bandwidth vector for estimating the SMLE $\tilde F_{nh}(t)$ for each point in the grid. If no pre-specified bandwidth value is preferred, a data-driven bandwidth vector can be obtained by the function *ComputeBW*. 
 ```{r, fig.width=4,fig.height=4, fig.align='center'}
@@ -143,16 +142,13 @@ lines(grid, (1-exp(-grid))/(1-exp(-2.0)), col=2)
 ## Data applications 
 
 ### Hepatitis A data
-@Keiding91 considered a cross-sectional study on the Hepatitis A virus from Bulgaria. In 1964 samples were collected from schoolchildren and blood donors on the presence or absence of Hepatitis A immunity. In total $n=850$ individuals ranging from 1 to 86 years old were tested for immunization. It is assumed that, once infected with Hepatitis A, lifelong immunity is achieved. To estimate the sero-prevalence for Hepatitis A in Bulgaria 95% confidence intervals around the distribution function for the time to infection are computed using the *ComputeConfIntervals* function in the package *curstatCI*. Since only 51 out of the 850 individuals were older than 69 years, who, moreover, all had antibodies for Hepatitis A, it seems sensible to restrict the range to [0,69]. The resulting confidence intervals are obtained as follows:
+@Keiding91 considered a cross-sectional study on the Hepatitis A virus from Bulgaria. In 1964 samples were collected from schoolchildren and blood donors on the presence or absence of Hepatitis A immunity. In total $n=850$ individuals ranging from 1 to 86 years old were tested for immunization. It is assumed that, once infected with Hepatitis A, lifelong immunity is achieved. To estimate the sero-prevalence for Hepatitis A in Bulgaria 95% confidence intervals around the distribution function for the time to infection are computed using the *ComputeConfIntervals* function in the package *curstatCI*. Since only 22 out of the 850 individuals were older than 75 years, who, moreover, all had antibodies for Hepatitis A, it seems sensible to restrict the range to [1,75]. The resulting confidence intervals are obtained as follows:
 ```{r}
 data(hepatitisA)
 head(hepatitisA)
-mingrid<-hepatitisA[min(which(hepatitisA$freq1>0)),1]
-maxgrid<-hepatitisA[max(which(hepatitisA$freq1<hepatitisA$freq2)),1]
-c(mingrid, maxgrid)
 ```
 ```{r, results='hide'}
-grid<-mingrid:maxgrid
+grid<-1:75
 
 bw<-ComputeBW(data=hepatitisA,x=grid)
 out<-ComputeConfIntervals(data=hepatitisA,x=grid,alpha=0.05, bw=bw)
@@ -179,12 +175,10 @@ out$NonStudentized
 ```{r}
 data(rubella)
 head(rubella)
-mingrid<-rubella[min(which(rubella$freq1>0)),1]
-maxgrid<-rubella[max(which(rubella$freq1<rubella$freq2)),1]
-c(mingrid, maxgrid)
+summary(rubella$t)
 ```
 ```{r, results="hide"}
-grid<-1:74
+grid<-1:80
 bw<-ComputeBW(data=rubella,x=grid)
 out<-ComputeConfIntervals(data=rubella,x=grid,alpha=0.05, bw=bw)
 ```

@@ -96,7 +96,7 @@ segments(grid,left,grid,right)
 
 #hepatitisA
 data(hepatitisA)
-grid <- 1:69
+grid <- 1:85
 
 h=ComputeBW(hepatitisA,grid)
 plot(grid,h)

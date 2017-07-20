@@ -16,8 +16,7 @@ ComputeConfIntervals(data, x, alpha, bw)
 }}
 
 \item{x}{numeric vector containing the points where the confidence intervals are computed.
-It is recommended that this vector is contained within the observation interval starting from
-the smallest observation t such that \code{freq1>0} until the largest observation t such that \code{freq1<freq2}.}
+This vector needs to be contained within the observation interval: \eqn{t[1] < min(x) \le max(x) < t[n]}.}
 
 \item{alpha}{confidence level of pointwise confidence intervals.}
 
@@ -46,10 +45,6 @@ In the current status model, the variable of interest \eqn{X} with distribution 
 A censoring variable \eqn{T} is observed instead together with the indicator \eqn{\Delta = (X \le T)}.
 ComputeConfIntervals computes the pointwise \code{1-alpha} bootstrap confidence intervals around the SMLE of \eqn{F} based on a sample of size \code{n <- sum(data$freq2)}.
 
-Since the limiting behavior for the MLE in [Groeneboom & Wellner (1992)] is derived for each point within the interval
-starting from the smallest observation such that \eqn{\Delta =1} until the largest obsrvation such that \eqn{\Delta =0},
-it is recommend to limit the construction of pointwise confidence intervals to points within this interval.
-
 The bandwidth parameter vector that minimizes the pointwise Mean Squared Error using the subsampling pricinciple in combination with undersmoothing is returned by the function \code{\link{ComputeBW}}.
 
 The default method for constructing the confidence intervals in [Groeneboom & Hendrickx (2017)] is based on estimating the asymptotic variance of the SMLE.
@@ -72,10 +67,7 @@ delta <- as.numeric(y <= t)
 A<-cbind(t[order(t)], delta[order(t)], rep(1,n))
 
 # x vector
-mingrid<-A[min(which(A[,2]>0)),1]
-maxgrid<- A[max(which(A[,2] <A[,3])),1]
-
-grid<-seq(mingrid, maxgrid, length =100)
+grid<-seq(0.01,1.99 ,by = 0.01)
 
 # data-driven bandwidth vector
 bw <- ComputeBW(data =A, x = grid)
@@ -94,8 +86,6 @@ segments(grid,left, grid, right)
 }
 \references{
 Groeneboom, P. and Hendrickx, K. (2017). The nonparametric bootstrap for the current status model. \url{https://arxiv.org/abs/1701.07359}
-
-Groeneboom, P. & Wellner, J. (1992). Information bounds and nonparametric maximum likelihood estimation, volume 19 of DMV Seminar. Birkhauser Verlag, Base
 }
 \seealso{
 \code{vignette("curstatCI")}

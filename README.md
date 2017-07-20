@@ -38,9 +38,9 @@ library(Rcpp)
 library(curstatCI)
 set.seed(1)
 data(rubella)
-grid <-1:75
+grid <-1:80
 bw <-ComputeBW(data=rubella, x=grid)
-#> The computations took    1.561   seconds
+#> The computations took    1.276   seconds
 out<-ComputeConfIntervals(data=rubella,x=grid,alpha=0.05, bw = bw)
 #> The program produces the Studentized nonparametric bootstrap confidence intervals for the cdf, using the SMLE
 #> 
@@ -50,9 +50,9 @@ out<-ComputeConfIntervals(data=rubella,x=grid,alpha=0.05, bw = bw)
 #> 
 #> Number of unique observations:    225
 #> Sample size n =  230
-#> Number of Studentized Intervals = 75
+#> Number of Studentized Intervals = 80
 #> Number of Non-Studentized Intervals = 0
-#> The computations took    0.566   seconds
+#> The computations took    0.423   seconds
 
 out$MLE
 #>          [,1]      [,2]
