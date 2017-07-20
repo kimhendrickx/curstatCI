@@ -15,12 +15,12 @@ ComputeSMLE(data, x, bw)
     \item{freq2}{Frequency of observation t. The sample size equals \code{sum(freq2)}. If no tied observations are present in the data \code{length(t)} equals \code{sum(freq2)}. }
 }}
 
-\item{x}{numeric vector}
+\item{x}{numeric vector.}
 
 \item{bw}{numeric vector of size \code{length(x)}. This vector contains the pointwise bandwidth values for each point in the vector x.}
 }
 \value{
-SMLE(x)
+SMLE(x) Smoothed Maximum Likelihood Estimator. This is a vector of size \code{length(x)} containing the values of the SMLE for each point in the vector x.
 }
 \description{
 The function ComputeSMLE computes the Smoothed Maximum Likelihood Estimator of the distribution function under current status data.

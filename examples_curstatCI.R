@@ -34,7 +34,7 @@ maxt;mingrid;maxgrid;
 
 grid <-seq(mingrid,maxgrid ,length =200)
 grid <-seq(A[2,1] ,A[n-1,1], length = 200)
-
+grid <-seq(0,5, by = 0.05)
 
 h =ComputeBW(A,grid)
 plot(grid,h)
@@ -96,7 +96,7 @@ segments(grid,left,grid,right)
 
 #hepatitisA
 data(hepatitisA)
-
+grid <- 1:69
 
 h=ComputeBW(hepatitisA,grid)
 plot(grid,h)
@@ -137,7 +137,7 @@ A=cbind(t[order(t)], delta[order(t)], rep(1,n))
 delta <- as.numeric(y<=t)
 
 mingrid<-A[min(which(A[,2]>0)),1]
-maxgrid<- A[max(which(A[,2] <A[,3])),1]
+maxgrid<- A[max(which(A[,2]<A[,3])),1]
 mingrid;maxgrid;
 
 grid <-seq(0.02,1.98 ,by = 0.02)

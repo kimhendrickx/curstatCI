@@ -18,8 +18,8 @@ ComputeMLE(data)
 \value{
 Dataframe with two variables :
 \describe{
-    \item{x}{jumplocations of the MLE}
-    \item{mle}{MLE evaluated at the jumplocations}
+    \item{x}{jump locations of the MLE}
+    \item{mle}{MLE evaluated at the jump locations}
 }
 }
 \description{

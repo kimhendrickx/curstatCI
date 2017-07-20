@@ -19,7 +19,7 @@ ComputeConfIntervals(data, x, alpha, bw)
 It is recommended that this vector is contained within the observation interval starting from
 the smallest observation t such that \code{freq1>0} until the largest observation t such that \code{freq1<freq2}.}
 
-\item{alpha}{confidence level of pointwise confidence intervals}
+\item{alpha}{confidence level of pointwise confidence intervals.}
 
 \item{bw}{numeric vector of size \code{length(x)}.
 This vector contains the pointwise bandwidth values for each point in the vector x.}
@@ -30,7 +30,7 @@ List with 5 variables:
 \describe{
     \item{MLE }{Maximum Likelihood Estimator. This is a matrix of dimension (m+1)x2 where m is the number of jump points of the MLE.
                  The first column consists of the point zero and the jump locations of the MLE. The second column contains the value zero and the values of the MLE at the jump points. }
-    \item{SMLE }{Smoothed Maximum Likelihood Estimator in x }
+    \item{SMLE }{Smoothed Maximum Likelihood Estimator. This is a vector of size \code{length(x)} containing the values of the SMLE for each point in the vector x. }
     \item{CI }{pointwise confidence interval. This is a martix of dimension \code{length(x)}x2.
                The first resp. second column contains the lower resp. upper values of the confidence intervals for each point in x.}
     \item{Studentized}{points in x for which Studentized nonparametric bootstrap confidence intervals are computed. }
