@@ -229,7 +229,7 @@ List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha, Numeric
   f3  = new double*[NumIt+1];
 
   for (iter=0;iter<NumIt+1;iter++)
-    f3[iter] = new double[npoints];
+    f3[iter] = new double[npoints+1];
 
   F[0]=F2[0]=0;
   cumw[0]=cs[0]=0;
@@ -349,12 +349,11 @@ List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha, Numeric
 
   }
 
-
   f4= new double[NumIt+1];
 
 
-  lowbound=new double[npoints];
-  upbound=new double[npoints];
+  lowbound=new double[npoints+1];
+  upbound=new double[npoints+1];
 
   j = 0;
   k= 0;
@@ -427,16 +426,24 @@ List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha, Numeric
 
   // free memory
 
-  delete[] Data, delete[] delta, delete[] tt, delete[] delta2, delete[] SMLE, delete[] SMLE2,
-  delete[] F, delete[] F2, delete[] cumw, delete[] cs, delete[] y, delete[] y2,
-  delete[] jumploc,  delete[] data0, delete[] data1, delete[] data2, delete[] p, delete[] p2,
+  delete[] Data, delete[] delta, delete[] tt, delete[] delta2, delete[] SMLE, delete[] SMLE2;
+  delete[] F, delete[] F2, delete[] cumw, delete[] cs, delete[] y, delete[] y2;
+  delete[] jumploc,  delete[] data0, delete[] data1, delete[] data2, delete[] p, delete[] p2;
+  delete[] freq1, delete[] freq2, delete[] grid;
+
   delete[] lowbound, delete[] upbound;
+
+  delete[] studentized, delete[] nonstudentized;
 
   for (i = 0;i<2;i++)
     delete[] freq[i];
   delete[] freq;
 
-  for (iter = 0;iter < NumIt;iter++)
+  for (i = 0;i<2;i++)
+    delete[] frequence1[i];
+  delete[] frequence1;
+
+  for (iter=0;iter<NumIt+1;iter++)
     delete[] f3[iter];
   delete[] f3;
 

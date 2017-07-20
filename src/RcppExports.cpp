@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // ComputeConfIntervals
 List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha, NumericVector bw);
-RcppExport SEXP curstatCI_ComputeConfIntervals(SEXP dataSEXP, SEXP xSEXP, SEXP alphaSEXP, SEXP bwSEXP) {
+RcppExport SEXP _curstatCI_ComputeConfIntervals(SEXP dataSEXP, SEXP xSEXP, SEXP alphaSEXP, SEXP bwSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -21,7 +21,7 @@ END_RCPP
 }
 // ComputeBW
 NumericVector ComputeBW(DataFrame data, NumericVector x);
-RcppExport SEXP curstatCI_ComputeBW(SEXP dataSEXP, SEXP xSEXP) {
+RcppExport SEXP _curstatCI_ComputeBW(SEXP dataSEXP, SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -33,7 +33,7 @@ END_RCPP
 }
 // ComputeConfIntervals0
 List ComputeConfIntervals0(DataFrame data, NumericVector x, double alpha);
-RcppExport SEXP curstatCI_ComputeConfIntervals0(SEXP dataSEXP, SEXP xSEXP, SEXP alphaSEXP) {
+RcppExport SEXP _curstatCI_ComputeConfIntervals0(SEXP dataSEXP, SEXP xSEXP, SEXP alphaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -46,7 +46,7 @@ END_RCPP
 }
 // ComputeMLE
 DataFrame ComputeMLE(DataFrame data);
-RcppExport SEXP curstatCI_ComputeMLE(SEXP dataSEXP) {
+RcppExport SEXP _curstatCI_ComputeMLE(SEXP dataSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -57,7 +57,7 @@ END_RCPP
 }
 // ComputeSMLE
 NumericVector ComputeSMLE(DataFrame data, NumericVector x, NumericVector bw);
-RcppExport SEXP curstatCI_ComputeSMLE(SEXP dataSEXP, SEXP xSEXP, SEXP bwSEXP) {
+RcppExport SEXP _curstatCI_ComputeSMLE(SEXP dataSEXP, SEXP xSEXP, SEXP bwSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -70,11 +70,11 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"curstatCI_ComputeConfIntervals", (DL_FUNC) &curstatCI_ComputeConfIntervals, 4},
-    {"curstatCI_ComputeBW", (DL_FUNC) &curstatCI_ComputeBW, 2},
-    {"curstatCI_ComputeConfIntervals0", (DL_FUNC) &curstatCI_ComputeConfIntervals0, 3},
-    {"curstatCI_ComputeMLE", (DL_FUNC) &curstatCI_ComputeMLE, 1},
-    {"curstatCI_ComputeSMLE", (DL_FUNC) &curstatCI_ComputeSMLE, 3},
+    {"_curstatCI_ComputeConfIntervals", (DL_FUNC) &_curstatCI_ComputeConfIntervals, 4},
+    {"_curstatCI_ComputeBW", (DL_FUNC) &_curstatCI_ComputeBW, 2},
+    {"_curstatCI_ComputeConfIntervals0", (DL_FUNC) &_curstatCI_ComputeConfIntervals0, 3},
+    {"_curstatCI_ComputeMLE", (DL_FUNC) &_curstatCI_ComputeMLE, 1},
+    {"_curstatCI_ComputeSMLE", (DL_FUNC) &_curstatCI_ComputeSMLE, 3},
     {NULL, NULL, 0}
 };
 

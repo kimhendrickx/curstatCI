@@ -91,7 +91,7 @@
 #'
 #'@export
 ComputeConfIntervals <- function(data, x, alpha, bw) {
-    .Call('curstatCI_ComputeConfIntervals', PACKAGE = 'curstatCI', data, x, alpha, bw)
+    .Call('_curstatCI_ComputeConfIntervals', PACKAGE = 'curstatCI', data, x, alpha, bw)
 }
 
 #'@title Data-driven bandwidth vector
@@ -144,7 +144,7 @@ ComputeConfIntervals <- function(data, x, alpha, bw) {
 #'@references Groeneboom, P. and Hendrickx, K. (2017). The nonparametric bootstrap for the current status model. \url{https://arxiv.org/abs/1701.07359}
 #'@export
 ComputeBW <- function(data, x) {
-    .Call('curstatCI_ComputeBW', PACKAGE = 'curstatCI', data, x)
+    .Call('_curstatCI_ComputeBW', PACKAGE = 'curstatCI', data, x)
 }
 
 #'@title Pointwise Confidence Intervals under Current Status data
@@ -211,7 +211,7 @@ ComputeBW <- function(data, x) {
 #'@references The nonparametric bootstrap for the current status model, Groeneboom, P. and Hendrickx, K. Electronical Journal of Statistics (2017)
 #'@export
 ComputeConfIntervals0 <- function(data, x, alpha) {
-    .Call('curstatCI_ComputeConfIntervals0', PACKAGE = 'curstatCI', data, x, alpha)
+    .Call('_curstatCI_ComputeConfIntervals0', PACKAGE = 'curstatCI', data, x, alpha)
 }
 
 #'@title Maximum Likelihood Estimator
@@ -262,7 +262,7 @@ ComputeConfIntervals0 <- function(data, x, alpha) {
 #'
 #'@export
 ComputeMLE <- function(data) {
-    .Call('curstatCI_ComputeMLE', PACKAGE = 'curstatCI', data)
+    .Call('_curstatCI_ComputeMLE', PACKAGE = 'curstatCI', data)
 }
 
 #'@title Smoothed Maximum Likelihood Estimator
@@ -317,6 +317,6 @@ ComputeMLE <- function(data) {
 #'
 #'@export
 ComputeSMLE <- function(data, x, bw) {
-    .Call('curstatCI_ComputeSMLE', PACKAGE = 'curstatCI', data, x, bw)
+    .Call('_curstatCI_ComputeSMLE', PACKAGE = 'curstatCI', data, x, bw)
 }
 
