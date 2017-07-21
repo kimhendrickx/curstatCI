@@ -2,7 +2,6 @@
 
 export(ComputeBW)
 export(ComputeConfIntervals)
-export(ComputeConfIntervals0)
 export(ComputeMLE)
 export(ComputeSMLE)
 importFrom(Rcpp,sourceCpp)

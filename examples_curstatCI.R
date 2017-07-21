@@ -72,6 +72,7 @@ data(rubella)
 
 grid <-seq(0.5, 79.5, by = 0.5)
 #grid <- rubella$t
+grid <- 1:85
 
 set.seed(100)
 

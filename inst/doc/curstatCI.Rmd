@@ -10,7 +10,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-In the current status model, a positive variable of interest $X$ with distribution function $F_0$ is not observed directly. A censoring variable $T \sim G$ is observed instead together with the indicator $\Delta=(X \le T)$. *curstatCI* provides functions to estimate the distribution function $F_0$ and to construct pointswise confidence intervals around $F_0(t)$ based on an observed sample $(T_1, \Delta_1),\ldots, (T_n, \Delta_n)$ of size $n$ from the observable random  vector $(T, \Delta)$.
+In the current status model, a positive variable of interest $X$ with distribution function $F_0$ is not observed directly. A censoring variable $T \sim G$ is observed instead together with the indicator $\Delta=(X \le T)$. *curstatCI* provides functions to estimate the distribution function $F_0$ and to construct pointswise confidence intervals around $F_0(t)$ based on an observed sample $(T_1, \Delta_1),\ldots, (T_n, \Delta_n)$ of size $n$ from the observable random  vector $(T, \Delta)$. The methods used in this package are described in @GroeneboomHendrickx2017. More details on the current status model can be found in @piet_geurt14.
 
 To illustrate the usage of the functions provided in the *curstatCI* package we consider a sample $(X_1,\ldots,X_n)$ of size $n=1000$ from the truncated exponential distribution on $[0,2]$ with distribution function $F_0(t)=(1-\exp(-t))/(1-\exp(-2)$ if $t \in [0,2]$. The observation points $(T_1,\ldots,T_n)$ are sampled from a uniform distribution on $[0,2]$. This data setting is also considered in the simulation section of @GroeneboomHendrickx2017. The R-code to generate the observable random vector $(t_1,\delta_1), \ldots, (t_n, \delta_n)$ is given below.
 ```{r}
@@ -86,7 +86,7 @@ $$ \left[\tilde F_{nh}(t)-Q_{1-\alpha/2}^*(t)\sqrt{S_{nh}(t)}, \tilde F_{nh}(t)-
 where $Q_{\alpha}^*(t)$ is the $\alpha$th quantile of $B$ values of $W_{nh}^*(t)$ defined by,
 $$W_{nh}^*(t)=\left\{\tilde F_{nh}^*(t)-\tilde F_{nh}(t)\right\}/\sqrt{S_{nh}^*(t)},$$
 where $\tilde F_{nh}^*(t)$ is the SMLE in the bootstrap sample and  $S_{nh}(t)$ is given by:
-$$S_{nh}(t)=\frac1{hn^{2}}\sum_{i=1}^n K\left(\frac{t-T_i}h\right)^2\left(\Delta_i-F_n(T_i)\right)^2.$$
+$$S_{nh}(t)=\frac1{(nh)^{2}}\sum_{i=1}^n K\left(\frac{t-T_i}h\right)^2\left(\Delta_i-F_n(T_i)\right)^2.$$
 $S_{nh}^*(t)$ is the bootstrap analogue of $S_{nh}(t)$ obtained by replacing $(T_i,\Delta_i)$ in the expression above by $(T_i^*,\Delta_i^*)$. The number of bootstrap samples $B$ used by the function *ComputeSMLE* equals $B=1000$. 
 
 The bandwidth for estimating the SMLE $\tilde F_{nh}$ at point $t$, obtained by minimizing the pointwise Mean Squared Error using the subsampling pricinciple in combination with undersmoothing is given by the function *ComputeBW*. To obtain an approximation to the optimal bandwidth minimizing the pointwise MSE, $1000$ bootstrap subsamples of size  $m=o(n)$ are generated from the original sample using the subsampling principle and $c_{t, opt}$ is selected as the minimizer of
@@ -193,52 +193,6 @@ lines(grid, right, col=4)
 segments(grid,left, grid, right)
 ```
 
-### Exponential sample
-In this example, 1000 observations are simulated from the exponential distribution with mean 4/3. Although the theory does not support this data model, *curstatCI* can still be used to construct confidence intervals around the SMLE of the exponential distribution function $F_0(t)=1-\exp(-0.75t)$.
-```{r, fig.width=4,fig.height=4, fig.align='center'}
-# sample size
-n<-1000
-
-# Exponential Data without ties (mean 1/lambda)
-set.seed(100)
-lambda<-0.75;
-y<-rexp(n,lambda); summary(y)
-t<-runif(n, 0,5)
-delta<-as.numeric(y<=t)
-
-# input data matrix
-A<-cbind(t[order(t)], delta[order(t)], rep(1,n))
-
-
-# x vector (recommended)
-maxgrid<-A[max(which(A[, 2]==0)),1]
-mingrid<-A[min(which(A[, 2]==1)),1]
-c(mingrid,maxgrid)
-
-# x vector 2
-grid <-seq(0,5, by = 0.05)
-
-bw<-ComputeBW(A,grid)
-plot(grid,bw,ylim=c(1,2), main="",ylab="",xlab="",las=1)
-
-
-out=ComputeConfIntervals(A,grid,0.05, bw)
-left<-out$CI[,1]
-right<-out$CI[,2]
-```
-The confidence intervals at the points outside the recommended range do not include the true distribution function in this example. The overall performance of the confidence intervals is good despite the fact that the theory for this model is not yet proven.
-```{r, fig.width=4,fig.height=4, fig.align='center'}
-plot(grid, out$SMLE,type='l', ylim=c(0,1), main="",ylab="",xlab="",las=1)
-lines(grid, left, col=4)
-lines(grid, right, col=4)
-segments(grid,left,grid,right)
-
-# True distribution function
-lines(grid, 1-exp(-lambda*grid), col=2)
-
-# Recommended x limits
-abline(v=c(mingrid, maxgrid), col=2 )
-```
 
 
 ## References

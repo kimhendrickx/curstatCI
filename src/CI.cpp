@@ -105,11 +105,7 @@ List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha, Numeric
   IntegerVector freq01 = DF[1];
   IntegerVector freq02 = DF[2];
 
-  Rcout << "The program produces the Studentized nonparametric bootstrap confidence intervals for the cdf, using the SMLE" << std::endl<< std::endl;
-  Rcout << "For further information see:" << std::endl;
-  Rcout << "The nonparametric bootstrap for the current status model," << std::endl;
-  Rcout << "Piet Groeneboom & Kim Hendrickx, Electronical Journal of Statistics (2017)." << std::endl << std::endl;
-
+  Rcout << "The program produces the Studentized nonparametric bootstrap confidence intervals for the cdf, using the SMLE." << std::endl<< std::endl;
 
   // determine the number of rows of the data frame
 

@@ -3,3 +3,4 @@
 ^README\.Rmd$
 ^README-.*\.png$
 examples_curstatCI.R
+src\CI0.cpp

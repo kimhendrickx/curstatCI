@@ -31,19 +31,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// ComputeConfIntervals0
-List ComputeConfIntervals0(DataFrame data, NumericVector x, double alpha);
-RcppExport SEXP _curstatCI_ComputeConfIntervals0(SEXP dataSEXP, SEXP xSEXP, SEXP alphaSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< DataFrame >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
-    rcpp_result_gen = Rcpp::wrap(ComputeConfIntervals0(data, x, alpha));
-    return rcpp_result_gen;
-END_RCPP
-}
 // ComputeMLE
 DataFrame ComputeMLE(DataFrame data);
 RcppExport SEXP _curstatCI_ComputeMLE(SEXP dataSEXP) {
@@ -72,7 +59,6 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_curstatCI_ComputeConfIntervals", (DL_FUNC) &_curstatCI_ComputeConfIntervals, 4},
     {"_curstatCI_ComputeBW", (DL_FUNC) &_curstatCI_ComputeBW, 2},
-    {"_curstatCI_ComputeConfIntervals0", (DL_FUNC) &_curstatCI_ComputeConfIntervals0, 3},
     {"_curstatCI_ComputeMLE", (DL_FUNC) &_curstatCI_ComputeMLE, 1},
     {"_curstatCI_ComputeSMLE", (DL_FUNC) &_curstatCI_ComputeSMLE, 3},
     {NULL, NULL, 0}
