@@ -13,8 +13,8 @@ LinkingTo: Rcpp
 Imports: Rcpp
 Depends: R (>= 2.10)
 RoxygenNote: 6.0.1
-URL: https://github.com/pietg/curstatCI
-BugReports: https://github.com/pietg/curstatCI/issues
+URL: https://github.com/kimhendrickx/curstatCI
+BugReports: https://github.com/kimhendrickx/curstatCI/issues
 Suggests: knitr,
     rmarkdown
 VignetteBuilder: knitr
