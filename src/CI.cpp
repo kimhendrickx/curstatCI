@@ -444,7 +444,7 @@ List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha, Numeric
 //////////////////////////////////////////////////////////////////////////////////
 //'@title Data-driven bandwidth vector
 //'
-//'@description The function ComputeBW computes the bandwidth that minimizes the pointwise Mean Squared Error using the subsampling pricinciple in combination with undersmoothing.
+//'@description The function ComputeBW computes the bandwidth that minimizes the pointwise Mean Squared Error using the subsampling principle in combination with undersmoothing.
 //'
 //'@param data Dataframe with three variables:
 //'\describe{
