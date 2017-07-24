@@ -11,13 +11,25 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Test environments 
 
+###Check Mac environment  (macOS Sierra version 10.12.5)
+
+* platform: x86_64-apple-darwin15.6.0 (64-bit)
+ 
+* R version 3.4.1  (2017-06-30) 
+
+* Status: OK  R CMD check results 
+    * 0 errors | 0 warnings | 0 notes 
+
 ###Check Windows environment  (Microsoft Windows 10 Enterprise)
 
 * platform: x86_64-w64-mingw32/x64 (64-bit) 
 
 * R version 3.4.1 Patched (2017-07-01 r72876)
 
-* R CMD check results
+
+* Status: 1 WARNING, 1 NOTE  
+
+  R CMD check results
     * 0 errors | 0 warnings | 1 note 
     
     ```{r}
@@ -43,14 +55,12 @@ The URL  "https://arxiv.org/abs/1701.07359 " is a valid URL.
 #File 'curstatCI/libs/x64/curstatCI.dll':
 #  Found no calls to: 'R_registerRoutines', 'R_useDynamicSymbols'
 ```
-I was unable to locate read_symbols_from_dll(so, rach) and could not add objdump.exe to the PATH.
+objdump.exe was not part of the PATH in the Windows environment.
 ```{r}
-#* checking examples ... NOTE
-#Examples with CPU or elapsed time > 5s
-#                     user system elapsed
-#ComputeConfIntervals 8.44      0    8.46
+# WARNING
+# 'qpdf' is needed for checks on size reduction of PDFs
 ```
-
+qpdf was not installed on the Windows platform
  
 ###Check Linux environment (Ubuntu 16.04 LTS)
 
@@ -58,17 +68,10 @@ I was unable to locate read_symbols_from_dll(so, rach) and could not add objdump
 
 * R version 3.4.1 (2017-06-30)
 
-* R CMD check results
+* Status: OK  R CMD check results
     * 0 errors | 0 warnings | 0 notes 
 
-###Check Mac environment  (macOS Sierra version 10.12.5)
 
-* platform: x86_64-apple-darwin15.6.0 (64-bit)
- 
-* R version 3.4.1  (2017-06-30) 
-
-* R CMD check results 
-    * 0 errors | 0 warnings | 0 notes 
 
 
 ## Downstream Dependencies

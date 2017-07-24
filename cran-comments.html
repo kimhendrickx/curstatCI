@@ -125,16 +125,27 @@ $(document).ready(function () {
 
 <div id="test-environments" class="section level2">
 <h2>Test environments</h2>
+<div id="check-mac-environment-macos-sierra-version-10.12.5" class="section level3">
+<h3>Check Mac environment (macOS Sierra version 10.12.5)</h3>
+<ul>
+<li><p>platform: x86_64-apple-darwin15.6.0 (64-bit)</p></li>
+<li><p>R version 3.4.1 (2017-06-30)</p></li>
+<li>Status: OK R CMD check results
+<ul>
+<li>0 errors | 0 warnings | 0 notes</li>
+</ul></li>
+</ul>
+</div>
 <div id="check-windows-environment-microsoft-windows-10-enterprise" class="section level3">
 <h3>Check Windows environment (Microsoft Windows 10 Enterprise)</h3>
 <ul>
 <li><p>platform: x86_64-w64-mingw32/x64 (64-bit)</p></li>
 <li><p>R version 3.4.1 Patched (2017-07-01 r72876)</p></li>
-<li>R CMD check results
-<ul>
-<li>0 errors | 0 warnings | 1 note</li>
+<li><p>Status: 1 WARNING, 1 NOTE</p></li>
 </ul>
-<pre class="r"><code># * checking CRAN incoming feasibility ... NOTE
+<p>R CMD check results * 0 errors | 0 warnings | 1 note</p>
+<pre><code>```r
+# * checking CRAN incoming feasibility ... NOTE
 # Maintainer: 'Kim Hendrickx &lt;kim.hendrickx@uhasselt.be&gt;'
 
 #New submission
@@ -142,9 +153,9 @@ $(document).ready(function () {
 #Found the following (possibly) invalid URLs:
 #  URL: \url{https://arxiv.org/abs/1701.07359}
 #    From: inst/doc/curstatCI.html
-#    Message: Invalid URI scheme</code></pre>
-<p>The URL “<a href="https://arxiv.org/abs/1701.07359" class="uri">https://arxiv.org/abs/1701.07359</a>” is a valid URL.</p></li>
-</ul>
+#    Message: Invalid URI scheme
+```</code></pre>
+<p>The URL “<a href="https://arxiv.org/abs/1701.07359" class="uri">https://arxiv.org/abs/1701.07359</a>” is a valid URL.</p>
 <pre class="r"><code>#checking compiled code ... NOTE
 #Warning in read_symbols_from_dll(so, rarch) :
 #  this requires 'objdump.exe' to be on the PATH
@@ -154,29 +165,17 @@ $(document).ready(function () {
 #  this requires 'objdump.exe' to be on the PATH
 #File 'curstatCI/libs/x64/curstatCI.dll':
 #  Found no calls to: 'R_registerRoutines', 'R_useDynamicSymbols'</code></pre>
-<p>I was unable to locate read_symbols_from_dll(so, rach) and could not add objdump.exe to the PATH.</p>
-<pre class="r"><code>#* checking examples ... NOTE
-#Examples with CPU or elapsed time &gt; 5s
-#                     user system elapsed
-#ComputeConfIntervals 8.44      0    8.46</code></pre>
+<p>objdump.exe was not part of the PATH in the Windows environment.</p>
+<pre class="r"><code># WARNING
+# 'qpdf' is needed for checks on size reduction of PDFs</code></pre>
+<p>qpdf was not installed on the Windows platform</p>
 </div>
 <div id="check-linux-environment-ubuntu-16.04-lts" class="section level3">
 <h3>Check Linux environment (Ubuntu 16.04 LTS)</h3>
 <ul>
 <li><p>platform: x86_64-pc-linux-gnu (64-bit)</p></li>
 <li><p>R version 3.4.1 (2017-06-30)</p></li>
-<li>R CMD check results
-<ul>
-<li>0 errors | 0 warnings | 0 notes</li>
-</ul></li>
-</ul>
-</div>
-<div id="check-mac-environment-macos-sierra-version-10.12.5" class="section level3">
-<h3>Check Mac environment (macOS Sierra version 10.12.5)</h3>
-<ul>
-<li><p>platform: x86_64-apple-darwin15.6.0 (64-bit)</p></li>
-<li><p>R version 3.4.1 (2017-06-30)</p></li>
-<li>R CMD check results
+<li>Status: OK R CMD check results
 <ul>
 <li>0 errors | 0 warnings | 0 notes</li>
 </ul></li>
