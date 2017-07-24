@@ -1,14 +1,3 @@
----
-title: "cran-comments"
-author: "Kim Hendrickx"
-date: "24 juli 2017"
-output: html_document
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 ## Test environments 
 
 ###Check Mac environment  (macOS Sierra version 10.12.5)
@@ -29,6 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 * Status: 1 WARNING, 1 NOTE    R CMD check results
     * 0 errors | 0 warnings | 1 note 
+    
 ```{r}    
 #checking compiled code ... NOTE
 #Warning in read_symbols_from_dll(so, rarch) :
@@ -78,6 +68,6 @@ The URL "https://arxiv.org/abs/1701.07359" is a valid URL.
 #ComputeConfIntervals 8.25   0.02     8.3
 ```
 
-## Downstream Dependencies
-There are currently no downstream dependencies for this package
+## Reverse Dependencies
 
+This is a new release, so there are no reverse dependencies.
