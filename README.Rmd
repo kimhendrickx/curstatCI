@@ -43,7 +43,7 @@ devtools::install_github("pietg/curstatCI")
 
 ## Example
 
-This is a basic example which shows you how to obtain the confidence intervals for the distribution function of the time to infection for the Rubella data set. More information on the data and usage of the package can be found in the vignette "curstatCI"
+This is a basic example which shows you how to obtain the confidence intervals for the distribution function of the time to infection for the Rubella data set. More information on the data and usage of the package can be found in the vignette "curstatCI":
 
 ```{r, fig.width = 5,fig.height = 5, fig.align = 'center'}
 library(Rcpp)

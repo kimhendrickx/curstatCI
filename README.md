@@ -31,7 +31,7 @@ devtools::install_github("pietg/curstatCI")
 Example
 -------
 
-This is a basic example which shows you how to obtain the confidence intervals for the distribution function of the time to infection for the Rubella data set. More information on the data and usage of the package can be found in the vignette "curstatCI"
+This is a basic example which shows you how to obtain the confidence intervals for the distribution function of the time to infection for the Rubella data set. More information on the data and usage of the package can be found in the vignette "curstatCI":
 
 ``` r
 library(Rcpp)
@@ -40,19 +40,15 @@ set.seed(1)
 data(rubella)
 grid <-1:80
 bw <-ComputeBW(data=rubella, x=grid)
-#> The computations took    1.276   seconds
+#> The computations took    1.271   seconds
 out<-ComputeConfIntervals(data=rubella,x=grid,alpha=0.05, bw = bw)
-#> The program produces the Studentized nonparametric bootstrap confidence intervals for the cdf, using the SMLE
-#> 
-#> For further information see:
-#> The nonparametric bootstrap for the current status model,
-#> Piet Groeneboom & Kim Hendrickx, Electronical Journal of Statistics (2017).
+#> The program produces the Studentized nonparametric bootstrap confidence intervals for the cdf, using the SMLE.
 #> 
 #> Number of unique observations:    225
 #> Sample size n =  230
 #> Number of Studentized Intervals = 80
 #> Number of Non-Studentized Intervals = 0
-#> The computations took    0.423   seconds
+#> The computations took    0.43   seconds
 
 out$MLE
 #>          [,1]      [,2]

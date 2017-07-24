@@ -42,7 +42,7 @@ bw<-ComputeBW(data=A, x=grid)
 plot(grid, bw, main="",ylim=c(0.5,0.7),ylab="",xlab="",las=1)
 
 ## ---- fig.width=4,fig.height=4, fig.align='center'-----------------------
-out<-ComputeConfIntervals(data=A,x=grid,alpha=0.05, bw=bw )
+out<-ComputeConfIntervals(data=A,x=grid,alpha=0.05, bw=bw)
 
 ## ------------------------------------------------------------------------
 attributes(out)

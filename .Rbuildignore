@@ -4,3 +4,6 @@
 ^README-.*\.png$
 examples_curstatCI.R
 src\CI0.cpp
+cran-comments.Rmd
+cran-comments.html
+

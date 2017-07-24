@@ -1,0 +1,57 @@
+---
+title: "cran-comments"
+author: "Kim Hendrickx"
+date: "24 juli 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Test environments 
+
+###Check Windows environment  (Microsoft Windows 10 Enterprise)
+
+* platform: x86_64-w64-mingw32/x64 (64-bit) 
+
+* R version 3.4.1 Patched (2017-07-01 r72876)
+
+* R CMD check results
+    * 0 errors | 0 warnings | 1 note 
+```{r}    
+#checking compiled code ... NOTE
+#Warning in read_symbols_from_dll(so, rarch) :
+#  this requires 'objdump.exe' to be on the PATH
+#Warning in read_symbols_from_dll(so, rarch) :
+#  this requires 'objdump.exe' to be on the PATH
+#Warning in read_symbols_from_dll(so, rarch) :
+#  this requires 'objdump.exe' to be on the PATH
+#File 'curstatCI/libs/x64/curstatCI.dll':
+#  Found no calls to: 'R_registerRoutines', 'R_useDynamicSymbols'
+```
+ 
+ I was unable to locate read_symbols_from_dll(so, rach) and could not add objdump.exe to the PATH.
+ 
+###Check Linux environment (Ubuntu 16.04 LTS)
+
+* platform: x86_64-pc-linux-gnu (64-bit) 
+
+* R version 3.4.1 (2017-06-30)
+
+* R CMD check results
+    * 0 errors | 0 warnings | 0 notes 
+
+###Check Mac environment  (macOS Sierra version 10.12.5)
+
+* platform: x86_64-apple-darwin15.6.0 (64-bit)
+ 
+* R version 3.4.1  (2017-06-30) 
+
+* R CMD check results 
+    * 0 errors | 0 warnings | 0 notes 
+
+
+## Downstream Dependencies
+There are currently no downstream dependencies for this package
+
