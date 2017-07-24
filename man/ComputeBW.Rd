@@ -21,7 +21,7 @@ ComputeBW(data, x)
 bw data-driven bandwidth vector of size \code{length(x)} containing the bandwidth value for each point in x.
 }
 \description{
-The function ComputeBW computes the bandwidth that minimizes the pointwise Mean Squared Error using the subsampling pricinciple in combination with undersmoothing.
+The function ComputeBW computes the bandwidth that minimizes the pointwise Mean Squared Error using the subsampling principle in combination with undersmoothing.
 }
 \examples{
 library(Rcpp)

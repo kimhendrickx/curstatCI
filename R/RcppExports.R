@@ -28,7 +28,7 @@
 #'     \item{MLE }{Maximum Likelihood Estimator. This is a matrix of dimension (m+1)x2 where m is the number of jump points of the MLE.
 #'                  The first column consists of the point zero and the jump locations of the MLE. The second column contains the value zero and the values of the MLE at the jump points. }
 #'     \item{SMLE }{Smoothed Maximum Likelihood Estimator. This is a vector of size \code{length(x)} containing the values of the SMLE for each point in the vector x. }
-#'     \item{CI }{pointwise confidence interval. This is a martix of dimension \code{length(x)}x2.
+#'     \item{CI }{pointwise confidence interval. This is a matrix of dimension \code{length(x)}x2.
 #'                The first resp. second column contains the lower resp. upper values of the confidence intervals for each point in x.}
 #'     \item{Studentized}{points in x for which Studentized nonparametric bootstrap confidence intervals are computed. }
 #'     \item{NonStudentized}{points in x for which classical nonparametric bootstrap confidence intervals are computed.}
@@ -38,7 +38,7 @@
 #'A censoring variable \eqn{T} is observed instead together with the indicator \eqn{\Delta = (X \le T)}.
 #'ComputeConfIntervals computes the pointwise \code{1-alpha} bootstrap confidence intervals around the SMLE of \eqn{F} based on a sample of size \code{n <- sum(data$freq2)}.
 #'
-#'The bandwidth parameter vector that minimizes the pointwise Mean Squared Error using the subsampling pricinciple in combination with undersmoothing is returned by the function \code{\link{ComputeBW}}.
+#'The bandwidth parameter vector that minimizes the pointwise Mean Squared Error using the subsampling principle in combination with undersmoothing is returned by the function \code{\link{ComputeBW}}.
 #'
 #'The default method for constructing the confidence intervals in [Groeneboom & Hendrickx (2017)] is based on estimating the asymptotic variance of the SMLE.
 #'When the bandwidth is small for some point in x, the variance estimate of the SMLE at this point might not exist.
@@ -87,7 +87,7 @@ ComputeConfIntervals <- function(data, x, alpha, bw) {
 
 #'@title Data-driven bandwidth vector
 #'
-#'@description The function ComputeBW computes the bandwidth that minimizes the pointwise Mean Squared Error using the subsampling pricinciple in combination with undersmoothing.
+#'@description The function ComputeBW computes the bandwidth that minimizes the pointwise Mean Squared Error using the subsampling principle in combination with undersmoothing.
 #'
 #'@param data Dataframe with three variables:
 #'\describe{
@@ -208,7 +208,7 @@ ComputeMLE <- function(data) {
 #'@details In the current status model, the variable of interest \eqn{X} with distribution function \eqn{F} is not observed directly.
 #'A censoring variable \eqn{T} is observed instead together with the indicator \eqn{\Delta = (X \le T)}.
 #' ComputeSMLE computes the SMLE of \eqn{F} based on a sample of size \code{n <- sum(data$freq2)}.
-#' The bandwidth parameter vector that minimizes the pointwise Mean Squared Error using the subsampling pricinciple in combination with undersmoothing is returned by the function \link{ComputeBW}.
+#' The bandwidth parameter vector that minimizes the pointwise Mean Squared Error using the subsampling principle in combination with undersmoothing is returned by the function \link{ComputeBW}.
 #'
 #'@return SMLE(x) Smoothed Maximum Likelihood Estimator. This is a vector of size \code{length(x)} containing the values of the SMLE for each point in the vector x.
 #'
