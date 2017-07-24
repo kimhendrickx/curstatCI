@@ -20,9 +20,9 @@ knitr::opts_chunk$set(echo = TRUE)
 * R CMD check results
     * 0 errors | 0 warnings | 1 note 
     
- ```{r}
+    ```{r}
 # * checking CRAN incoming feasibility ... NOTE
-#Maintainer: 'Kim Hendrickx <kim.hendrickx@uhasselt.be>'
+# Maintainer: 'Kim Hendrickx <kim.hendrickx@uhasselt.be>'
 
 #New submission
 
@@ -32,7 +32,6 @@ knitr::opts_chunk$set(echo = TRUE)
 #    Message: Invalid URI scheme
 ```
 The URL  "https://arxiv.org/abs/1701.07359 " is a valid URL.    
-    
 ```{r}    
 #checking compiled code ... NOTE
 #Warning in read_symbols_from_dll(so, rarch) :
@@ -44,10 +43,7 @@ The URL  "https://arxiv.org/abs/1701.07359 " is a valid URL.
 #File 'curstatCI/libs/x64/curstatCI.dll':
 #  Found no calls to: 'R_registerRoutines', 'R_useDynamicSymbols'
 ```
- 
- I was unable to locate read_symbols_from_dll(so, rach) and could not add objdump.exe to the PATH.
- 
-
+I was unable to locate read_symbols_from_dll(so, rach) and could not add objdump.exe to the PATH.
 ```{r}
 #* checking examples ... NOTE
 #Examples with CPU or elapsed time > 5s

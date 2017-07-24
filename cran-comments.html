@@ -133,11 +133,18 @@ $(document).ready(function () {
 <li>R CMD check results
 <ul>
 <li>0 errors | 0 warnings | 1 note</li>
-</ul></li>
 </ul>
-<p>```r # * checking CRAN incoming feasibility … NOTE #Maintainer: ‘Kim Hendrickx <a href="mailto:kim.hendrickx@uhasselt.be">kim.hendrickx@uhasselt.be</a>’</p>
-<p>#New submission</p>
-<p>#Found the following (possibly) invalid URLs: # URL:  # From: inst/doc/curstatCI.html # Message: Invalid URI scheme ``` The URL “<a href="https://arxiv.org/abs/1701.07359" class="uri">https://arxiv.org/abs/1701.07359</a>” is a valid URL.</p>
+<pre class="r"><code># * checking CRAN incoming feasibility ... NOTE
+# Maintainer: 'Kim Hendrickx &lt;kim.hendrickx@uhasselt.be&gt;'
+
+#New submission
+
+#Found the following (possibly) invalid URLs:
+#  URL: \url{https://arxiv.org/abs/1701.07359}
+#    From: inst/doc/curstatCI.html
+#    Message: Invalid URI scheme</code></pre>
+<p>The URL “<a href="https://arxiv.org/abs/1701.07359" class="uri">https://arxiv.org/abs/1701.07359</a>” is a valid URL.</p></li>
+</ul>
 <pre class="r"><code>#checking compiled code ... NOTE
 #Warning in read_symbols_from_dll(so, rarch) :
 #  this requires 'objdump.exe' to be on the PATH
