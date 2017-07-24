@@ -141,21 +141,11 @@ $(document).ready(function () {
 <ul>
 <li><p>platform: x86_64-w64-mingw32/x64 (64-bit)</p></li>
 <li><p>R version 3.4.1 Patched (2017-07-01 r72876)</p></li>
-<li><p>Status: 1 WARNING, 1 NOTE</p></li>
+<li>Status: 1 WARNING, 1 NOTE R CMD check results
+<ul>
+<li>0 errors | 0 warnings | 1 note</li>
+</ul></li>
 </ul>
-<p>R CMD check results * 0 errors | 0 warnings | 1 note</p>
-<pre><code>```r
-# * checking CRAN incoming feasibility ... NOTE
-# Maintainer: 'Kim Hendrickx &lt;kim.hendrickx@uhasselt.be&gt;'
-
-#New submission
-
-#Found the following (possibly) invalid URLs:
-#  URL: \url{https://arxiv.org/abs/1701.07359}
-#    From: inst/doc/curstatCI.html
-#    Message: Invalid URI scheme
-```</code></pre>
-<p>The URL “<a href="https://arxiv.org/abs/1701.07359" class="uri">https://arxiv.org/abs/1701.07359</a>” is a valid URL.</p>
 <pre class="r"><code>#checking compiled code ... NOTE
 #Warning in read_symbols_from_dll(so, rarch) :
 #  this requires 'objdump.exe' to be on the PATH
@@ -180,6 +170,23 @@ $(document).ready(function () {
 <li>0 errors | 0 warnings | 0 notes</li>
 </ul></li>
 </ul>
+</div>
+<div id="release-check-additional-notes" class="section level3">
+<h3>Release check: Additional notes</h3>
+<pre class="r"><code>#* checking CRAN incoming feasibility ... NOTE
+#Maintainer: 'Kim Hendrickx &lt;kim.hendrickx@uhasselt.be&gt;'
+
+#New submission
+
+#Found the following (possibly) invalid URLs:
+#  URL: \url{https://arxiv.org/abs/1701.07359}
+#    From: inst/doc/curstatCI.html
+#    Message: Invalid URI scheme</code></pre>
+<p>The URL “<a href="https://arxiv.org/abs/1701.07359" class="uri">https://arxiv.org/abs/1701.07359</a>” is a valid URL.</p>
+<pre class="r"><code>#* checking examples ... NOTE
+#Examples with CPU or elapsed time &gt; 5s
+#                     user system elapsed
+#ComputeConfIntervals 8.25   0.02     8.3</code></pre>
 </div>
 </div>
 <div id="downstream-dependencies" class="section level2">
