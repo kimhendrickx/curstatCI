@@ -37,10 +37,10 @@ This is a basic example which shows you how to obtain the confidence intervals f
 library(Rcpp)
 library(curstatCI)
 set.seed(1)
-data(rubella)
+data(rubella) 
 grid <-1:80
 bw <-ComputeBW(data=rubella, x=grid)
-#> The computations took    1.254   seconds
+#> The computations took    1.256   seconds
 out<-ComputeConfIntervals(data=rubella,x=grid,alpha=0.05, bw = bw)
 #> The program produces the Studentized nonparametric bootstrap confidence intervals for the cdf, using the SMLE.
 #> 
@@ -48,7 +48,7 @@ out<-ComputeConfIntervals(data=rubella,x=grid,alpha=0.05, bw = bw)
 #> Sample size n =  230
 #> Number of Studentized Intervals = 80
 #> Number of Non-Studentized Intervals = 0
-#> The computations took    0.423   seconds
+#> The computations took    0.414   seconds
 
 out$MLE
 #>          [,1]      [,2]
@@ -68,10 +68,13 @@ smle <-  out$SMLE
 left<-out$CI[,1]
 right<-out$CI[,2]
 
-plot(grid,smle,type ='l', ylim=c(0,1), main= "",ylab="",xlab="",las=1)
-lines(grid, left, col = 4)
-lines(grid, right, col = 4)
-segments(grid,left, grid, right)
+ConfInt<-cbind(smle, left, right)
+head(ConfInt)
+#>            smle       left      right
+#> [1,] 0.05205647 0.04645370 0.05684488
+#> [2,] 0.10387679 0.09062863 0.11518718
+#> [3,] 0.15522742 0.13450756 0.17291065
+#> [4,] 0.20587997 0.17795836 0.22970949
+#> [5,] 0.25561365 0.22085116 0.28528225
+#> [6,] 0.30421750 0.26290425 0.33934792
 ```
-
-<img src="README-unnamed-chunk-2-1.png" style="display: block; margin: auto;" />
