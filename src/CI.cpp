@@ -43,7 +43,7 @@
 //'A censoring variable \eqn{T} is observed instead together with the indicator \eqn{\Delta = (X \le T)}.
 //'ComputeConfIntervals computes the pointwise \code{1-alpha} bootstrap confidence intervals around the SMLE of \eqn{F} based on a sample of size \code{n <- sum(data$freq2)}.
 //'
-//'The bandwidth parameter vector that minimizes the pointwise Mean Squared Error using the subsampling pricinciple in combination with undersmoothing is returned by the function \code{\link{ComputeBW}}.
+//'The bandwidth parameter vector that minimizes the pointwise Mean Squared Error using the subsampling principle in combination with undersmoothing is returned by the function \code{\link{ComputeBW}}.
 //'
 //'The default method for constructing the confidence intervals in [Groeneboom & Hendrickx (2017)] is based on estimating the asymptotic variance of the SMLE.
 //'When the bandwidth is small for some point in x, the variance estimate of the SMLE at this point might not exist.

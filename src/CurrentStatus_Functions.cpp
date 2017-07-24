@@ -167,7 +167,7 @@ DataFrame ComputeMLE(DataFrame data)
 //'@details In the current status model, the variable of interest \eqn{X} with distribution function \eqn{F} is not observed directly.
 //'A censoring variable \eqn{T} is observed instead together with the indicator \eqn{\Delta = (X \le T)}.
 //' ComputeSMLE computes the SMLE of \eqn{F} based on a sample of size \code{n <- sum(data$freq2)}.
-//' The bandwidth parameter vector that minimizes the pointwise Mean Squared Error using the subsampling pricinciple in combination with undersmoothing is returned by the function \link{ComputeBW}.
+//' The bandwidth parameter vector that minimizes the pointwise Mean Squared Error using the subsampling principle in combination with undersmoothing is returned by the function \link{ComputeBW}.
 //'
 //'@return SMLE(x) Smoothed Maximum Likelihood Estimator. This is a vector of size \code{length(x)} containing the values of the SMLE for each point in the vector x.
 //'
