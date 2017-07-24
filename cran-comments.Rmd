@@ -45,7 +45,7 @@ objdump.exe was not part of the PATH in the Windows environment.
 # WARNING
 # 'qpdf' is needed for checks on size reduction of PDFs
 ```
-qpdf was not installed on the Windows platform
+qpdf was not installed on the Windows platform.
  
 ###Check Linux environment (Ubuntu 16.04 LTS)
 
