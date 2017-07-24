@@ -36,7 +36,7 @@ You can install curstatCI from github with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("pietg/curstatCI")
+devtools::install_github("kimhendrickx/curstatCI")
 ```
 
 

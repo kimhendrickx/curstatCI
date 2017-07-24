@@ -25,7 +25,7 @@ You can install curstatCI from github with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("pietg/curstatCI")
+devtools::install_github("kimhendrickx/curstatCI")
 ```
 
 Example
@@ -40,7 +40,7 @@ set.seed(1)
 data(rubella)
 grid <-1:80
 bw <-ComputeBW(data=rubella, x=grid)
-#> The computations took    1.271   seconds
+#> The computations took    1.254   seconds
 out<-ComputeConfIntervals(data=rubella,x=grid,alpha=0.05, bw = bw)
 #> The program produces the Studentized nonparametric bootstrap confidence intervals for the cdf, using the SMLE.
 #> 
@@ -48,7 +48,7 @@ out<-ComputeConfIntervals(data=rubella,x=grid,alpha=0.05, bw = bw)
 #> Sample size n =  230
 #> Number of Studentized Intervals = 80
 #> Number of Non-Studentized Intervals = 0
-#> The computations took    0.43   seconds
+#> The computations took    0.423   seconds
 
 out$MLE
 #>          [,1]      [,2]
