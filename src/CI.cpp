@@ -483,7 +483,7 @@ List ComputeConfIntervals(DataFrame data, NumericVector x, double alpha, Numeric
 //'A<-cbind(t[order(t)], delta[order(t)], rep(1,n))
 //'
 //'# x vector
-//'grid<-seq(0.01,1.99 ,by = 0.01)
+//'grid<-seq(0.1,1.9 ,by = 0.1)
 //'
 //'# data-driven bandwidth vector
 //'bw <- ComputeBW(data =A, x = grid)
