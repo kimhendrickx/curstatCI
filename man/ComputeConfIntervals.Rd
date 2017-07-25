@@ -67,7 +67,7 @@ delta <- as.numeric(y <= t)
 A<-cbind(t[order(t)], delta[order(t)], rep(1,n))
 
 # x vector
-grid<-seq(0.01,1.99 ,by = 0.01)
+grid<-seq(0.1,1.9 ,by = 0.1)
 
 # data-driven bandwidth vector
 bw <- ComputeBW(data =A, x = grid)
@@ -79,8 +79,8 @@ left <- out$CI[,1]
 right <- out$CI[,2]
 
 plot(grid, out$SMLE,type ='l', ylim=c(0,1), main= "",ylab="",xlab="",las=1)
-lines(grid, left, col = 4)
-lines(grid, right, col = 4)
+points(grid, left, col = 4)
+points(grid, right, col = 4)
 segments(grid,left, grid, right)
 
 }

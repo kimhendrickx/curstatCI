@@ -1,19 +1,12 @@
 ## Test environments 
 
-###Check Mac environment  (macOS Sierra version 10.12.5)
+* Mac environment  (macOS Sierra version 10.12.5)
+    * platform: x86_64-apple-darwin15.6.0 (64-bit)
+    * R version 3.4.1  (2017-06-30) 
 
-* platform: x86_64-apple-darwin15.6.0 (64-bit)
- 
-* R version 3.4.1  (2017-06-30) 
-
-* Status: OK  R CMD check results 
-    * 0 errors | 0 warnings | 0 notes 
-
-###Check Windows environment  (Microsoft Windows 10 Enterprise)
-
-* platform: x86_64-w64-mingw32/x64 (64-bit) 
-
-* R version 3.4.1 Patched (2017-07-01 r72876)
+* Windows environment  (Microsoft Windows 10 Enterprise)
+    * platform: x86_64-w64-mingw32/x64 (64-bit) 
+    * R version 3.4.1 Patched (2017-07-01 r72876)
 
 
 * Status: 1 WARNING, 1 NOTE    R CMD check results
@@ -37,10 +30,9 @@ objdump.exe was not part of the PATH in the Windows environment.
 ```
 qpdf was not installed on the Windows platform.
  
-###Check Linux environment (Ubuntu 16.04 LTS)
+### Linux environment (Ubuntu 16.04 LTS)
 
 * platform: x86_64-pc-linux-gnu (64-bit) 
-
 * R version 3.4.1 (2017-06-30)
 
 * Status: OK  R CMD check results
