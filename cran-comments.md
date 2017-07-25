@@ -1,63 +1,34 @@
+# Releasing package curstatCI
+25-07-2017
+
 ## Test environments 
 
 * Mac environment  (macOS Sierra version 10.12.5)
     * platform: x86_64-apple-darwin15.6.0 (64-bit)
     * R version 3.4.1  (2017-06-30) 
 
+
 * Windows environment  (Microsoft Windows 10 Enterprise)
     * platform: x86_64-w64-mingw32/x64 (64-bit) 
     * R version 3.4.1 Patched (2017-07-01 r72876)
 
 
-* Status: 1 WARNING, 1 NOTE    R CMD check results
-    * 0 errors | 0 warnings | 1 note 
+* Linux environment (Ubuntu 16.04 LTS)
+    * platform: x86_64-pc-linux-gnu (64-bit) 
+    * R version 3.4.1 (2017-06-30)
+
     
-```{r}    
-#checking compiled code ... NOTE
-#Warning in read_symbols_from_dll(so, rarch) :
-#  this requires 'objdump.exe' to be on the PATH
-#Warning in read_symbols_from_dll(so, rarch) :
-#  this requires 'objdump.exe' to be on the PATH
-#Warning in read_symbols_from_dll(so, rarch) :
-#  this requires 'objdump.exe' to be on the PATH
-#File 'curstatCI/libs/x64/curstatCI.dll':
-#  Found no calls to: 'R_registerRoutines', 'R_useDynamicSymbols'
+* win-builder
+    * platform: x86_64-w64-mingw32 (64-bit)
+    * R Under development (unstable) (2017-07-23 r72955)
+
+## R CMD check results    
+
+There is 1 note:
 ```
-objdump.exe was not part of the PATH in the Windows environment.
-```{r}
-# WARNING
-# 'qpdf' is needed for checks on size reduction of PDFs
-```
-qpdf was not installed on the Windows platform.
- 
-### Linux environment (Ubuntu 16.04 LTS)
+Maintainer: 'Kim Hendrickx <kim.hendrickx@uhasselt.be>'
 
-* platform: x86_64-pc-linux-gnu (64-bit) 
-* R version 3.4.1 (2017-06-30)
-
-* Status: OK  R CMD check results
-    * 0 errors | 0 warnings | 0 notes 
-
-### Release check: Additional notes
-
-```{r}
-#* checking CRAN incoming feasibility ... NOTE
-#Maintainer: 'Kim Hendrickx <kim.hendrickx@uhasselt.be>'
-
-#New submission
-
-#Found the following (possibly) invalid URLs:
-#  URL: \url{https://arxiv.org/abs/1701.07359}
-#    From: inst/doc/curstatCI.html
-#    Message: Invalid URI scheme
-```
-The URL "https://arxiv.org/abs/1701.07359" is a valid URL.
-
-```{r}
-#* checking examples ... NOTE
-#Examples with CPU or elapsed time > 5s
-#                     user system elapsed
-#ComputeConfIntervals 8.25   0.02     8.3
+New submission
 ```
 
 ## Reverse Dependencies
