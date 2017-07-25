@@ -34,3 +34,6 @@ New submission
 ## Reverse Dependencies
 
 This is a new release, so there are no reverse dependencies.
+
+## Resubmission
+This is a resubmission. In this version I have added the reference "Groeneboom and Hendrickx (2017) <arXiv:1701.07359>" to the DESCRIPTION. 
