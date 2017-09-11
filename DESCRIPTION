@@ -5,7 +5,7 @@ Version: 0.1.0
 Authors@R: c(
    person("Piet", "Groeneboom", email = "P.Groeneboom@tudelft.nl",role = "aut"),
    person("Kim", "Hendrickx", email = "kim.hendrickx@uhasselt.be",role = "cre"))
-Description:Computes the maximum likelihood estimator, the smoothed maximum likelihood
+Description: Computes the maximum likelihood estimator, the smoothed maximum likelihood
     estimator and pointwise bootstrap confidence intervals for the distribution 
     function under current status data. 
     Groeneboom and Hendrickx (2017) <arXiv:1701.07359>.
@@ -15,7 +15,7 @@ LazyData: true
 LinkingTo: Rcpp
 Imports: Rcpp
 Depends: R (>= 2.10)
-RoxygenNote: 6.0.1
+RoxygenNote: 6.0.1.9000
 URL: https://github.com/kimhendrickx/curstatCI
 BugReports: https://github.com/kimhendrickx/curstatCI/issues
 Suggests: knitr,
