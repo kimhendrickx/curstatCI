@@ -78,7 +78,7 @@
 #'points(grid, right, col = 4)
 #'segments(grid,left, grid, right)
 #'
-#'@references Groeneboom, P. and Hendrickx, K. (2017). The nonparametric bootstrap for the current status model. \url{https://arxiv.org/abs/1701.07359}
+#'@references Groeneboom, P. and Hendrickx, K. (2017). The nonparametric bootstrap for the current status model. Electronic Journal of Statistics 11(2):3446-3848.
 #'
 #'@export
 ComputeConfIntervals <- function(data, x, alpha, bw) {
@@ -132,7 +132,7 @@ ComputeConfIntervals <- function(data, x, alpha, bw) {
 #'bw <- ComputeBW(data =A, x = grid)
 #'plot(grid, bw)
 #'
-#'@references Groeneboom, P. and Hendrickx, K. (2017). The nonparametric bootstrap for the current status model. \url{https://arxiv.org/abs/1701.07359}
+#'@references Groeneboom, P. and Hendrickx, K. (2017). The nonparametric bootstrap for the current status model. Electronic Journal of Statistics 11(2):3446-3848.
 #'@export
 ComputeBW <- function(data, x) {
     .Call('_curstatCI_ComputeBW', PACKAGE = 'curstatCI', data, x)
@@ -162,8 +162,7 @@ ComputeBW <- function(data, x) {
 #'     \item{mle}{MLE evaluated at the jump locations}
 #' }
 #'
-#'@references Groeneboom, P. and Hendrickx, K. (2017). The nonparametric bootstrap for the current status model. \url{https://arxiv.org/abs/1701.07359}
-#'
+#'@references Groeneboom, P. and Hendrickx, K. (2017). The nonparametric bootstrap for the current status model. Electronic Journal of Statistics 11(2):3446-3848.//'
 #'@seealso \code{\link{ComputeConfIntervals}}
 #'
 #'
@@ -212,7 +211,7 @@ ComputeMLE <- function(data) {
 #'
 #'@return SMLE(x) Smoothed Maximum Likelihood Estimator. This is a vector of size \code{length(x)} containing the values of the SMLE for each point in the vector x.
 #'
-#'@references Groeneboom, P. and Hendrickx, K. (2017). The nonparametric bootstrap for the current status model. \url{https://arxiv.org/abs/1701.07359}
+#'@references Groeneboom, P. and Hendrickx, K. (2017). The nonparametric bootstrap for the current status model. Electronic Journal of Statistics 11(2):3446-3848.
 #'
 #'@seealso \code{\link{ComputeConfIntervals}}
 #'

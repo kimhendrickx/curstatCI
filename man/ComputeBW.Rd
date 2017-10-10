@@ -52,7 +52,7 @@ plot(grid, bw)
 
 }
 \references{
-Groeneboom, P. and Hendrickx, K. (2017). The nonparametric bootstrap for the current status model. \url{https://arxiv.org/abs/1701.07359}
+Groeneboom, P. and Hendrickx, K. (2017). The nonparametric bootstrap for the current status model. Electronic Journal of Statistics 11(2):3446-3848.
 }
 \seealso{
 \code{vignette("curstatCI")}
