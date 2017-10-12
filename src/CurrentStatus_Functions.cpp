@@ -32,7 +32,7 @@
 //'     \item{mle}{MLE evaluated at the jump locations}
 //' }
 //'
-//'@references Groeneboom, P. and Hendrickx, K. (2017). The nonparametric bootstrap for the current status model. Electronic Journal of Statistics 11(2):3446-3848.//'
+//'@references Groeneboom, P. and Hendrickx, K. (2017). The nonparametric bootstrap for the current status model. Electronic Journal of Statistics 11(2):3446-3848.
 //'@seealso \code{\link{ComputeConfIntervals}}
 //'
 //'

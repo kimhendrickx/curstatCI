@@ -1,5 +1,5 @@
 # Releasing package curstatCI
-25-07-2017
+12-10-2017
 
 ## Test environments 
 
@@ -15,25 +15,27 @@
 
 * Linux environment (Ubuntu 16.04 LTS)
     * platform: x86_64-pc-linux-gnu (64-bit) 
-    * R version 3.4.1 (2017-06-30)
+    * R version 3.4.2 (2017-09-28) 
 
     
 * win-builder
     * platform: x86_64-w64-mingw32 (64-bit)
-    * R Under development (unstable) (2017-07-23 r72955)
+    * R Under development (unstable) (2017-09-12 r73242)
 
 ## R CMD check results    
 
 There is 1 note:
-```
-Maintainer: 'Kim Hendrickx <kim.hendrickx@uhasselt.be>'
 
-New submission
-```
 
 ## Reverse Dependencies
+There are no problems with reverse dependencies.
 
-This is a new release, so there are no reverse dependencies.
 
 ## Resubmission
-This is a resubmission. In this version I have added the reference "Groeneboom and Hendrickx (2017) <arXiv:1701.07359>" to the DESCRIPTION. 
+This is a resubmission. In this version I have 
+
+* corrected an error in the source code of the function ComputeBW.
+
+* changed the reference "Groeneboom and Hendrickx (2017) <arXiv:1701.07359>" 
+    * to "Groeneboom and Hendrickx (2017) <doi:10.1214/17-EJS1345"" in the DESCRIPTION 
+    * to "Groeneboom, P. and Hendrickx, K. (2017). The nonparametric bootstrap for the current status model. Electronic Journal of Statistics 11(2):3446-3848." in the references of the documentation of the functions ComputeMLE, ComputeSMLE, ComputeBW and ComputeConfIntervals and the references of the vignette curstatCI. 
