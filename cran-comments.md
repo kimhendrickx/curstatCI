@@ -24,7 +24,7 @@
 
 ## R CMD check results    
 
-There is 1 note:
+There are no errors, no warnings and no notes.
 
 
 ## Reverse Dependencies
