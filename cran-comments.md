@@ -4,7 +4,7 @@
 ## Test environments 
 
 * Mac environment  (macOS Sierra version 10.12.5)
-    * platform: x86_64-apple-darwin15.6.0 (64-bit)
+    * platform: x86_64-apple-darwin15.6.0 (64-bit) 
     * R version 3.4.1  (2017-06-30) 
 
 
@@ -32,7 +32,7 @@ There are no problems with reverse dependencies.
 
 
 ## Resubmission
-This is a resubmission. In this version I have 
+This is a resubmission. In this version I have: 
 
 * corrected an error in the source code of the function ComputeBW.
 
